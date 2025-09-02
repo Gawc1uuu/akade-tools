@@ -18,6 +18,7 @@ export const config = [
       turbo: turboPlugin,
     },
     rules: {
+      "no-console": "warn",
       "turbo/no-undeclared-env-vars": "warn",
     },
   },
