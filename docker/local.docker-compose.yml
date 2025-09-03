@@ -1,0 +1,20 @@
+services:
+  postgres:
+    container_name: akade-db-postgres
+    image: postgres:alpine
+    environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: akade
+    ports:
+      - 5432:5432
+    volumes:
+      - akade-db-postgres:/var/lib/postgresql/data
+    healthcheck:  
+      test: pg_isready -U postgres -d akade
+      interval: 1s
+      timeout: 2s
+      retries: 20
+volumes:
+  akade-db-postgres:
+
