@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "db:up": "docker compose -f ../../docker/local.docker-compose.yml -p akade up"
   },
   "keywords": [],
   "author": "",
