@@ -21,16 +21,16 @@ export const cars = pgTable('cars', {
   inspectionEndDate: timestamp('inspection_end_date', { withTimezone: true }),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
-  userId:varchar("user_id").notNull()
+  userId: varchar('user_id').notNull(),
 });
 
-export const usersRelations = relations(users,({many})=>({
-  cars:many(cars)
-}))
+export const usersRelations = relations(users, ({ many }) => ({
+  cars: many(cars),
+}));
 
-export const carsRelations = relations(cars, ({one})=>({
-  owner:one(users,{
-    fields:[cars.userId],
-    references:[users.id]
-  })
-}))
+export const carsRelations = relations(cars, ({ one }) => ({
+  owner: one(users, {
+    fields: [cars.userId],
+    references: [users.id],
+  }),
+}));
