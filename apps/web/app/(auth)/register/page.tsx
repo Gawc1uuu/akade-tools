@@ -8,10 +8,9 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 
 const Register = () => {
+  const [state, formAction, isPending] = useActionState(signup, undefined);
 
-  const [state, formAction,isPending] = useActionState(signup,undefined)
-
-  console.log(state)
+  console.log(state);
 
   return (
     <div className="flex justify-center items-center min-h-screen relative">
@@ -34,11 +33,11 @@ const Register = () => {
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" name='email' type="email" placeholder="m@example.com" required />
+                <Input id="email" name="email" type="email" placeholder="m@example.com" required />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Hasło</Label>
-                <Input name='password' id="password" type="password" required placeholder="Wprowadź hasło" />
+                <Input name="password" id="password" type="password" required placeholder="Wprowadź hasło" />
               </div>
             </div>
           </form>

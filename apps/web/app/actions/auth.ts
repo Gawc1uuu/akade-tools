@@ -1,81 +1,79 @@
 /* eslint-disable no-useless-escape */
-"use server";
-import * as z from "zod";
-import bcrypt from "bcrypt"
-import {db, getUserById, users} from "@repo/db"
-import { redirect } from "next/navigation";
-import { createAccessToken, deleteToken, verifyAccessToken } from "~/lib/tokens";
-import { deleteSession } from "~/lib/session";
-
-
+'use server';
+import * as z from 'zod';
+import bcrypt from 'bcrypt';
+import { db, getUserById, users } from '@repo/db';
+import { redirect } from 'next/navigation';
+import { createAccessToken, deleteToken, verifyAccessToken } from '~/lib/tokens';
+import { deleteSession } from '~/lib/session';
 
 const registerFormSchema = z.object({
-    email:z.email("This is not correct email").trim(),
-    password: z
+  email: z.email('This is not correct email').trim(),
+  password: z
     .string()
     .min(8, { message: 'Be at least 8 characters long' })
     .regex(/[a-zA-Z]/, { message: 'Contain at least one letter.' })
     .regex(/[0-9]/, { message: 'Contain at least one number.' })
     .regex(/[^a-zA-Z0-9]/, {
       message: 'Contain at least one special character.',
-    })
-})
+    }),
+});
 
 export type FormState =
   | {
       errors?: {
-        email?: string[]
-        password?: string[]
-      }
-      message?: string
+        email?: string[];
+        password?: string[];
+      };
+      message?: string;
     }
-  | undefined
+  | undefined;
 
-export async function signup(currentState:FormState,formData:FormData){
-
+export async function signup(currentState: FormState, formData: FormData) {
   const validatedFields = registerFormSchema.safeParse({
-    email:formData.get("email"),
-    password:formData.get("password")
-  })
+    email: formData.get('email'),
+    password: formData.get('password'),
+  });
 
-  if(!validatedFields.success){
+  if (!validatedFields.success) {
     return {
-        errors: validatedFields.error.flatten().fieldErrors,
-    }
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
   }
-  const {email, password} = validatedFields.data
-  const hashedPassword = await bcrypt.hash(password,10)
-  const data = await db.insert(users).values({
-    email,
-    password:hashedPassword
-  })
-  .returning({id:users.id})
-    
-  const user = data[0]
+  const { email, password } = validatedFields.data;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const data = await db
+    .insert(users)
+    .values({
+      email,
+      password: hashedPassword,
+    })
+    .returning({ id: users.id });
 
-    if(!user){
-        return {
-            message:"Error occured while creating your account"
-        }
-    }
+  const user = data[0];
 
-    await createAccessToken({id:user.id})
-    redirect("/")
+  if (!user) {
+    return {
+      message: 'Error occured while creating your account',
+    };
+  }
+
+  await createAccessToken({ id: user.id });
+  redirect('/');
 }
 
 export async function getMe() {
-    const session = await verifyAccessToken();
-  
-    if (session && typeof session.id === 'string') {
-      const user = await getUserById(session.id);
-      return user;
-    }
-    return null;
+  const session = await verifyAccessToken();
+
+  if (session && typeof session.id === 'string') {
+    const user = await getUserById(session.id);
+    return user;
   }
+  return null;
+}
 
-
-export async function logout(){
-    await deleteSession()
-    await deleteToken()
-    redirect("/login")
+export async function logout() {
+  await deleteSession();
+  await deleteToken();
+  redirect('/login');
 }
