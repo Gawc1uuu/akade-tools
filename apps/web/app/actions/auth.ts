@@ -1,11 +1,12 @@
 /* eslint-disable no-useless-escape */
 'use server';
 import * as z from 'zod';
-import bcrypt from 'bcrypt';
 import { db, getUserById, users } from '@repo/db';
-import { redirect } from 'next/navigation';
-import { createAccessToken, deleteToken, verifyAccessToken } from '~/lib/tokens';
+import { deleteToken, saveAccessTokenToCookies, verifyAccessToken } from '~/lib/tokens';
 import { deleteSession } from '~/lib/session';
+import bcrypt from 'bcryptjs';
+import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 
 const registerFormSchema = z.object({
   email: z.email('This is not correct email').trim(),
@@ -57,14 +58,14 @@ export async function signup(currentState: FormState, formData: FormData) {
       message: 'Error occured while creating your account',
     };
   }
-
-  await createAccessToken({ id: user.id });
+  await saveAccessTokenToCookies(user.id);
   redirect('/');
 }
 
 export async function getMe() {
-  const session = await verifyAccessToken();
-
+    const cookiesStore = await cookies()
+    const token = cookiesStore.get('accessToken')?.value;
+  const session = await verifyAccessToken(token);
   if (session && typeof session.id === 'string') {
     const user = await getUserById(session.id);
     return user;
