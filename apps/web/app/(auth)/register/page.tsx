@@ -8,16 +8,17 @@ import { Label } from '~/components/ui/label';
 const Register = () => {
   return (
     <div className="flex justify-center items-center min-h-screen relative">
-      <div className='absolute inset-0 bg-cover bg-center bg-no-repeat'
-      style={{
-        backgroundImage: "url('/office.jpg')"
-      }}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('/office.jpg')",
+        }}
       />
-      <div className='absolute inset-0 bg-black/60' />
+      <div className="absolute inset-0 bg-black/60" />
       <Card className="w-[90%] max-w-md relative z-10">
-        <CardHeader className='space-y-2'>
-          <CardTitle className='text-2xl font-bold text-center'>Utwórz konto</CardTitle>
-          <CardDescription className='text-center text-gray-600 font-normal'>
+        <CardHeader className="space-y-2">
+          <CardTitle className="text-2xl font-bold text-center">Utwórz konto</CardTitle>
+          <CardDescription className="text-center text-gray-600 font-normal">
             Wprowadź wszystkie swoje dane, aby załozyć nowe konto
           </CardDescription>
         </CardHeader>
@@ -30,7 +31,7 @@ const Register = () => {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Hasło</Label>
-                <Input id="password" type="password" required placeholder='Wprowadź hasło' />
+                <Input id="password" type="password" required placeholder="Wprowadź hasło" />
               </div>
             </div>
           </form>
@@ -41,7 +42,10 @@ const Register = () => {
               Zarejestruj się
             </Button>
             <div className="text-center text-sm text-gray-600">
-              <span >Masz juz konto?</span> <Link className='text-primary-red font-medium hover:text-primary-red/90 hover:cursor-pointer hover:underline' href="/login">Zaloguj się</Link>
+              <span>Masz juz konto?</span>{' '}
+              <Link className="text-primary-red font-medium hover:text-primary-red/90 hover:cursor-pointer hover:underline" href="/login">
+                Zaloguj się
+              </Link>
             </div>
           </div>
         </CardFooter>
