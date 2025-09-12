@@ -63,8 +63,8 @@ export async function signup(currentState: FormState, formData: FormData) {
 }
 
 export async function getMe() {
-    const cookiesStore = await cookies()
-    const token = cookiesStore.get('accessToken')?.value;
+  const cookiesStore = await cookies();
+  const token = cookiesStore.get('accessToken')?.value;
   const session = await verifyAccessToken(token);
   if (session && typeof session.id === 'string') {
     const user = await getUserById(session.id);
