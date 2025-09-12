@@ -19,3 +19,4 @@ const pool = new Pool({
 
 export const db = drizzle(pool, { schema });
 export * from './schema/schema'; // Export all schema objects
+export * from './queries'
