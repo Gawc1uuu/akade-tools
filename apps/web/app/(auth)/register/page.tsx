@@ -1,16 +1,25 @@
 import Link from 'next/link';
 import React from 'react';
 import { Button } from '~/components/ui/button';
-import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
+import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 
 const Register = () => {
   return (
-    <div className="flex justify-center items-center h-screen">
-      <Card className="w-full max-w-lg">
-        <CardHeader>
-          <CardTitle>Załóz konto</CardTitle>
+    <div className="flex justify-center items-center min-h-screen relative">
+      <div className='absolute inset-0 bg-cover bg-center bg-no-repeat'
+      style={{
+        backgroundImage: "url('/office.jpg')"
+      }}
+      />
+      <div className='absolute inset-0 bg-black/60' />
+      <Card className="w-[90%] max-w-md relative z-10">
+        <CardHeader className='space-y-2'>
+          <CardTitle className='text-2xl font-bold text-center'>Utwórz konto</CardTitle>
+          <CardDescription className='text-center text-gray-600 font-normal'>
+            Wprowadź wszystkie swoje dane, aby załozyć nowe konto
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form>
@@ -20,19 +29,19 @@ const Register = () => {
                 <Input id="email" type="email" placeholder="m@example.com" required />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" required />
+                <Label htmlFor="password">Hasło</Label>
+                <Input id="password" type="password" required placeholder='Wprowadź hasło' />
               </div>
             </div>
           </form>
         </CardContent>
         <CardFooter>
           <div className="flex flex-col gap-4 w-full">
-            <Button type="submit" className="w-full">
+            <Button type="submit" variant="register" className="w-full">
               Zarejestruj się
             </Button>
-            <div className="text-center">
-              <span>Masz juz konto?</span> <Link href="#">Zaloguj się</Link>
+            <div className="text-center text-sm text-gray-600">
+              <span >Masz juz konto?</span> <Link className='text-primary-red font-medium hover:text-primary-red/90 hover:cursor-pointer hover:underline' href="/login">Zaloguj się</Link>
             </div>
           </div>
         </CardFooter>
