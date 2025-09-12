@@ -11,7 +11,7 @@ export async function saveSession(payload: Session) {
   cookieStore.set('session', JSON.stringify(payload), {
     httpOnly: true,
     secure: true,
-    sameSite: 'none',
+    sameSite: 'lax',
     expires: new Date(Date.now() + 1000 * 5), //FIXME: 5mins
   });
 }
