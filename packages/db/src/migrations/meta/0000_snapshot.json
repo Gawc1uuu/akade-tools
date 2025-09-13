@@ -1,5 +1,5 @@
 {
-  "id": "3a899480-8bc7-4629-a39c-f03a91d57e45",
+  "id": "a8e2a0e1-112d-4373-a258-b599c4088a15",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -89,13 +89,13 @@
           "primaryKey": false,
           "notNull": false
         },
-        "status": {
-          "name": "status",
-          "type": "user_status",
+        "role": {
+          "name": "role",
+          "type": "role",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'INVITED'"
+          "notNull": false,
+          "default": "'ADMIN'"
         },
         "created_at": {
           "name": "created_at",
@@ -123,6 +123,14 @@
     }
   },
   "enums": {
+    "public.role": {
+      "name": "role",
+      "schema": "public",
+      "values": [
+        "ADMIN",
+        "USER"
+      ]
+    },
     "public.user_status": {
       "name": "user_status",
       "schema": "public",

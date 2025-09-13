@@ -10,8 +10,6 @@ import { Label } from '~/components/ui/label';
 const Register = () => {
   const [state, formAction, isPending] = useActionState(signup, undefined);
 
-  console.log(state);
-
   return (
     <div className="flex justify-center items-center min-h-screen relative">
       <div

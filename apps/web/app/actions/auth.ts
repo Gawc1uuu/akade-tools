@@ -2,11 +2,11 @@
 'use server';
 import * as z from 'zod';
 import { db, getUserById, users } from '@repo/db';
-import { deleteToken, saveAccessTokenToCookies, verifyAccessToken } from '~/lib/tokens';
+import { deleteTokens, saveAccessTokenToCookies, saveRefreshTokenToCookies, verifyAccessToken } from '~/lib/tokens';
 import { deleteSession } from '~/lib/session';
 import bcrypt from 'bcryptjs';
 import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
+import { AccessTokenPayload } from '~/lib/types';
 
 const registerFormSchema = z.object({
   email: z.email('This is not correct email').trim(),
@@ -49,7 +49,7 @@ export async function signup(currentState: FormState, formData: FormData) {
       email,
       password: hashedPassword,
     })
-    .returning({ id: users.id });
+    .returning();
 
   const user = data[0];
 
@@ -58,23 +58,22 @@ export async function signup(currentState: FormState, formData: FormData) {
       message: 'Error occured while creating your account',
     };
   }
-  await saveAccessTokenToCookies(user.id);
+  await saveAccessTokenToCookies({userId:user.id,email:user.email,role:user.role});
+  await saveRefreshTokenToCookies({userId:user.id})
   redirect('/');
 }
 
 export async function getMe() {
-  const cookiesStore = await cookies();
-  const token = cookiesStore.get('accessToken')?.value;
-  const session = await verifyAccessToken(token);
-  if (session && typeof session.id === 'string') {
-    const user = await getUserById(session.id);
-    return user;
+  const payload = await verifyAccessToken() as AccessTokenPayload
+  if(!payload){
+    return null
   }
-  return null;
+  const user = await getUserById(payload.userId)
+  return user
 }
 
 export async function logout() {
   await deleteSession();
-  await deleteToken();
-  redirect('/login');
+  await deleteTokens();
+  // redirect('/login');
 }
