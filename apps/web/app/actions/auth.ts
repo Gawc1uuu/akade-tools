@@ -58,18 +58,18 @@ export async function signup(currentState: FormState, formData: FormData) {
       message: 'Error occured while creating your account',
     };
   }
-  await saveAccessTokenToCookies({userId:user.id,email:user.email,role:user.role});
-  await saveRefreshTokenToCookies({userId:user.id})
+  await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role });
+  await saveRefreshTokenToCookies({ userId: user.id });
   redirect('/');
 }
 
 export async function getMe() {
-  const payload = await verifyAccessToken() as AccessTokenPayload
-  if(!payload){
-    return null
+  const payload = (await verifyAccessToken()) as AccessTokenPayload;
+  if (!payload) {
+    return null;
   }
-  const user = await getUserById(payload.userId)
-  return user
+  const user = await getUserById(payload.userId);
+  return user;
 }
 
 export async function logout() {
