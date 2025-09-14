@@ -13,7 +13,6 @@ export async function createRefreshToken(payload: RefreshTokenPayload, expiresAt
   return new jose.SignJWT(payload).setProtectedHeader({ alg: 'HS256' }).setIssuedAt().setExpirationTime(expiresAt).sign(encodedKey);
 }
 
-
 export async function verifyToken(token: string = '') {
   try {
     const { payload } = await jose.jwtVerify(token, encodedKey, {

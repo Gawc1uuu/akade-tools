@@ -21,24 +21,23 @@ const registerFormSchema = z.object({
 });
 
 export type FormState = {
-  success:boolean;
-  errors:{
-    email?:string[];
-    password?:string[];
-    other?:string[]
-  },
-  data?:{
-    email?:string;
-    password?:string;
-  }
-}
+  success: boolean;
+  errors: {
+    email?: string[];
+    password?: string[];
+    other?: string[];
+  };
+  data?: {
+    email?: string;
+    password?: string;
+  };
+};
 
-export async function signup(currentState: FormState, formData: FormData):Promise<FormState> {
-
+export async function signup(currentState: FormState, formData: FormData): Promise<FormState> {
   const rawData = {
-    email:formData.get("email")?.toString() ?? '',
-    password:formData.get('password')?.toString() ?? ''
-  }
+    email: formData.get('email')?.toString() ?? '',
+    password: formData.get('password')?.toString() ?? '',
+  };
 
   const validatedFields = registerFormSchema.safeParse({
     email: formData.get('email'),
@@ -47,9 +46,9 @@ export async function signup(currentState: FormState, formData: FormData):Promis
 
   if (!validatedFields.success) {
     return {
-      success:false,
+      success: false,
       errors: validatedFields.error.flatten().fieldErrors,
-      data:rawData
+      data: rawData,
     };
   }
   const { email, password } = validatedFields.data;
@@ -66,11 +65,11 @@ export async function signup(currentState: FormState, formData: FormData):Promis
 
   if (!user) {
     return {
-      success:false,
-      errors:{
-        other: ["Bład podczas rejestracji"]
+      success: false,
+      errors: {
+        other: ['Bład podczas rejestracji'],
       },
-      data:rawData
+      data: rawData,
     };
   }
   await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role });
@@ -78,11 +77,11 @@ export async function signup(currentState: FormState, formData: FormData):Promis
   redirect('/');
 }
 
-export async function login(currentState:FormState, formData:FormData):Promise<FormState> {
+export async function login(currentState: FormState, formData: FormData): Promise<FormState> {
   const rawData = {
-    email:formData.get("email")?.toString() ?? '',
-    password:formData.get('password')?.toString() ?? ''
-  }
+    email: formData.get('email')?.toString() ?? '',
+    password: formData.get('password')?.toString() ?? '',
+  };
 
   const validatedFields = registerFormSchema.safeParse({
     email: formData.get('email'),
@@ -91,14 +90,14 @@ export async function login(currentState:FormState, formData:FormData):Promise<F
 
   if (!validatedFields.success) {
     return {
-      success:false,
+      success: false,
       errors: validatedFields.error.flatten().fieldErrors,
-      data:rawData
+      data: rawData,
     };
   }
   const { email, password } = validatedFields.data;
 
-  const user = await getUserByEmail(email)
+  const user = await getUserByEmail(email);
 
   if (!user || !user.password) {
     return {
@@ -108,7 +107,7 @@ export async function login(currentState:FormState, formData:FormData):Promise<F
     };
   }
 
-  const passwordsMatch = await bcrypt.compare(password,user.password)
+  const passwordsMatch = await bcrypt.compare(password, user.password);
 
   if (!passwordsMatch) {
     return {
@@ -121,9 +120,7 @@ export async function login(currentState:FormState, formData:FormData):Promise<F
   await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role });
   await saveRefreshTokenToCookies({ userId: user.id });
   redirect('/');
-
 }
-
 
 export async function getMe() {
   const payload = (await verifyAccessToken()) as AccessTokenPayload;

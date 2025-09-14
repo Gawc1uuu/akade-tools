@@ -47,7 +47,14 @@ const Login = () => {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Hasło</Label>
-                <Input name="password" id="password" type="password" defaultValue={state?.data?.password ?? ''} required placeholder="Wprowadź hasło" />
+                <Input
+                  name="password"
+                  id="password"
+                  type="password"
+                  defaultValue={state?.data?.password ?? ''}
+                  required
+                  placeholder="Wprowadź hasło"
+                />
                 {state.errors.password && <ErrorDisplay message={state.errors.password[0] ?? ''} />}
               </div>
             </div>
@@ -55,13 +62,16 @@ const Login = () => {
         </CardContent>
         <CardFooter>
           <div className="flex flex-col gap-4 w-full">
-            <Button type="submit" variant="register" className="w-full" form="register-form"  disabled={isPending}>
-            {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Zaloguj się'}
+            <Button type="submit" variant="register" className="w-full" form="register-form" disabled={isPending}>
+              {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Zaloguj się'}
             </Button>
             {state.errors.other && <ErrorDisplay message={state.errors.other[0] ?? ''} />}
             <div className="text-center text-sm text-gray-600">
               <span>Nie masz konta?</span>{' '}
-              <Link className="text-primary-red font-medium hover:text-primary-red/90 hover:cursor-pointer hover:underline" href="/register">
+              <Link
+                className="text-primary-red font-medium hover:text-primary-red/90 hover:cursor-pointer hover:underline"
+                href="/register"
+              >
                 Zarejestruj się
               </Link>
             </div>

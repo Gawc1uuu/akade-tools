@@ -2,7 +2,6 @@ import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '~/components/ui/alert';
 import { cn } from '~/lib/utils';
 
-
 interface ErrorDisplayProps {
   message: string;
   className?: string;

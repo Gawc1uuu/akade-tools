@@ -21,7 +21,7 @@ const initialState: FormState = {
 const Register = () => {
   const [state, formAction, isPending] = useActionState(signup, initialState);
 
-  console.log(state)
+  console.log(state);
 
   return (
     <div className="flex justify-center items-center min-h-screen relative">
@@ -49,7 +49,14 @@ const Register = () => {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Hasło</Label>
-                <Input name="password" id="password" type="password" defaultValue={state?.data?.password ?? ''} required placeholder="Wprowadź hasło" />
+                <Input
+                  name="password"
+                  id="password"
+                  type="password"
+                  defaultValue={state?.data?.password ?? ''}
+                  required
+                  placeholder="Wprowadź hasło"
+                />
                 {state.errors.password && <ErrorDisplay message={state.errors.password[0] ?? ''} />}
               </div>
             </div>
@@ -58,7 +65,7 @@ const Register = () => {
         <CardFooter>
           <div className="flex flex-col gap-4 w-full">
             <Button type="submit" variant="register" className="w-full" form="register-form">
-            {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Zarejstruj się'}
+              {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Zarejstruj się'}
             </Button>
             {state.errors.other && <ErrorDisplay message={state.errors.other[0] ?? ''} />}
             <div className="text-center text-sm text-gray-600">
