@@ -14,7 +14,7 @@ export async function createRefreshToken(payload: RefreshTokenPayload, expiresAt
 }
 
 export async function decodeAccessTokenJwt(token: string = '') {
-  try{
+  try {
     const payload = jose.decodeJwt(token);
     return payload;
   } catch (e) {
