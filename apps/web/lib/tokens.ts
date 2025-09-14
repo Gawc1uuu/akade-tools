@@ -6,7 +6,7 @@ const secretKey = process.env.JWT_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
 export async function createAccessToken(payload: AccessTokenPayload, expiresAt: Date) {
-  return new jose.SignJWT(payload).setProtectedHeader({ alg: 'HS256' }).setIssuedAt().setExpirationTime('1s').sign(encodedKey);
+  return new jose.SignJWT(payload).setProtectedHeader({ alg: 'HS256' }).setIssuedAt().setExpirationTime('15m').sign(encodedKey);
 }
 
 export async function createRefreshToken(payload: RefreshTokenPayload, expiresAt: Date) {
@@ -14,8 +14,17 @@ export async function createRefreshToken(payload: RefreshTokenPayload, expiresAt
 }
 
 export async function decodeAccessTokenJwt(token: string = '') {
-  const payload = jose.decodeJwt(token);
-  return payload;
+  try{
+    const payload = jose.decodeJwt(token);
+    return payload;
+  } catch (e) {
+    if (e instanceof Error) {
+      console.error(e.message);
+    } else {
+      console.error(e);
+    }
+    return null;
+  }
 }
 
 export async function verifyToken(token: string = '') {
@@ -36,7 +45,7 @@ export async function verifyToken(token: string = '') {
 }
 
 export async function saveAccessTokenToCookies(payload: AccessTokenPayload) {
-  const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const accessToken = await createAccessToken(payload, expiresAt);
   const cookieStore = await cookies();
 

@@ -20,14 +20,19 @@ export default async function middleware(req: NextRequest) {
   let accessTokenPayload = await verifyToken(accessToken);
   const session = await getSession();
 
+
+  console.log("acces token payload",accessToken)
+
   if (!accessTokenPayload && refreshToken) {
     const refreshTokenPayload = await verifyToken(refreshToken);
     if (refreshTokenPayload && typeof refreshTokenPayload.userId === 'string') {
       const decodedAccessToken = (await decodeAccessTokenJwt(accessToken)) as AccessTokenPayload;
 
+      console.log("decoded access token",decodedAccessToken)
+
       if (!decodedAccessToken || !decodedAccessToken.userId) {
         await logout();
-        return NextResponse.redirect('/login');
+        return NextResponse.redirect(new URL('/login', req.nextUrl));
       }
 
       const newAccesToken = await saveAccessTokenToCookies({
