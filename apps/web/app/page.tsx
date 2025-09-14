@@ -1,6 +1,4 @@
-import { getMe } from '~/app/actions/auth';
 import { Button } from '~/components/ui/button';
-import { getSession } from '~/lib/session';
 
 export default async function Home() {
   return (

@@ -1,14 +1,27 @@
 'use client';
+import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import React, { useActionState } from 'react';
-import { signup } from '~/app/actions/auth';
+import { FormState, signup } from '~/app/actions/auth';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
+import { ErrorDisplay } from '~/components/ui/error-display';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 
+const initialState: FormState = {
+  success: false,
+  errors: {},
+  data: {
+    email: '',
+    password: '',
+  },
+};
+
 const Register = () => {
-  const [state, formAction, isPending] = useActionState(signup, undefined);
+  const [state, formAction, isPending] = useActionState(signup, initialState);
+
+  console.log(state)
 
   return (
     <div className="flex justify-center items-center min-h-screen relative">
@@ -31,11 +44,13 @@ const Register = () => {
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" name="email" type="email" placeholder="m@example.com" required />
+                <Input id="email" name="email" type="email" defaultValue={state?.data?.email ?? ''} placeholder="m@example.com" required />
+                {state.errors.email && <ErrorDisplay message={state.errors.email[0] ?? ''} />}
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Hasło</Label>
-                <Input name="password" id="password" type="password" required placeholder="Wprowadź hasło" />
+                <Input name="password" id="password" type="password" defaultValue={state?.data?.password ?? ''} required placeholder="Wprowadź hasło" />
+                {state.errors.password && <ErrorDisplay message={state.errors.password[0] ?? ''} />}
               </div>
             </div>
           </form>
@@ -43,12 +58,13 @@ const Register = () => {
         <CardFooter>
           <div className="flex flex-col gap-4 w-full">
             <Button type="submit" variant="register" className="w-full" form="register-form">
-              Zarejestruj się
+            {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Zarejstruj się'}
             </Button>
+            {state.errors.other && <ErrorDisplay message={state.errors.other[0] ?? ''} />}
             <div className="text-center text-sm text-gray-600">
               <span>Masz juz konto?</span>{' '}
               <Link className="text-primary-red font-medium hover:text-primary-red/90 hover:cursor-pointer hover:underline" href="/login">
-                Zaloguj się
+                Zalgouj się
               </Link>
             </div>
           </div>

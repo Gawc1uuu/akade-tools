@@ -10,3 +10,10 @@ export async function getUserById(id: string) {
 
   return user;
 }
+
+export async function getUserByEmail(email:string){
+  const user = await db.query.users.findFirst({
+    where:eq(users.email,email)
+  })
+  return user;
+}

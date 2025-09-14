@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { NextRequest, NextResponse } from 'next/server';
-import { decodeAccessTokenJwt, deleteTokens, saveAccessTokenToCookies, saveRefreshTokenToCookies, verifyToken } from '~/lib/tokens';
+import { deleteTokens, saveAccessTokenToCookies, saveRefreshTokenToCookies, verifyToken } from '~/lib/tokens';
 import { getSession, saveSession } from '~/lib/session';
 import { getMe, logout } from '~/app/actions/auth';
-import { AccessTokenPayload } from '~/lib/types';
+import { getUserById } from '@repo/db';
 
 const protectedRoutes = ['/'];
 const publicRoutes = ['/login', '/register'];
@@ -20,28 +20,26 @@ export default async function middleware(req: NextRequest) {
   let accessTokenPayload = await verifyToken(accessToken);
   const session = await getSession();
 
-  console.log('acces token payload', accessToken);
 
   if (!accessTokenPayload && refreshToken) {
     const refreshTokenPayload = await verifyToken(refreshToken);
     if (refreshTokenPayload && typeof refreshTokenPayload.userId === 'string') {
-      const decodedAccessToken = (await decodeAccessTokenJwt(accessToken)) as AccessTokenPayload;
 
-      console.log('decoded access token', decodedAccessToken);
-
-      if (!decodedAccessToken || !decodedAccessToken.userId) {
+      const user = await getUserById(refreshTokenPayload.userId); 
+      
+      if (!user) {
         await logout();
         return NextResponse.redirect(new URL('/login', req.nextUrl));
       }
 
       const newAccesToken = await saveAccessTokenToCookies({
-        userId: decodedAccessToken.userId,
-        email: decodedAccessToken.email,
-        role: decodedAccessToken.role ?? null,
+        userId: user.id,
+        email: user.email,
+        role: user.role ?? null,
       });
 
       accessTokenPayload = await verifyToken(newAccesToken);
-      await saveRefreshTokenToCookies({ userId: (accessTokenPayload as AccessTokenPayload).userId });
+      await saveRefreshTokenToCookies({ userId: user.id });
     }
   }
 
