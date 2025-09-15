@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-escape */
 'use server';
 import * as z from 'zod';
-import { db, getUserByEmail, users } from '@repo/db';
+import { db, getUserByEmail, organizations, users } from '@repo/db';
 import { deleteTokens, saveAccessTokenToCookies } from '~/lib/tokens';
 import { deleteSession } from '~/lib/session';
 import { redirect } from 'next/navigation';
@@ -52,15 +52,28 @@ export async function signup(currentState: FormState, formData: FormData): Promi
   }
   const { email, password } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
-  const data = await db
+
+  const [organization] = await db.insert(organizations).values({
+    name: `${email.split('@')[0]}'s Organization`,
+  }).returning();
+
+  if (!organization) {
+    return {
+      success: false,
+      errors: { other: ['Bład podczas rejestracji'] },
+      data: rawData,
+    };
+  }
+
+  const [user] = await db
     .insert(users)
     .values({
       email,
       password: hashedPassword,
+      organizationId: organization.id,
     })
     .returning();
 
-  const user = data[0];
 
   if (!user) {
     return {

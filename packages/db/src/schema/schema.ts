@@ -12,6 +12,13 @@ export const users = pgTable('users', {
   password: varchar('password'),
   role: roleEnum('role').default('ADMIN'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  organizationId: varchar('organization_id').notNull(),
+});
+
+export const organizations = pgTable('organizations', {
+  id: varchar('id').primaryKey().$defaultFn(ulid),
+  name: varchar('name').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
 export const cars = pgTable('cars', {
@@ -22,16 +29,30 @@ export const cars = pgTable('cars', {
   inspectionEndDate: timestamp('inspection_end_date', { withTimezone: true }),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
-  userId: varchar('user_id').notNull(),
+  createdBy: varchar('created_by').notNull(),
+  organizationId: varchar('organization_id').notNull(),
 });
 
-export const usersRelations = relations(users, ({ many }) => ({
+export const usersRelations = relations(users, ({ many, one }) => ({
   cars: many(cars),
+  organization: one(organizations, {
+    fields: [users.organizationId],
+    references: [organizations.id],
+  }),
 }));
 
 export const carsRelations = relations(cars, ({ one }) => ({
   owner: one(users, {
-    fields: [cars.userId],
+    fields: [cars.createdBy],
     references: [users.id],
   }),
+  organization: one(organizations, {
+    fields: [cars.organizationId],
+    references: [organizations.id],
+  }),
+}));
+
+export const organizationsRelations = relations(organizations, ({ many }) => ({
+  cars: many(cars),
+  users: many(users),
 }));

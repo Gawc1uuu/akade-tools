@@ -32,7 +32,7 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+      <SidebarGroupLabel>Akade</SidebarGroupLabel>
       <SidebarMenu className="space-y-1">
         {items.map(item => {
           const hasSubItems = item.items && item.items.length > 0;
