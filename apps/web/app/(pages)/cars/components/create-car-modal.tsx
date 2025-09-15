@@ -17,20 +17,19 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 
 const CreateCarModal = () => {
-
   const [state, formAction] = useActionState(createCar, null);
 
   return (
     <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="outline">Dodaj pojazd</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Dodaj pojazd</DialogTitle>
-            <DialogDescription>Dodaj pojazd do bazy danych.</DialogDescription>
-          </DialogHeader>
-      <form action={formAction} id="create-car-form">
+      <DialogTrigger asChild>
+        <Button variant="outline">Dodaj pojazd</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Dodaj pojazd</DialogTitle>
+          <DialogDescription>Dodaj pojazd do bazy danych.</DialogDescription>
+        </DialogHeader>
+        <form action={formAction} id="create-car-form">
           <div className="grid gap-4">
             <div className="grid gap-3">
               <Label htmlFor="make">Marka</Label>
@@ -47,14 +46,16 @@ const CreateCarModal = () => {
               <Calendar28 name="inspectionEndDate" defaultValue="" placeholder="Data końca przeglądu" label="Data końca przeglądu" />
             </div>
           </div>
-      </form>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Anuluj</Button>
-            </DialogClose>
-            <Button type="submit" form="create-car-form">Zapisz</Button>
-          </DialogFooter>
-        </DialogContent>
+        </form>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">Anuluj</Button>
+          </DialogClose>
+          <Button type="submit" form="create-car-form">
+            Zapisz
+          </Button>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   );
 };

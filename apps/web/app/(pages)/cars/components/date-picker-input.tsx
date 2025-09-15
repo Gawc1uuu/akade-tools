@@ -15,7 +15,7 @@ function formatDate(date: Date | undefined) {
   }
   return date.toLocaleDateString('pl-PL', {
     day: '2-digit',
-    month: 'long', 
+    month: 'long',
     year: 'numeric',
   });
 }
