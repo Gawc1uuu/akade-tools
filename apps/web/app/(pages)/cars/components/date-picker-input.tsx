@@ -13,10 +13,9 @@ function formatDate(date: Date | undefined) {
   if (!date) {
     return '';
   }
-
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString('pl-PL', {
     day: '2-digit',
-    month: 'long',
+    month: 'long', 
     year: 'numeric',
   });
 }
@@ -40,7 +39,7 @@ export function Calendar28({
   label: string;
 }) {
   const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState<Date | undefined>(new Date('2025-06-01'));
+  const [date, setDate] = React.useState<Date | undefined>();
   const [month, setMonth] = React.useState<Date | undefined>(date);
   const [value, setValue] = React.useState(formatDate(date));
 
@@ -53,7 +52,6 @@ export function Calendar28({
         <Input
           id={name}
           name={name}
-          defaultValue={defaultValue}
           value={value}
           placeholder={placeholder}
           className="bg-background pr-10"

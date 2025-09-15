@@ -1,5 +1,7 @@
-import React from 'react';
+'use client';
+import React, { useActionState } from 'react';
 import { Calendar28 } from '~/app/(pages)/cars/components/date-picker-input';
+import { createCar } from '~/app/actions/cars/create-car';
 import { Button } from '~/components/ui/button';
 import {
   Dialog,
@@ -15,9 +17,11 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 
 const CreateCarModal = () => {
+
+  const [state, formAction] = useActionState(createCar, null);
+
   return (
     <Dialog>
-      <form>
         <DialogTrigger asChild>
           <Button variant="outline">Dodaj pojazd</Button>
         </DialogTrigger>
@@ -26,14 +30,15 @@ const CreateCarModal = () => {
             <DialogTitle>Dodaj pojazd</DialogTitle>
             <DialogDescription>Dodaj pojazd do bazy danych.</DialogDescription>
           </DialogHeader>
+      <form action={formAction} id="create-car-form">
           <div className="grid gap-4">
             <div className="grid gap-3">
-              <Label htmlFor="name-1">Marka</Label>
-              <Input id="name-1" name="make" defaultValue="" placeholder="Marka" />
+              <Label htmlFor="make">Marka</Label>
+              <Input id="make" name="make" defaultValue="" placeholder="Marka" />
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="username-1">Model</Label>
-              <Input id="username-1" name="model" defaultValue="" placeholder="Model" />
+              <Label htmlFor="model">Model</Label>
+              <Input id="model" name="model" defaultValue="" placeholder="Model" />
             </div>
             <div className="grid gap-3">
               <Calendar28 name="insuranceEndDate" defaultValue="" placeholder="Data końca ubezpieczenia" label="Data końca ubezpieczenia" />
@@ -42,14 +47,14 @@ const CreateCarModal = () => {
               <Calendar28 name="inspectionEndDate" defaultValue="" placeholder="Data końca przeglądu" label="Data końca przeglądu" />
             </div>
           </div>
+      </form>
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="outline">Anuluj</Button>
             </DialogClose>
-            <Button type="submit">Zapisz</Button>
+            <Button type="submit" form="create-car-form">Zapisz</Button>
           </DialogFooter>
         </DialogContent>
-      </form>
     </Dialog>
   );
 };
