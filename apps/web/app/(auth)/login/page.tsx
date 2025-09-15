@@ -2,7 +2,7 @@
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import React, { useActionState } from 'react';
-import { FormState, login, signup } from '~/app/actions/auth';
+import { FormState, login } from '~/app/actions/auth';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
 import { ErrorDisplay } from '~/components/ui/error-display';

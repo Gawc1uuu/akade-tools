@@ -1,12 +1,11 @@
 /* eslint-disable no-useless-escape */
 'use server';
 import * as z from 'zod';
-import { db, getUserByEmail, getUserById, users } from '@repo/db';
-import { deleteTokens, saveAccessTokenToCookies, saveRefreshTokenToCookies, verifyAccessToken } from '~/lib/tokens';
+import { db, getUserByEmail, users } from '@repo/db';
+import { deleteTokens, saveAccessTokenToCookies } from '~/lib/tokens';
 import { deleteSession } from '~/lib/session';
-import bcrypt from 'bcryptjs';
 import { redirect } from 'next/navigation';
-import { AccessTokenPayload } from '~/lib/types';
+import bcrypt from 'bcrypt';
 
 const registerFormSchema = z.object({
   email: z.email('This is not correct email').trim(),
@@ -73,7 +72,6 @@ export async function signup(currentState: FormState, formData: FormData): Promi
     };
   }
   await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role });
-  await saveRefreshTokenToCookies({ userId: user.id });
   redirect('/');
 }
 
@@ -118,17 +116,7 @@ export async function login(currentState: FormState, formData: FormData): Promis
   }
 
   await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role });
-  await saveRefreshTokenToCookies({ userId: user.id });
   redirect('/');
-}
-
-export async function getMe() {
-  const payload = (await verifyAccessToken()) as AccessTokenPayload;
-  if (!payload) {
-    return null;
-  }
-  const user = await getUserById(payload.userId);
-  return user;
 }
 
 export async function logout() {
