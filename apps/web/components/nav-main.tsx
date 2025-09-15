@@ -14,6 +14,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '~/components/ui/sidebar';
+import { cn } from '~/lib/utils';
 
 export function NavMain({
   items,
@@ -32,7 +33,7 @@ export function NavMain({
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
-      <SidebarMenu>
+      <SidebarMenu className="space-y-1">
         {items.map(item => {
           const hasSubItems = item.items && item.items.length > 0;
 
@@ -40,7 +41,12 @@ export function NavMain({
             <Collapsible key={item.title} asChild defaultOpen={item.isActive} className="group/collapsible">
               <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={item.title}>
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    className={cn('text-base gap-x-3 [&>svg]:h-5 [&>svg]:w-5', {
+                      'bg-accent text-accent-foreground': item.isActive,
+                    })}
+                  >
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
                     <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -63,7 +69,13 @@ export function NavMain({
             </Collapsible>
           ) : (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild tooltip={item.title}>
+              <SidebarMenuButton
+                asChild
+                tooltip={item.title}
+                className={cn('text-base gap-x-3 [&>svg]:h-5 [&>svg]:w-5', {
+                  'bg-accent text-accent-foreground': item.isActive,
+                })}
+              >
                 <Link href={item.url}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>

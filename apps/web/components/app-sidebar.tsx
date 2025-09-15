@@ -1,13 +1,12 @@
 'use client';
 
 import * as React from 'react';
-import { AudioWaveform, BookOpen, Bot, Command, Frame, GalleryVerticalEnd, Map, PieChart, Settings2, SquareTerminal } from 'lucide-react';
+import { BookOpen, Bot, Settings2, CarIcon, Users } from 'lucide-react';
 
 import { NavMain } from '~/components/nav-main';
-import { NavProjects } from '~/components/nav-projects';
 import { NavUser } from '~/components/nav-user';
-import { TeamSwitcher } from '~/components/team-switcher';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '~/components/ui/sidebar';
+import { usePathname } from 'next/navigation';
 
 // This is sample data.
 const data = {
@@ -18,37 +17,33 @@ const data = {
   },
   navMain: [
     {
-      title: 'Playground',
-      url: '#',
-      icon: SquareTerminal,
+      title: 'Samochody',
+      url: '/cars',
+      icon: CarIcon,
       isActive: true,
     },
     {
-      title: 'Models',
-      url: '#',
-      icon: Bot,
-    },
-    {
-      title: 'Documentation',
-      url: '#',
-      icon: BookOpen,
-    },
-    {
-      title: 'Settings',
-      url: '#',
-      icon: Settings2,
+      title: 'Pracownicy',
+      url: '/staff',
+      icon: Users,
     },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
+  const dynamicNavMain = data.navMain.map(item => ({
+    ...item,
+    isActive: pathname.startsWith(item.url),
+  }));
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <div>LOGO</div>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={dynamicNavMain} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
