@@ -6,7 +6,7 @@ const Cars = () => {
     <div>
       <CreateCarModal />
     </div>
-  )
+  );
 };
 
 export default Cars;

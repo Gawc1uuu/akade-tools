@@ -53,9 +53,12 @@ export async function signup(currentState: FormState, formData: FormData): Promi
   const { email, password } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const [organization] = await db.insert(organizations).values({
-    name: `${email.split('@')[0]}'s Organization`,
-  }).returning();
+  const [organization] = await db
+    .insert(organizations)
+    .values({
+      name: `${email.split('@')[0]}'s Organization`,
+    })
+    .returning();
 
   if (!organization) {
     return {
@@ -73,7 +76,6 @@ export async function signup(currentState: FormState, formData: FormData): Promi
       organizationId: organization.id,
     })
     .returning();
-
 
   if (!user) {
     return {
