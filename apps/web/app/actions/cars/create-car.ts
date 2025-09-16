@@ -17,31 +17,30 @@ export type CreateCarState = {
     other?: string[];
   };
   data?: {
-    make?: string ;
-    model?: string ;
-    registrationNumber?: string ;
-    insuranceEndDate?: string ;
-    inspectionEndDate?: string ;
+    make?: string;
+    model?: string;
+    registrationNumber?: string;
+    insuranceEndDate?: string;
+    inspectionEndDate?: string;
   };
 };
 
 const createCarSchema = z.object({
-  make: z.string().min(1,{message: 'Marka jest wymagana'}),
-  model: z.string().min(1,{message: 'Model jest wymagany'}),
-  registrationNumber: z.string().min(1,{message: 'Numer rejestracyjny jest wymagany'}),
-  insuranceEndDate: z.string().min(1,{message: 'Data końca ubezpieczenia jest wymagana'}),
-  inspectionEndDate: z.string().min(1,{message: 'Data końca przeglądu jest wymagana'}),
+  make: z.string().min(1, { message: 'Marka jest wymagana' }),
+  model: z.string().min(1, { message: 'Model jest wymagany' }),
+  registrationNumber: z.string().min(1, { message: 'Numer rejestracyjny jest wymagany' }),
+  insuranceEndDate: z.string().min(1, { message: 'Data końca ubezpieczenia jest wymagana' }),
+  inspectionEndDate: z.string().min(1, { message: 'Data końca przeglądu jest wymagana' }),
 });
 
-export async function createCar(currentState: CreateCarState, formData: FormData):Promise<CreateCarState> {
-
+export async function createCar(currentState: CreateCarState, formData: FormData): Promise<CreateCarState> {
   const token = await getToken();
   const decodedToken = await verifyToken(token);
 
   if (!decodedToken) {
     return {
       success: false,
-      errors: { 
+      errors: {
         other: ['Nieprawidłowy token'],
         make: [],
         model: [],
@@ -76,7 +75,6 @@ export async function createCar(currentState: CreateCarState, formData: FormData
   const inspectionEndDate = parse(parsed.data.inspectionEndDate, 'dd MMMM yyyy', new Date(), {
     locale: pl,
   });
-
 
   await db.insert(cars).values({
     make: parsed.data.make,

@@ -17,9 +17,7 @@ export const ErrorDisplay = ({ messages, className }: ErrorDisplayProps) => {
   return (
     <Alert variant="destructive" className={cn('border-red-200 bg-red-50 text-red-800', className)}>
       <AlertCircle className="h-4 w-4" />
-      <AlertDescription className="text-sm font-medium">
-        {formattedMessages}
-      </AlertDescription>
+      <AlertDescription className="text-sm font-medium">{formattedMessages}</AlertDescription>
     </Alert>
   );
 };
