@@ -29,12 +29,10 @@ function isValidDate(date: Date | undefined) {
 
 export function Calendar28({
   name,
-  defaultValue,
   placeholder,
   label,
 }: {
   name: string;
-  defaultValue: string;
   placeholder: string;
   label: string;
 }) {
@@ -57,7 +55,6 @@ export function Calendar28({
           id={name}
           name={name}
           value={value}
-          defaultValue={defaultValue}
           placeholder={placeholder}
           className="bg-background pr-10"
           onChange={e => {
@@ -89,6 +86,7 @@ export function Calendar28({
               captionLayout="dropdown"
               month={month}
               onMonthChange={setMonth}
+              disabled={(date) => date < new Date()}
               onSelect={date => {
                 setDate(date);
                 setValue(formatDate(date));

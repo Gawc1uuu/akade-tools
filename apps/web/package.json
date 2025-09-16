@@ -23,6 +23,7 @@
     "@repo/db": "workspace:*",
     "@repo/ui": "workspace:*",
     "@tailwindcss/postcss": "^4.1.12",
+    "@tanstack/react-table": "^8.21.3",
     "bcrypt": "^6.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

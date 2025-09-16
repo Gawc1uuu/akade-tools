@@ -1,3 +1,6 @@
+import { cars } from "@repo/db";
+import z from "zod";
+
 export type AccessTokenPayload = {
   userId: string;
   email: string;
@@ -12,4 +15,14 @@ export type RefreshTokenPayload = {
 export type Session = {
   id: string;
   email: string;
+};
+
+export type Car = {
+  id: string;
+  make: string;
+  model:string;
+  registrationNumber:string;
+  insuranceEndDate:Date;
+  inspectionEndDate:Date;
+  createdBy:string;
 };
