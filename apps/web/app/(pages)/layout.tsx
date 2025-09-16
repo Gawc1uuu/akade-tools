@@ -27,7 +27,7 @@ export default function RootLayout({
             <Button onClick={logout}>Logout</Button>
           </div>
         </header>
-        <main className="min-w-0 overflow-x-auto">{children}</main>
+        <main>{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );
