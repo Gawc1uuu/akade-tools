@@ -21,8 +21,6 @@ const initialState: FormState = {
 const Register = () => {
   const [state, formAction, isPending] = useActionState(signup, initialState);
 
-  console.log(state);
-
   return (
     <div className="flex justify-center items-center min-h-screen relative">
       <div
@@ -45,7 +43,7 @@ const Register = () => {
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input id="email" name="email" type="email" defaultValue={state?.data?.email ?? ''} placeholder="m@example.com" required />
-                {state.errors.email && <ErrorDisplay message={state.errors.email[0] ?? ''} />}
+                {state.errors.email && <ErrorDisplay messages={state.errors.email ?? []} />}
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Hasło</Label>
@@ -57,7 +55,7 @@ const Register = () => {
                   required
                   placeholder="Wprowadź hasło"
                 />
-                {state.errors.password && <ErrorDisplay message={state.errors.password[0] ?? ''} />}
+                {state.errors.password && <ErrorDisplay messages={state.errors.password ?? []} />}
               </div>
             </div>
           </form>
@@ -67,7 +65,7 @@ const Register = () => {
             <Button type="submit" variant="register" className="w-full" form="register-form">
               {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Zarejstruj się'}
             </Button>
-            {state.errors.other && <ErrorDisplay message={state.errors.other[0] ?? ''} />}
+            {state.errors.other && <ErrorDisplay messages={state.errors.other ?? []} />}
             <div className="text-center text-sm text-gray-600">
               <span>Masz juz konto?</span>{' '}
               <Link className="text-primary-red font-medium hover:text-primary-red/90 hover:cursor-pointer hover:underline" href="/login">

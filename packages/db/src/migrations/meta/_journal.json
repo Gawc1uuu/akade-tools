@@ -8,6 +8,13 @@
       "when": 1757947456827,
       "tag": "0000_rich_grandmaster",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1758019967588,
+      "tag": "0001_eminent_rhino",
+      "breakpoints": true
     }
   ]
 }

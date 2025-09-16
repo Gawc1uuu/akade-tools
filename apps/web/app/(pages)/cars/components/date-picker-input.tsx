@@ -39,7 +39,11 @@ export function Calendar28({
   label: string;
 }) {
   const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState<Date | undefined>();
+  const [date, setDate] = React.useState<Date | undefined>(() => {
+    const oneYearFromNow = new Date();
+    oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+    return oneYearFromNow;
+  });
   const [month, setMonth] = React.useState<Date | undefined>(date);
   const [value, setValue] = React.useState(formatDate(date));
 
@@ -53,6 +57,7 @@ export function Calendar28({
           id={name}
           name={name}
           value={value}
+          defaultValue={defaultValue}
           placeholder={placeholder}
           className="bg-background pr-10"
           onChange={e => {

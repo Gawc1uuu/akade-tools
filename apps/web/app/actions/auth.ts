@@ -86,7 +86,7 @@ export async function signup(currentState: FormState, formData: FormData): Promi
       data: rawData,
     };
   }
-  await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role });
+  await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role, organizationId: user.organizationId });
   redirect('/');
 }
 
@@ -130,7 +130,7 @@ export async function login(currentState: FormState, formData: FormData): Promis
     };
   }
 
-  await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role });
+  await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role, organizationId: user.organizationId });
   redirect('/');
 }
 

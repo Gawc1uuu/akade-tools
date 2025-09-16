@@ -2,6 +2,7 @@ export type AccessTokenPayload = {
   userId: string;
   email: string;
   role: string | null;
+  organizationId: string;
 };
 
 export type RefreshTokenPayload = {

@@ -25,6 +25,7 @@ export const cars = pgTable('cars', {
   id: varchar('id').primaryKey().$defaultFn(ulid),
   make: varchar('make').notNull(),
   model: varchar('model').notNull(),
+  registrationNumber: varchar('registration_number').notNull(),
   insuranceEndDate: timestamp('insurance_end_date', { withTimezone: true }),
   inspectionEndDate: timestamp('inspection_end_date', { withTimezone: true }),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),

@@ -46,3 +46,8 @@ export async function deleteTokens() {
   const cookieStore = await cookies();
   cookieStore.delete('accessToken');
 }
+
+export async function getToken(){
+  const cookieStore = await cookies();
+  return cookieStore.get('accessToken')?.value;
+}

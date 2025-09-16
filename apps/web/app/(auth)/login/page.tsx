@@ -43,7 +43,7 @@ const Login = () => {
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input id="email" name="email" type="email" defaultValue={state?.data?.email ?? ''} placeholder="m@example.com" required />
-                {state.errors.email && <ErrorDisplay message={state.errors.email[0] ?? ''} />}
+                {state.errors.email && <ErrorDisplay messages={state.errors.email ?? []} />}
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Hasło</Label>
@@ -55,7 +55,7 @@ const Login = () => {
                   required
                   placeholder="Wprowadź hasło"
                 />
-                {state.errors.password && <ErrorDisplay message={state.errors.password[0] ?? ''} />}
+                {state.errors.password && <ErrorDisplay messages={state.errors.password ?? []} />}
               </div>
             </div>
           </form>
@@ -65,7 +65,7 @@ const Login = () => {
             <Button type="submit" variant="register" className="w-full" form="register-form" disabled={isPending}>
               {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Zaloguj się'}
             </Button>
-            {state.errors.other && <ErrorDisplay message={state.errors.other[0] ?? ''} />}
+            {state.errors.other && <ErrorDisplay messages={state.errors.other ?? []} />}
             <div className="text-center text-sm text-gray-600">
               <span>Nie masz konta?</span>{' '}
               <Link
