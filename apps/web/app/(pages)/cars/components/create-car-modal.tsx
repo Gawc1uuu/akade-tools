@@ -1,17 +1,9 @@
 'use client';
 import React, { useState } from 'react';
-import CreateCarForm from '~/app/(pages)/cars/components/create-car-form';  
+import CreateCarForm from '~/app/(pages)/cars/components/create-car-form';
 import { Button } from '~/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '~/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '~/components/ui/dialog';
 import { useRouter } from 'next/navigation';
-
 
 const CreateCarModal = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +13,6 @@ const CreateCarModal = () => {
     setIsOpen(false);
     router.refresh();
   };
-
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

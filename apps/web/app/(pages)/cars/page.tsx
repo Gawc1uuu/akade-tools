@@ -12,7 +12,7 @@ const Cars = async () => {
     <div>
       <CreateCarModal />
       <div className="flex flex-col gap-8 px-10">
-      <DataTable columns={columns} data={cars as Car[]} title="Pojazdy" />
+        <DataTable columns={columns} data={cars as Car[]} title="Pojazdy" />
       </div>
     </div>
   );

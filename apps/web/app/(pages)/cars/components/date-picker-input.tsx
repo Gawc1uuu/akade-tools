@@ -27,15 +27,7 @@ function isValidDate(date: Date | undefined) {
   return !isNaN(date.getTime());
 }
 
-export function Calendar28({
-  name,
-  placeholder,
-  label,
-}: {
-  name: string;
-  placeholder: string;
-  label: string;
-}) {
+export function Calendar28({ name, placeholder, label }: { name: string; placeholder: string; label: string }) {
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState<Date | undefined>(() => {
     const oneYearFromNow = new Date();
@@ -86,7 +78,7 @@ export function Calendar28({
               captionLayout="dropdown"
               month={month}
               onMonthChange={setMonth}
-              disabled={(date) => date < new Date()}
+              disabled={date => date < new Date()}
               onSelect={date => {
                 setDate(date);
                 setValue(formatDate(date));

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
 
@@ -17,7 +17,7 @@ export function ClientDate({ date, options }: ClientDateProps) {
   const dateObject = typeof date === 'string' ? new Date(date) : date;
 
   if (!isClient || !date) {
-    return null; 
+    return null;
   }
 
   // Once mounted on the client, render the formatted date
