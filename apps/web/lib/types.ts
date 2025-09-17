@@ -25,4 +25,8 @@ export type Car = {
   insuranceEndDate: Date;
   inspectionEndDate: Date;
   createdBy: string;
+  owner: {
+    id: string;
+    email: string;
+  };
 };

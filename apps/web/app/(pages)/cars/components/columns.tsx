@@ -34,6 +34,10 @@ export const columns: ColumnDef<Car>[] = [
   },
   {
     header: 'Utworzono przez',
-    accessorKey: 'createdBy',
+    accessorKey: 'owner',
+    cell: ({ row }) => {
+      const owner = row.getValue('owner') as { id: string; email: string };
+      return <div>{owner.email}</div>;
+    },
   },
 ];
