@@ -7,7 +7,7 @@ interface GetCarsParams {
   limit?: number;
 }
 
-export async function getCars({page=1,limit=5}:GetCarsParams={}) {
+export async function getCars({ page = 1, limit = 5 }: GetCarsParams = {}) {
   const token = await getToken();
   const decodedToken = await verifyToken(token);
 
@@ -19,33 +19,36 @@ export async function getCars({page=1,limit=5}:GetCarsParams={}) {
     throw new Error('Organization ID not found');
   }
 
-  const {data,total} = await db.transaction(async (tx) => {
-  const data = await tx.query.cars.findMany({
-    where: eq(cars.organizationId, String(decodedToken.organizationId)),
-    with:{
-      owner:{
-        columns:{
-          id:true,
-          email:true,
-        }
-      }
-    },
-    limit:limit,
-    offset: (page - 1) * limit,
-    orderBy: (cars, { desc }) => [desc(cars.createdAt)],
-  });
+  const { data, total } = await db.transaction(async tx => {
+    const data = await tx.query.cars.findMany({
+      where: eq(cars.organizationId, String(decodedToken.organizationId)),
+      with: {
+        owner: {
+          columns: {
+            id: true,
+            email: true,
+          },
+        },
+      },
+      limit: limit,
+      offset: (page - 1) * limit,
+      orderBy: (cars, { desc }) => [desc(cars.createdAt)],
+    });
 
-  const totalResult= await tx.select({count:count()}).from(cars).where(eq(cars.organizationId, String(decodedToken.organizationId)));
+    const totalResult = await tx
+      .select({ count: count() })
+      .from(cars)
+      .where(eq(cars.organizationId, String(decodedToken.organizationId)));
 
-  const total = totalResult[0]?.count ?? 0;
+    const total = totalResult[0]?.count ?? 0;
 
-  return {data,total};
+    return { data, total };
   });
 
   return {
-    cars:data,
+    cars: data,
     total,
-    totalPages:Math.ceil(total / limit),
-    currentPage:page,
+    totalPages: Math.ceil(total / limit),
+    currentPage: page,
   };
 }

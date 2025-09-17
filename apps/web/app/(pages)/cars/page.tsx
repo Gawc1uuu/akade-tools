@@ -11,12 +11,10 @@ interface CarsProps {
   };
 }
 
-const Cars = async ({searchParams}: CarsProps) => {
-  
+const Cars = async ({ searchParams }: CarsProps) => {
   const params = await searchParams;
   const page = Number(params?.page) || 1;
-  const {cars,totalPages,currentPage,total} = await getCars({page:Number(page)});
-
+  const { cars, totalPages, currentPage, total } = await getCars({ page: Number(page) });
 
   return (
     <div>

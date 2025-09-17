@@ -1,6 +1,6 @@
 'use client';
 
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable,getPaginationRowModel } from '@tanstack/react-table';
+import { ColumnDef, flexRender, getCoreRowModel, useReactTable, getPaginationRowModel } from '@tanstack/react-table';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Paginator from '~/components/paginator';
 import { Button } from '~/components/ui/button';
@@ -12,8 +12,8 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   title: string;
-  page:number;
-  totalPages:number;
+  page: number;
+  totalPages: number;
 }
 
 export function DataTable<TData, TValue>({ columns, data, title, page, totalPages }: DataTableProps<TData, TValue>) {
@@ -24,17 +24,15 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
     getPaginationRowModel: getPaginationRowModel(),
   });
 
-  const {push} = useRouter();
+  const { push } = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams(searchParams);
     params.set('page', page.toString());
-    push(`${pathname}?${params.toString()}`,{scroll: false});
-  }
-
-
+    push(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
   return (
     <div className="flex flex-col p-6 border border-border">
@@ -75,8 +73,8 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
               )}
             </TableBody>
           </Table>
-          <div className='flex justify-end mt-4'>
-             <Paginator onPageChange={handlePageChange} page={page} totalPages={totalPages} showPreviousNext={true} />
+          <div className="flex justify-end mt-4">
+            <Paginator onPageChange={handlePageChange} page={page} totalPages={totalPages} showPreviousNext={true} />
           </div>
         </div>
       </div>
