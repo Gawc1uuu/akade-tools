@@ -1,6 +1,7 @@
 import { db, cars } from '@repo/db';
 import { count, eq } from 'drizzle-orm';
 import { getToken, verifyToken } from '~/lib/tokens';
+import { Car } from '~/lib/types';
 
 interface GetCarsParams {
   page?: number;
@@ -46,7 +47,7 @@ export async function getCars({ page = 1, limit = 5 }: GetCarsParams = {}) {
   });
 
   return {
-    cars: data,
+    cars: data as Car[],
     total,
     totalPages: Math.ceil(total / limit),
     currentPage: page,

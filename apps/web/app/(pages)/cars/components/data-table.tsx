@@ -8,15 +8,26 @@ import { Button } from '~/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table';
 import { cn } from '~/lib/utils';
 
+export interface Action<T> {
+  label:string;
+  onClick?:(row:T)=>void;
+  variant?:'default' | 'destructive' | 'outline' | 'success';
+  condition?:(row:T)=>boolean;
+  className?:string;
+  disabled:boolean;
+  renderer?:(row:T)=>React.ReactNode;
+}
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   title: string;
   page: number;
   totalPages: number;
+  actions?: Action<TData>[] | ((row: TData) => Action<TData>[]);
 }
 
-export function DataTable<TData, TValue>({ columns, data, title, page, totalPages }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, title, page, totalPages,actions }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
@@ -27,6 +38,10 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
   const { push } = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const getRowActions = (row: TData): Action<TData>[] | undefined => {
+    return typeof actions === 'function' ? actions(row) : actions;
+  };
 
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams(searchParams);
@@ -62,6 +77,30 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
                     {row.getVisibleCells().map(cell => (
                       <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                     ))}
+                    {actions && getRowActions(row.original) && (
+                      <TableCell>
+                        <div>
+                          {getRowActions(row.original)?.map(
+                            (action, actionIndex) => {
+                              return (
+                                <Button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (action.onClick) {
+                                      action.onClick(row.original);
+                                    }
+                                  }}
+                                  key={actionIndex}
+                                >
+                                  {action.label}
+                                </Button>
+                              );
+                            }
+                          )
+                          }
+                        </div>
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))
               ) : (
@@ -71,6 +110,7 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
                   </TableCell>
                 </TableRow>
               )}
+            
             </TableBody>
           </Table>
           <div className="flex justify-end mt-4">

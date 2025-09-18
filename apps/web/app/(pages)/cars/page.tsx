@@ -1,9 +1,7 @@
 import React from 'react';
-import { columns } from '~/app/(pages)/cars/components/columns';
 import CreateCarModal from '~/app/(pages)/cars/components/create-car-modal';
-import { DataTable } from '~/app/(pages)/cars/components/data-table';
+import DataDisplay from '~/app/(pages)/cars/data-display';
 import { getCars } from '~/app/actions/cars/get-cars';
-import { Car } from '~/lib/types';
 
 interface CarsProps {
   searchParams?: {
@@ -14,13 +12,14 @@ interface CarsProps {
 const Cars = async ({ searchParams }: CarsProps) => {
   const params = await searchParams;
   const page = Number(params?.page) || 1;
-  const { cars, totalPages, currentPage, total } = await getCars({ page: Number(page) });
+  const { cars, totalPages, currentPage } = await getCars({ page: Number(page) });
+
 
   return (
     <div>
       <CreateCarModal />
       <div className="flex flex-col gap-8 px-10 min-w-0">
-        <DataTable columns={columns} data={cars as Car[]} title="Pojazdy" page={currentPage} totalPages={totalPages} />
+        <DataDisplay cars={cars} totalPages={totalPages} currentPage={currentPage} />
       </div>
     </div>
   );
