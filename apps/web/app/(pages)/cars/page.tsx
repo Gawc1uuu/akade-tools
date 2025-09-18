@@ -14,7 +14,6 @@ const Cars = async ({ searchParams }: CarsProps) => {
   const page = Number(params?.page) || 1;
   const { cars, totalPages, currentPage } = await getCars({ page: Number(page) });
 
-
   return (
     <div>
       <CreateCarModal />

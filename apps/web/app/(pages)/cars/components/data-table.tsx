@@ -9,13 +9,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~
 import { cn } from '~/lib/utils';
 
 export interface Action<T> {
-  label:string;
-  onClick?:(row:T)=>void;
-  variant?:'default' | 'destructive' | 'outline' | 'success';
-  condition?:(row:T)=>boolean;
-  className?:string;
-  disabled:boolean;
-  renderer?:(row:T)=>React.ReactNode;
+  label: string;
+  onClick?: (row: T) => void;
+  variant?: 'default' | 'destructive' | 'outline' | 'success';
+  condition?: (row: T) => boolean;
+  className?: string;
+  disabled: boolean;
+  renderer?: (row: T) => React.ReactNode;
 }
 
 interface DataTableProps<TData, TValue> {
@@ -27,7 +27,7 @@ interface DataTableProps<TData, TValue> {
   actions?: Action<TData>[] | ((row: TData) => Action<TData>[]);
 }
 
-export function DataTable<TData, TValue>({ columns, data, title, page, totalPages,actions }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, title, page, totalPages, actions }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
@@ -80,24 +80,21 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
                     {actions && getRowActions(row.original) && (
                       <TableCell>
                         <div>
-                          {getRowActions(row.original)?.map(
-                            (action, actionIndex) => {
-                              return (
-                                <Button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    if (action.onClick) {
-                                      action.onClick(row.original);
-                                    }
-                                  }}
-                                  key={actionIndex}
-                                >
-                                  {action.label}
-                                </Button>
-                              );
-                            }
-                          )
-                          }
+                          {getRowActions(row.original)?.map((action, actionIndex) => {
+                            return (
+                              <Button
+                                onClick={e => {
+                                  e.stopPropagation();
+                                  if (action.onClick) {
+                                    action.onClick(row.original);
+                                  }
+                                }}
+                                key={actionIndex}
+                              >
+                                {action.label}
+                              </Button>
+                            );
+                          })}
                         </div>
                       </TableCell>
                     )}
@@ -110,7 +107,6 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
                   </TableCell>
                 </TableRow>
               )}
-            
             </TableBody>
           </Table>
           <div className="flex justify-end mt-4">
