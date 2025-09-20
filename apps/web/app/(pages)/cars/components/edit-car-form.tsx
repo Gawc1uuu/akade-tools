@@ -21,7 +21,7 @@ const initialState = {
     inspectionEndDate: '',
   },
 };
-    
+
 interface EditCarFormProps {
   onSuccess: () => void;
   initialData: Car;
@@ -32,11 +32,10 @@ const EditCarForm = ({ onSuccess, initialData }: EditCarFormProps) => {
   const router = useRouter();
   useEffect(() => {
     if (state.success) {
-        console.log("iran")
       onSuccess();
       router.refresh();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.success, onSuccess]);
 
   return (

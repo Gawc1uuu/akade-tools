@@ -9,7 +9,6 @@ import { deleteCar } from '~/app/actions/cars/delete-car';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '~/components/ui/dialog';
 import { Car } from '~/lib/types';
 
-
 interface DataDisplayI {
   cars: Car[];
   currentPage: number;
@@ -17,15 +16,14 @@ interface DataDisplayI {
 }
 
 const DataDisplay = ({ cars, currentPage, totalPages }: DataDisplayI) => {
-
   const router = useRouter();
-  const [state,formAction,isPending] = useActionState(deleteCar, { success: false, deletedCar: null });
+  const [state, formAction, isPending] = useActionState(deleteCar, { success: false, deletedCar: null });
   const [deletingCarId, setDeletingCarId] = useState<string | null>(null);
   const [editingCar, setEditingCar] = useState<Car | null>(null);
 
   const handleDeleteSave = (car: string) => {
     setDeletingCarId(car);
-  }
+  };
 
   const handleDelete = (car: string) => {
     const formData = new FormData();
@@ -44,7 +42,7 @@ const DataDisplay = ({ cars, currentPage, totalPages }: DataDisplayI) => {
     setEditingCar(null);
   };
 
- const columns: ColumnDef<Car>[] = [
+  const columns: ColumnDef<Car>[] = [
     {
       header: 'Marka',
       accessorKey: 'make',
@@ -92,12 +90,10 @@ const DataDisplay = ({ cars, currentPage, totalPages }: DataDisplayI) => {
         const owner = row.getValue('owner') as { id: string; email: string };
         return <div>{owner.email}</div>;
       },
-    }, 
+    },
   ];
 
-
   const getActions = (row: Car): Action<Car>[] => {
-
     if (deletingCarId === row.id) {
       return [
         {
@@ -105,14 +101,14 @@ const DataDisplay = ({ cars, currentPage, totalPages }: DataDisplayI) => {
           onClick: () => handleDelete(row.id),
           variant: 'destructive',
           disabled: isPending,
-          className:'cursor-pointer',
+          className: 'cursor-pointer',
         },
         {
           label: 'Anuluj',
           onClick: () => setDeletingCarId(null),
           variant: 'outline',
           disabled: false,
-          className:'cursor-pointer',
+          className: 'cursor-pointer',
         },
       ];
     }
@@ -123,15 +119,15 @@ const DataDisplay = ({ cars, currentPage, totalPages }: DataDisplayI) => {
         onClick: () => handleDeleteSave(row.id),
         variant: 'destructive',
         disabled: isPending,
-        className:'cursor-pointer',
+        className: 'cursor-pointer',
       },
       {
         label: 'Edytuj',
         onClick: () => handleEdit(row),
         variant: 'default',
         disabled: false,
-        className:'cursor-pointer',
-      }
+        className: 'cursor-pointer',
+      },
     ];
   };
 
@@ -146,7 +142,7 @@ const DataDisplay = ({ cars, currentPage, totalPages }: DataDisplayI) => {
         totalPages={totalPages}
       />
 
-      <Dialog open={!!editingCar} onOpenChange={(isOpen) => !isOpen && handleModalClose()}>
+      <Dialog open={!!editingCar} onOpenChange={isOpen => !isOpen && handleModalClose()}>
         <DialogContent className="sm:max-w-[700px]">
           <DialogHeader>
             <DialogTitle>Edytuj pojazd</DialogTitle>

@@ -91,13 +91,16 @@ export async function editCar(currentState: EditCarState, formData: FormData): P
     };
   }
 
-  await db.update(cars).set({
-    make: parsed.data.make,
-    model: parsed.data.model,
-    registrationNumber: parsed.data.registrationNumber,
-    insuranceEndDate: insuranceEndDate,
-    inspectionEndDate: inspectionEndDate,
-  }).where(eq(cars.id, parsed.data.id));
+  await db
+    .update(cars)
+    .set({
+      make: parsed.data.make,
+      model: parsed.data.model,
+      registrationNumber: parsed.data.registrationNumber,
+      insuranceEndDate: insuranceEndDate,
+      inspectionEndDate: inspectionEndDate,
+    })
+    .where(eq(cars.id, parsed.data.id));
 
   return {
     success: true,
