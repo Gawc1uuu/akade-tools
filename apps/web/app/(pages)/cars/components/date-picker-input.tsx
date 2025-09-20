@@ -78,12 +78,13 @@ export function Calendar28({ name, placeholder, label }: { name: string; placeho
               captionLayout="dropdown"
               month={month}
               onMonthChange={setMonth}
-              disabled={date => date < new Date()}
               onSelect={date => {
                 setDate(date);
                 setValue(formatDate(date));
                 setOpen(false);
               }}
+              startMonth={new Date()}
+              endMonth={new Date(new Date().setFullYear(new Date().getFullYear() + 10))}
             />
           </PopoverContent>
         </Popover>

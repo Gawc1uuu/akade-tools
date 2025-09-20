@@ -90,6 +90,9 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
                                   }
                                 }}
                                 key={actionIndex}
+                                className={action.className}
+                                variant={action.variant as any}
+                                disabled={action.disabled}
                               >
                                 {action.label}
                               </Button>
