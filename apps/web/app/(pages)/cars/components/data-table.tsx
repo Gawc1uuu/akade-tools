@@ -16,6 +16,7 @@ export interface Action<T> {
   className?: string;
   disabled: boolean;
   renderer?: (row: T) => React.ReactNode;
+  width?: number | string;
 }
 
 interface DataTableProps<TData, TValue> {
@@ -62,7 +63,7 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map(header => {
                     return (
-                      <TableHead key={header.id}>
+                      <TableHead key={header.id} style={{ width: header.column.columnDef.meta?.width ?? header.getSize() }}>
                         {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                       </TableHead>
                     );
@@ -75,10 +76,12 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
                 table.getRowModel().rows.map(row => (
                   <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                     {row.getVisibleCells().map(cell => (
-                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                      <TableCell style={{
+                        width: cell.column.columnDef.meta?.width ?? cell.column.getSize(),
+                      }} key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                     ))}
                     {actions && getRowActions(row.original) && (
-                      <TableCell>
+                      <TableCell style={{ width: '20%', minWidth: '20%', maxWidth: '20%' }}>
                         <div>
                           {getRowActions(row.original)?.map((action, actionIndex) => {
                             return (
