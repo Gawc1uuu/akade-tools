@@ -24,13 +24,13 @@ const Paginator = ({ onPageChange, page, totalPages, showPreviousNext, className
       <PaginationContent>
         {showPreviousNext && totalPages ? (
           <PaginationItem>
-            <PaginationPrevious onClick={() => page > 1 && onPageChange(page - 1)} disabled={page === 1} />
+            <PaginationPrevious className={`${page === 1 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} onClick={() => page > 1 && onPageChange(page - 1)} disabled={page === 1} />
           </PaginationItem>
         ) : null}
         {generatePaginationLinks(page, totalPages, onPageChange)}
         {showPreviousNext && totalPages ? (
           <PaginationItem>
-            <PaginationNext onClick={() => page < totalPages && onPageChange(page + 1)} disabled={page === totalPages} />
+            <PaginationNext className={`${page === totalPages ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} onClick={() => page < totalPages && onPageChange(page + 1)} disabled={page === totalPages} />
           </PaginationItem>
         ) : null}
       </PaginationContent>

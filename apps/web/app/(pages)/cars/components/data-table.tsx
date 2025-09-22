@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable, getPaginationRowModel } from '@tanstack/react-table';
+import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Paginator from '~/components/paginator';
 import { Button } from '~/components/ui/button';
@@ -8,6 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table';
 import { cn } from '~/lib/utils';
+import { Label } from '~/components/ui/label';
+import { useEffect } from 'react';
 
 export interface Action<T> {
   label: string;
@@ -27,9 +30,10 @@ interface DataTableProps<TData, TValue> {
   page: number;
   totalPages: number;
   actions?: Action<TData>[] | ((row: TData) => Action<TData>[]);
+  pageSize: number;
 }
 
-export function DataTable<TData, TValue>({ columns, data, title, page, totalPages, actions }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, title, page, totalPages, actions, pageSize }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
@@ -39,6 +43,14 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
   const { push } = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if(page>totalPages){
+      const params = new URLSearchParams(searchParams);
+      params.set('page', totalPages.toString());
+      push(`${pathname}?${params.toString()}`, { scroll: false });
+    }
+  }, [page, totalPages,pageSize]);
 
   const getRowActions = (row: TData): Action<TData>[] | undefined => {
     return typeof actions === 'function' ? actions(row) : actions;
@@ -126,11 +138,12 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
               )}
             </TableBody>
           </Table>
-          <div className="flex justify-end mt-4">
-            <div>
-              <Select onValueChange={value => handlePageSizeChange(Number(value))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="5" />
+          <div className="flex justify-end my-6">
+            <div className="flex gap-2">
+              <Label>Rozmiar strony</Label>
+              <Select value={pageSize.toString()} onValueChange={value => handlePageSizeChange(Number(value))}>
+                <SelectTrigger className="border border-gray-400">
+                  <SelectValue placeholder={pageSize.toString()} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="5">5</SelectItem>

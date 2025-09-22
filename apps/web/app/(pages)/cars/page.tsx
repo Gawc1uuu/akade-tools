@@ -17,10 +17,10 @@ const Cars = async ({ searchParams }: CarsProps) => {
   const { cars, totalPages, currentPage } = await getCars({ page: Number(page), pageSize: Number(pageSize) });
 
   return (
-    <div className="border border-black">
+    <div>
       <CreateCarModal />
-      <div className="flex flex-col gap-8 px-10 min-w-0 border border-black">
-        <DataDisplay cars={cars} totalPages={totalPages} currentPage={currentPage} />
+      <div className="flex flex-col gap-8 px-10 min-w-0">
+        <DataDisplay cars={cars} totalPages={totalPages} currentPage={currentPage} pageSize={pageSize} />
       </div>
     </div>
   );

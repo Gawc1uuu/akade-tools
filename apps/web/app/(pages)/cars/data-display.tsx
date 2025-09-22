@@ -13,9 +13,10 @@ interface DataDisplayI {
   cars: Car[];
   currentPage: number;
   totalPages: number;
+  pageSize: number;
 }
 
-const DataDisplay = ({ cars, currentPage, totalPages }: DataDisplayI) => {
+const DataDisplay = ({ cars, currentPage, totalPages, pageSize }: DataDisplayI) => {
   const router = useRouter();
   const [state, formAction, isPending] = useActionState(deleteCar, { success: false, deletedCar: null });
   const [deletingCarId, setDeletingCarId] = useState<string | null>(null);
@@ -150,14 +151,15 @@ const DataDisplay = ({ cars, currentPage, totalPages }: DataDisplayI) => {
   };
 
   return (
-    <div className="border border-black">
-      <DataTable
+    <div>
+      <DataTable  
         actions={row => getActions(row)}
         columns={columns}
         data={cars as Car[]}
         title="Pojazdy"
         page={currentPage}
         totalPages={totalPages}
+        pageSize={pageSize}
       />
 
       <Dialog open={!!editingCar} onOpenChange={isOpen => !isOpen && handleModalClose()}>
