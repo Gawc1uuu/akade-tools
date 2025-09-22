@@ -45,12 +45,12 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if(page>totalPages){
+    if (page > totalPages) {
       const params = new URLSearchParams(searchParams);
       params.set('page', totalPages.toString());
       push(`${pathname}?${params.toString()}`, { scroll: false });
     }
-  }, [page, totalPages,pageSize]);
+  }, [page, totalPages, pageSize]);
 
   const getRowActions = (row: TData): Action<TData>[] | undefined => {
     return typeof actions === 'function' ? actions(row) : actions;

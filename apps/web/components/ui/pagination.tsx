@@ -59,7 +59,11 @@ const generatePaginationLinks = (currentPage: number, totalPages: number, onPage
     for (let i = 1; i <= totalPages; i++) {
       pages.push(
         <PaginationItem key={i}>
-          <PaginationLink className={`${i === currentPage ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} onClick={() => onPageChange(i)} isActive={i === currentPage}>
+          <PaginationLink
+            className={`${i === currentPage ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+            onClick={() => onPageChange(i)}
+            isActive={i === currentPage}
+          >
             {i}
           </PaginationLink>
         </PaginationItem>

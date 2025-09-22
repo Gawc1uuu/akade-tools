@@ -152,7 +152,7 @@ const DataDisplay = ({ cars, currentPage, totalPages, pageSize }: DataDisplayI) 
 
   return (
     <div>
-      <DataTable  
+      <DataTable
         actions={row => getActions(row)}
         columns={columns}
         data={cars as Car[]}
