@@ -46,8 +46,8 @@ const DataDisplay = ({ cars, currentPage, totalPages }: DataDisplayI) => {
     {
       header: 'Marka',
       accessorKey: 'make',
-      meta:{
-        width:'10%',
+      meta: {
+        width: '10%',
       },
       cell: ({ row }) => {
         const make = row.getValue('make') as string;
@@ -57,8 +57,8 @@ const DataDisplay = ({ cars, currentPage, totalPages }: DataDisplayI) => {
     {
       header: 'Model',
       accessorKey: 'model',
-      meta:{
-        width:'10%',
+      meta: {
+        width: '10%',
       },
       cell: ({ row }) => {
         const model = row.getValue('model') as string;
@@ -68,8 +68,8 @@ const DataDisplay = ({ cars, currentPage, totalPages }: DataDisplayI) => {
     {
       header: 'Numer rejestracyjny',
       accessorKey: 'registrationNumber',
-      meta:{
-        width:'10%',
+      meta: {
+        width: '10%',
       },
       cell: ({ row }) => {
         const registrationNumber = row.getValue('registrationNumber') as string;
@@ -79,8 +79,8 @@ const DataDisplay = ({ cars, currentPage, totalPages }: DataDisplayI) => {
     {
       header: 'Data ważności ubezpieczenia',
       accessorKey: 'insuranceEndDate',
-      meta:{
-        width:'10%',
+      meta: {
+        width: '10%',
       },
       cell: ({ row }) => {
         const insuranceEndDate = row.getValue('insuranceEndDate') as string;
@@ -90,8 +90,8 @@ const DataDisplay = ({ cars, currentPage, totalPages }: DataDisplayI) => {
     {
       header: 'Data ważności przeglądu',
       accessorKey: 'inspectionEndDate',
-      meta:{
-        width:'10%',
+      meta: {
+        width: '10%',
       },
       cell: ({ row }) => {
         const inspectionEndDate = row.getValue('inspectionEndDate') as string;
@@ -101,8 +101,8 @@ const DataDisplay = ({ cars, currentPage, totalPages }: DataDisplayI) => {
     {
       header: 'Utworzono przez',
       accessorKey: 'owner',
-      meta:{
-        width:'15%',
+      meta: {
+        width: '15%',
       },
       cell: ({ row }) => {
         const owner = row.getValue('owner') as { id: string; email: string };

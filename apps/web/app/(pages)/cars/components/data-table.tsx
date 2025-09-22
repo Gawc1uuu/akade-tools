@@ -76,9 +76,14 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
                 table.getRowModel().rows.map(row => (
                   <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                     {row.getVisibleCells().map(cell => (
-                      <TableCell style={{
-                        width: cell.column.columnDef.meta?.width ?? cell.column.getSize(),
-                      }} key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                      <TableCell
+                        style={{
+                          width: cell.column.columnDef.meta?.width ?? cell.column.getSize(),
+                        }}
+                        key={cell.id}
+                      >
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
                     ))}
                     {actions && getRowActions(row.original) && (
                       <TableCell style={{ width: '20%', minWidth: '20%', maxWidth: '20%' }}>
