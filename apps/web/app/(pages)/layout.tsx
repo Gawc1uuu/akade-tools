@@ -27,7 +27,7 @@ export default function RootLayout({
             <Button onClick={logout}>Logout</Button>
           </div>
         </header>
-        <main>{children}</main>
+        <main className='min-h-screen border border-red-500'>{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );

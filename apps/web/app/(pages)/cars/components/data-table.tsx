@@ -4,6 +4,7 @@ import { ColumnDef, flexRender, getCoreRowModel, useReactTable, getPaginationRow
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Paginator from '~/components/paginator';
 import { Button } from '~/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table';
 import { cn } from '~/lib/utils';
@@ -36,7 +37,7 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
     getPaginationRowModel: getPaginationRowModel(),
   });
 
-  const { push } = useRouter();
+  const { push, refresh } = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -49,6 +50,12 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
     params.set('page', page.toString());
     push(`${pathname}?${params.toString()}`, { scroll: false });
   };
+
+  const handlePageSizeChange = (pageSize: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('pageSize', pageSize.toString());
+    push(`${pathname}?${params.toString()}`, { scroll: false });
+  }
 
   return (
     <div className="flex flex-col p-6 border border-border">
@@ -121,6 +128,18 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
             </TableBody>
           </Table>
           <div className="flex justify-end mt-4">
+            <div>
+              <Select onValueChange={(value) => handlePageSizeChange(Number(value))}>
+                <SelectTrigger>
+                  <SelectValue placeholder="5" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="5">5</SelectItem>
+                  <SelectItem value="10">10</SelectItem>
+                  <SelectItem value="20">20</SelectItem>
+                </SelectContent>  
+              </Select>
+            </div>
             <Paginator onPageChange={handlePageChange} page={page} totalPages={totalPages} showPreviousNext={true} />
           </div>
         </div>

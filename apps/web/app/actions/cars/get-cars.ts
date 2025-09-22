@@ -5,10 +5,10 @@ import { Car } from '~/lib/types';
 
 interface GetCarsParams {
   page?: number;
-  limit?: number;
+  pageSize?: number;
 }
 
-export async function getCars({ page = 1, limit = 5 }: GetCarsParams = {}) {
+export async function getCars({ page = 1, pageSize = 5 }: GetCarsParams = {}) {
   const token = await getToken();
   const decodedToken = await verifyToken(token);
 
@@ -31,8 +31,8 @@ export async function getCars({ page = 1, limit = 5 }: GetCarsParams = {}) {
           },
         },
       },
-      limit: limit,
-      offset: (page - 1) * limit,
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
       orderBy: (cars, { desc }) => [desc(cars.createdAt)],
     });
 
@@ -49,7 +49,7 @@ export async function getCars({ page = 1, limit = 5 }: GetCarsParams = {}) {
   return {
     cars: data as Car[],
     total,
-    totalPages: Math.ceil(total / limit),
+    totalPages: Math.ceil(total / pageSize),
     currentPage: page,
   };
 }
