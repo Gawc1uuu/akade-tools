@@ -34,10 +34,9 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
   });
 
-  const { push, refresh } = useRouter();
+  const { push } = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -137,6 +136,7 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
                   <SelectItem value="5">5</SelectItem>
                   <SelectItem value="10">10</SelectItem>
                   <SelectItem value="20">20</SelectItem>
+                  <SelectItem value="30">30</SelectItem>
                 </SelectContent>
               </Select>
             </div>
