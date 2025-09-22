@@ -55,7 +55,7 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
     const params = new URLSearchParams(searchParams);
     params.set('pageSize', pageSize.toString());
     push(`${pathname}?${params.toString()}`, { scroll: false });
-  }
+  };
 
   return (
     <div className="flex flex-col p-6 border border-border">
@@ -129,7 +129,7 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
           </Table>
           <div className="flex justify-end mt-4">
             <div>
-              <Select onValueChange={(value) => handlePageSizeChange(Number(value))}>
+              <Select onValueChange={value => handlePageSizeChange(Number(value))}>
                 <SelectTrigger>
                   <SelectValue placeholder="5" />
                 </SelectTrigger>
@@ -137,7 +137,7 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
                   <SelectItem value="5">5</SelectItem>
                   <SelectItem value="10">10</SelectItem>
                   <SelectItem value="20">20</SelectItem>
-                </SelectContent>  
+                </SelectContent>
               </Select>
             </div>
             <Paginator onPageChange={handlePageChange} page={page} totalPages={totalPages} showPreviousNext={true} />
