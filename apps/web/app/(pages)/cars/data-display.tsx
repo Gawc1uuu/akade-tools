@@ -150,7 +150,7 @@ const DataDisplay = ({ cars, currentPage, totalPages }: DataDisplayI) => {
   };
 
   return (
-    <div className='border border-black'>
+    <div className="border border-black">
       <DataTable
         actions={row => getActions(row)}
         columns={columns}
