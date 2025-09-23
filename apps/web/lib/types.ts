@@ -30,3 +30,10 @@ export type Car = {
     email: string;
   };
 };
+
+export type User = {
+  id:string,
+  email:string,
+  organizationId:string;
+  role:string;
+}

@@ -7,16 +7,18 @@ import { Action, DataTable } from '~/app/(pages)/cars/components/data-table';
 import EditCarForm from '~/app/(pages)/cars/components/edit-car-form';
 import { deleteCar } from '~/app/actions/cars/delete-car';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '~/components/ui/dialog';
-import { Car } from '~/lib/types';
+import { Car, User } from '~/lib/types';
 
 interface DataDisplayI {
   cars: Car[];
   currentPage: number;
   totalPages: number;
   pageSize: number;
+  makes: string[];
+  users:User[];
 }
 
-const DataDisplay = ({ cars, currentPage, totalPages, pageSize }: DataDisplayI) => {
+const DataDisplay = ({ cars, currentPage, totalPages, pageSize, makes, users }: DataDisplayI) => {
   const router = useRouter();
   const [state, formAction, isPending] = useActionState(deleteCar, { success: false, deletedCar: null });
   const [deletingCarId, setDeletingCarId] = useState<string | null>(null);
@@ -153,6 +155,7 @@ const DataDisplay = ({ cars, currentPage, totalPages, pageSize }: DataDisplayI) 
   return (
     <div>
       <DataTable
+        makes={makes}
         actions={row => getActions(row)}
         columns={columns}
         data={cars as Car[]}
@@ -160,6 +163,7 @@ const DataDisplay = ({ cars, currentPage, totalPages, pageSize }: DataDisplayI) 
         page={currentPage}
         totalPages={totalPages}
         pageSize={pageSize}
+        users={users}
       />
 
       <Dialog open={!!editingCar} onOpenChange={isOpen => !isOpen && handleModalClose()}>

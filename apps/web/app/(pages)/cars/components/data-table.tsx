@@ -11,6 +11,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~
 import { cn } from '~/lib/utils';
 import { Label } from '~/components/ui/label';
 import { useEffect } from 'react';
+import DataTableFilters from '~/app/(pages)/cars/components/data-table-filters';
+import { User } from '~/lib/types';
 
 export interface Action<T> {
   label: string;
@@ -31,9 +33,11 @@ interface DataTableProps<TData, TValue> {
   totalPages: number;
   actions?: Action<TData>[] | ((row: TData) => Action<TData>[]);
   pageSize: number;
+  makes?: string[];
+  users?:User[]
 }
 
-export function DataTable<TData, TValue>({ columns, data, title, page, totalPages, actions, pageSize }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, title, page, totalPages, actions, pageSize, makes,users }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
@@ -72,6 +76,7 @@ export function DataTable<TData, TValue>({ columns, data, title, page, totalPage
     <div className="flex flex-col p-6 border border-border">
       <div className="flex flex-col gap-4 px-3 pb-3">
         <h1 className="text-2xl font-bold">{title}</h1>
+        <DataTableFilters makes={makes} users={users} />
       </div>
       <div className={cn('w-full relative bg-transparent')}>
         <div className="w-full overflow-auto min-w-0">

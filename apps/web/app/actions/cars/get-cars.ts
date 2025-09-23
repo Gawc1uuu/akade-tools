@@ -1,28 +1,45 @@
 import { db, cars } from '@repo/db';
-import { count, eq } from 'drizzle-orm';
+import { and, count, eq } from 'drizzle-orm';
 import { getToken, verifyToken } from '~/lib/tokens';
-import { Car } from '~/lib/types';
+import { Car, User } from '~/lib/types';
+
 
 interface GetCarsParams {
   page?: number;
   pageSize?: number;
+  make?: string;
+  owner?:string;
 }
 
-export async function getCars({ page = 1, pageSize = 5 }: GetCarsParams = {}) {
+export async function getCars({ page = 1, pageSize = 5, make, owner }: GetCarsParams = {}) {
   const token = await getToken();
   const decodedToken = await verifyToken(token);
 
   if (!decodedToken) {
-    throw new Error('Unauthenticated');
+    throw new Error('Unauthenticated'); 
   }
 
   if (!decodedToken.organizationId) {
     throw new Error('Organization ID not found');
   }
 
+  const conidtions = [
+    eq(cars.organizationId, String(decodedToken.organizationId)),
+  ];
+
+  if (make) {
+    conidtions.push(eq(cars.make, make));
+  }
+
+  if(owner){
+    conidtions.push(eq(cars.createdBy,owner))
+  }
+
+  const whereClause = and(...conidtions);
+
   const { data, total } = await db.transaction(async tx => {
     const data = await tx.query.cars.findMany({
-      where: eq(cars.organizationId, String(decodedToken.organizationId)),
+      where: whereClause,
       with: {
         owner: {
           columns: {
@@ -39,7 +56,7 @@ export async function getCars({ page = 1, pageSize = 5 }: GetCarsParams = {}) {
     const totalResult = await tx
       .select({ count: count() })
       .from(cars)
-      .where(eq(cars.organizationId, String(decodedToken.organizationId)));
+      .where(whereClause);
 
     const total = totalResult[0]?.count ?? 0;
 
