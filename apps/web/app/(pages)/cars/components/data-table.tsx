@@ -11,8 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~
 import { cn } from '~/lib/utils';
 import { Label } from '~/components/ui/label';
 import { useEffect } from 'react';
-import DataTableFilters from '~/app/(pages)/cars/components/data-table-filters';
-import { User } from '~/lib/types';
+import { param } from 'drizzle-orm';
 
 export interface Action<T> {
   label: string;
@@ -32,9 +31,9 @@ interface DataTableProps<TData, TValue> {
   page: number;
   totalPages: number;
   actions?: Action<TData>[] | ((row: TData) => Action<TData>[]);
-  pageSize: number;
-  makes?: string[];
-  users?: User[];
+  limit: number;
+  filters?:React.ReactNode;
+  paramName:string;
 }
 
 export function DataTable<TData, TValue>({
@@ -44,15 +43,18 @@ export function DataTable<TData, TValue>({
   page,
   totalPages,
   actions,
-  pageSize,
-  makes,
-  users,
+  limit,
+  filters,
+  paramName
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  const pageParamName = `${paramName}Page`;
+  const limitParamName = `${paramName}PageSize`
 
   const { push } = useRouter();
   const pathname = usePathname();
@@ -61,10 +63,10 @@ export function DataTable<TData, TValue>({
   useEffect(() => {
     if (page > totalPages) {
       const params = new URLSearchParams(searchParams);
-      params.set('page', totalPages.toString());
+      params.set(pageParamName, totalPages.toString());
       push(`${pathname}?${params.toString()}`, { scroll: false });
     }
-  }, [page, totalPages, pageSize]);
+  }, [page, totalPages, limit]);
 
   const getRowActions = (row: TData): Action<TData>[] | undefined => {
     return typeof actions === 'function' ? actions(row) : actions;
@@ -72,13 +74,13 @@ export function DataTable<TData, TValue>({
 
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams(searchParams);
-    params.set('page', page.toString());
+    params.set(pageParamName, page.toString());
     push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   const handlePageSizeChange = (pageSize: number) => {
     const params = new URLSearchParams(searchParams);
-    params.set('pageSize', pageSize.toString());
+    params.set(limitParamName, pageSize.toString());
     push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
@@ -86,7 +88,9 @@ export function DataTable<TData, TValue>({
     <div className="flex flex-col p-6 border border-border">
       <div className="flex flex-col gap-4 px-3 pb-3">
         <h1 className="text-2xl font-bold">{title}</h1>
-        <DataTableFilters makes={makes} users={users} />
+        <div>
+          {filters}
+        </div>
       </div>
       <div className={cn('w-full relative bg-transparent')}>
         <div className="w-full overflow-auto min-w-0">
@@ -156,9 +160,9 @@ export function DataTable<TData, TValue>({
           <div className="flex justify-end my-6">
             <div className="flex gap-2">
               <Label>Rozmiar strony</Label>
-              <Select value={pageSize.toString()} onValueChange={value => handlePageSizeChange(Number(value))}>
+              <Select value={limit.toString()} onValueChange={value => handlePageSizeChange(Number(value))}>
                 <SelectTrigger className="border border-gray-400">
-                  <SelectValue placeholder={pageSize.toString()} />
+                  <SelectValue placeholder={limit.toString()} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="5">5</SelectItem>

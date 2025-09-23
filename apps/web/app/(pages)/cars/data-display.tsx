@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { useActionState, startTransition, useState } from 'react';
 import { ClientDate } from '~/app/(pages)/cars/components/client-date';
 import { Action, DataTable } from '~/app/(pages)/cars/components/data-table';
+import DataTableFilter, { FilterConfig } from '~/app/(pages)/cars/components/data-table-filter';
 import EditCarForm from '~/app/(pages)/cars/components/edit-car-form';
 import { deleteCar } from '~/app/actions/cars/delete-car';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '~/components/ui/dialog';
@@ -13,12 +14,12 @@ interface DataDisplayI {
   cars: Car[];
   currentPage: number;
   totalPages: number;
-  pageSize: number;
+  limit: number;
   makes: string[];
   users: User[];
 }
 
-const DataDisplay = ({ cars, currentPage, totalPages, pageSize, makes, users }: DataDisplayI) => {
+const DataDisplay = ({ cars, currentPage, totalPages, limit, makes, users }: DataDisplayI) => {
   const router = useRouter();
   const [state, formAction, isPending] = useActionState(deleteCar, { success: false, deletedCar: null });
   const [deletingCarId, setDeletingCarId] = useState<string | null>(null);
@@ -152,18 +153,31 @@ const DataDisplay = ({ cars, currentPage, totalPages, pageSize, makes, users }: 
     ];
   };
 
+  const carFilterConfig: FilterConfig[] = [
+    {
+      param: 'carsMake',
+      placeholder: 'Wybierz markę',
+      options: makes.map(make => ({ value: make, label: make })),
+    },
+    {
+      param: 'carsOwner',
+      placeholder: 'Wybierz użytkownika',
+      options: users.map(user => ({ value: user.id, label: user.email })),
+    },
+  ];
+
   return (
     <div>
       <DataTable
-        makes={makes}
         actions={row => getActions(row)}
         columns={columns}
         data={cars as Car[]}
         title="Pojazdy"
         page={currentPage}
         totalPages={totalPages}
-        pageSize={pageSize}
-        users={users}
+        limit={limit}
+        filters={<DataTableFilter filters={carFilterConfig} />}
+        paramName="cars"
       />
 
       <Dialog open={!!editingCar} onOpenChange={isOpen => !isOpen && handleModalClose()}>

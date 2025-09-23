@@ -1,16 +1,17 @@
 import { db, cars } from '@repo/db';
 import { and, count, eq } from 'drizzle-orm';
 import { getToken, verifyToken } from '~/lib/tokens';
-import { Car, User } from '~/lib/types';
+import { Car } from '~/lib/types';
 
 interface GetCarsParams {
   page?: number;
-  pageSize?: number;
-  make?: string;
-  owner?: string;
+  limit?: number;
+  offset?:number;
+  carsMake?: string;
+  carsOwner?: string;
 }
 
-export async function getCars({ page = 1, pageSize = 5, make, owner }: GetCarsParams = {}) {
+export async function getCars({ page = 1, limit = 10, offset, carsMake, carsOwner }: GetCarsParams = {}) {
   const token = await getToken();
   const decodedToken = await verifyToken(token);
 
@@ -24,12 +25,12 @@ export async function getCars({ page = 1, pageSize = 5, make, owner }: GetCarsPa
 
   const conidtions = [eq(cars.organizationId, String(decodedToken.organizationId))];
 
-  if (make) {
-    conidtions.push(eq(cars.make, make));
+  if (carsMake) {
+    conidtions.push(eq(cars.make, carsMake));
   }
 
-  if (owner) {
-    conidtions.push(eq(cars.createdBy, owner));
+  if (carsOwner) {
+    conidtions.push(eq(cars.createdBy, carsOwner));
   }
 
   const whereClause = and(...conidtions);
@@ -45,8 +46,8 @@ export async function getCars({ page = 1, pageSize = 5, make, owner }: GetCarsPa
           },
         },
       },
-      limit: pageSize,
-      offset: (page - 1) * pageSize,
+      limit,
+      offset,
       orderBy: (cars, { desc }) => [desc(cars.createdAt)],
     });
 
@@ -60,7 +61,7 @@ export async function getCars({ page = 1, pageSize = 5, make, owner }: GetCarsPa
   return {
     cars: data as Car[],
     total,
-    totalPages: Math.ceil(total / pageSize),
+    totalPages: Math.ceil(total / limit),
     currentPage: page,
   };
 }
