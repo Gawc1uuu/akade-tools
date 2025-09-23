@@ -3,12 +3,11 @@ import { and, count, eq } from 'drizzle-orm';
 import { getToken, verifyToken } from '~/lib/tokens';
 import { Car, User } from '~/lib/types';
 
-
 interface GetCarsParams {
   page?: number;
   pageSize?: number;
   make?: string;
-  owner?:string;
+  owner?: string;
 }
 
 export async function getCars({ page = 1, pageSize = 5, make, owner }: GetCarsParams = {}) {
@@ -16,23 +15,21 @@ export async function getCars({ page = 1, pageSize = 5, make, owner }: GetCarsPa
   const decodedToken = await verifyToken(token);
 
   if (!decodedToken) {
-    throw new Error('Unauthenticated'); 
+    throw new Error('Unauthenticated');
   }
 
   if (!decodedToken.organizationId) {
     throw new Error('Organization ID not found');
   }
 
-  const conidtions = [
-    eq(cars.organizationId, String(decodedToken.organizationId)),
-  ];
+  const conidtions = [eq(cars.organizationId, String(decodedToken.organizationId))];
 
   if (make) {
     conidtions.push(eq(cars.make, make));
   }
 
-  if(owner){
-    conidtions.push(eq(cars.createdBy,owner))
+  if (owner) {
+    conidtions.push(eq(cars.createdBy, owner));
   }
 
   const whereClause = and(...conidtions);
@@ -53,10 +50,7 @@ export async function getCars({ page = 1, pageSize = 5, make, owner }: GetCarsPa
       orderBy: (cars, { desc }) => [desc(cars.createdAt)],
     });
 
-    const totalResult = await tx
-      .select({ count: count() })
-      .from(cars)
-      .where(whereClause);
+    const totalResult = await tx.select({ count: count() }).from(cars).where(whereClause);
 
     const total = totalResult[0]?.count ?? 0;
 

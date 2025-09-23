@@ -10,7 +10,7 @@ interface CarsProps {
     page?: string;
     pageSize?: string;
     make?: string;
-    owner?:string;
+    owner?: string;
   };
 }
 
@@ -20,8 +20,13 @@ const Cars = async ({ searchParams }: CarsProps) => {
   const pageSize = Number(params?.pageSize) || 5;
   const makes = await getAllMakes();
   const users = await getAllOrganizationUsers();
-  
-  const { cars, totalPages, currentPage } = await getCars({ page: Number(page), pageSize: Number(pageSize), make: params?.make, owner:params?.owner });
+
+  const { cars, totalPages, currentPage } = await getCars({
+    page: Number(page),
+    pageSize: Number(pageSize),
+    make: params?.make,
+    owner: params?.owner,
+  });
 
   return (
     <div>

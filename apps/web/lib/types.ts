@@ -32,8 +32,8 @@ export type Car = {
 };
 
 export type User = {
-  id:string,
-  email:string,
-  organizationId:string;
-  role:string;
-}
+  id: string;
+  email: string;
+  organizationId: string;
+  role: string;
+};

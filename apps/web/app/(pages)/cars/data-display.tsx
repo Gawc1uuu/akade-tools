@@ -15,7 +15,7 @@ interface DataDisplayI {
   totalPages: number;
   pageSize: number;
   makes: string[];
-  users:User[];
+  users: User[];
 }
 
 const DataDisplay = ({ cars, currentPage, totalPages, pageSize, makes, users }: DataDisplayI) => {

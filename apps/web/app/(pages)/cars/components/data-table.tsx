@@ -34,10 +34,20 @@ interface DataTableProps<TData, TValue> {
   actions?: Action<TData>[] | ((row: TData) => Action<TData>[]);
   pageSize: number;
   makes?: string[];
-  users?:User[]
+  users?: User[];
 }
 
-export function DataTable<TData, TValue>({ columns, data, title, page, totalPages, actions, pageSize, makes,users }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  title,
+  page,
+  totalPages,
+  actions,
+  pageSize,
+  makes,
+  users,
+}: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,

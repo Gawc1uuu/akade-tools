@@ -1,9 +1,9 @@
-import React from 'react'
-import { Label } from '~/components/ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { Button } from '~/components/ui/button'
-import { User } from '~/lib/types'
+import React from 'react';
+import { Label } from '~/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { Button } from '~/components/ui/button';
+import { User } from '~/lib/types';
 
 interface DataTableFiltersProps {
   makes?: string[];
@@ -30,7 +30,7 @@ const DataTableFilters = ({ makes, users }: DataTableFiltersProps) => {
   const handleClearFilters = () => {
     const params = new URLSearchParams(searchParams);
     params.delete('make');
-    params.delete('owner')
+    params.delete('owner');
     push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
@@ -38,17 +38,19 @@ const DataTableFilters = ({ makes, users }: DataTableFiltersProps) => {
     <div>
       <div>
         <div>
-        <Label>Marka</Label>
-        <Select value={searchParams.get('make') || ''} onValueChange={handleMakeChange}>
-          <SelectTrigger>
-            <SelectValue placeholder="Wybierz markę" />
-          </SelectTrigger>
-          <SelectContent>
-            {makes?.map((make) => (
-              <SelectItem key={make} value={make}>{make}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          <Label>Marka</Label>
+          <Select value={searchParams.get('make') || ''} onValueChange={handleMakeChange}>
+            <SelectTrigger>
+              <SelectValue placeholder="Wybierz markę" />
+            </SelectTrigger>
+            <SelectContent>
+              {makes?.map(make => (
+                <SelectItem key={make} value={make}>
+                  {make}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <div>
           <Label>Dodane przez</Label>
@@ -57,8 +59,10 @@ const DataTableFilters = ({ makes, users }: DataTableFiltersProps) => {
               <SelectValue placeholder="Wybierz użytkownika" />
             </SelectTrigger>
             <SelectContent>
-              {users?.map((user) => (
-                <SelectItem key={user.id} value={user.id}>{user.email}</SelectItem>
+              {users?.map(user => (
+                <SelectItem key={user.id} value={user.id}>
+                  {user.email}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -70,7 +74,7 @@ const DataTableFilters = ({ makes, users }: DataTableFiltersProps) => {
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DataTableFilters
+export default DataTableFilters;
