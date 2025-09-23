@@ -32,8 +32,8 @@ interface DataTableProps<TData, TValue> {
   totalPages: number;
   actions?: Action<TData>[] | ((row: TData) => Action<TData>[]);
   limit: number;
-  filters?:React.ReactNode;
-  paramName:string;
+  filters?: React.ReactNode;
+  paramName: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -45,7 +45,7 @@ export function DataTable<TData, TValue>({
   actions,
   limit,
   filters,
-  paramName
+  paramName,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -54,7 +54,7 @@ export function DataTable<TData, TValue>({
   });
 
   const pageParamName = `${paramName}Page`;
-  const limitParamName = `${paramName}PageSize`
+  const limitParamName = `${paramName}PageSize`;
 
   const { push } = useRouter();
   const pathname = usePathname();
@@ -88,9 +88,7 @@ export function DataTable<TData, TValue>({
     <div className="flex flex-col p-6 border border-border">
       <div className="flex flex-col gap-4 px-3 pb-3">
         <h1 className="text-2xl font-bold">{title}</h1>
-        <div>
-          {filters}
-        </div>
+        <div>{filters}</div>
       </div>
       <div className={cn('w-full relative bg-transparent')}>
         <div className="w-full overflow-auto min-w-0">

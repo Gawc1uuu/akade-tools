@@ -17,7 +17,7 @@ interface CarsProps {
 
 const Cars = async ({ searchParams }: CarsProps) => {
   const params = await searchParams;
-  const {page,limit,offset} = await parsePaginationParams(params,'cars')
+  const { page, limit, offset } = await parsePaginationParams(params, 'cars');
   const makes = await getAllMakes();
   const users = await getAllOrganizationUsers();
 
@@ -25,8 +25,8 @@ const Cars = async ({ searchParams }: CarsProps) => {
     page,
     limit,
     offset,
-    carsMake:params?.carsMake,
-    carsOwner:params?.carsOwner,
+    carsMake: params?.carsMake,
+    carsOwner: params?.carsOwner,
   });
 
   return (

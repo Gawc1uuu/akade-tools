@@ -6,7 +6,7 @@ import { Car } from '~/lib/types';
 interface GetCarsParams {
   page?: number;
   limit?: number;
-  offset?:number;
+  offset?: number;
   carsMake?: string;
   carsOwner?: string;
 }
