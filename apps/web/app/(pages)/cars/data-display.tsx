@@ -155,22 +155,22 @@ const DataDisplay = ({ cars, currentPage, totalPages, limit, makes, users }: Dat
 
   const carFilterConfig: FilterConfig[] = [
     {
-      type:'select',
+      type: 'select',
       param: 'carsMake',
       placeholder: 'Wybierz markę',
       options: makes.map(make => ({ value: make, label: make })),
     },
     {
-      type:'select',
+      type: 'select',
       param: 'carsOwner',
       placeholder: 'Wybierz użytkownika',
       options: users.map(user => ({ value: user.id, label: user.email })),
     },
     {
-      type:'input',
-      param:'carsSearchTerm',
-      placeholder:'Wyszukaj po czymkolwiek',
-    }
+      type: 'input',
+      param: 'carsSearchTerm',
+      placeholder: 'Wyszukaj po czymkolwiek',
+    },
   ];
 
   return (

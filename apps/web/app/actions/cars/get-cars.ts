@@ -9,7 +9,7 @@ interface GetCarsParams {
   offset?: number;
   carsMake?: string;
   carsOwner?: string;
-  carsSearchTerm?:string;
+  carsSearchTerm?: string;
 }
 
 export async function getCars({ page = 1, limit = 10, offset, carsMake, carsOwner, carsSearchTerm }: GetCarsParams = {}) {
@@ -69,8 +69,6 @@ export async function getCars({ page = 1, limit = 10, offset, carsMake, carsOwne
 
     return { data, total };
   });
-  
-
 
   return {
     cars: data as Car[],
