@@ -1,5 +1,5 @@
 import { db, cars } from '@repo/db';
-import { and, count, eq } from 'drizzle-orm';
+import { and, count, eq, ilike, or } from 'drizzle-orm';
 import { getToken, verifyToken } from '~/lib/tokens';
 import { Car } from '~/lib/types';
 
@@ -9,9 +9,10 @@ interface GetCarsParams {
   offset?: number;
   carsMake?: string;
   carsOwner?: string;
+  carsSearchTerm?:string;
 }
 
-export async function getCars({ page = 1, limit = 10, offset, carsMake, carsOwner }: GetCarsParams = {}) {
+export async function getCars({ page = 1, limit = 10, offset, carsMake, carsOwner, carsSearchTerm }: GetCarsParams = {}) {
   const token = await getToken();
   const decodedToken = await verifyToken(token);
 
@@ -23,17 +24,28 @@ export async function getCars({ page = 1, limit = 10, offset, carsMake, carsOwne
     throw new Error('Organization ID not found');
   }
 
-  const conidtions = [eq(cars.organizationId, String(decodedToken.organizationId))];
+  const conditions = [eq(cars.organizationId, String(decodedToken.organizationId))];
 
   if (carsMake) {
-    conidtions.push(eq(cars.make, carsMake));
+    conditions.push(eq(cars.make, carsMake));
   }
 
   if (carsOwner) {
-    conidtions.push(eq(cars.createdBy, carsOwner));
+    conditions.push(eq(cars.createdBy, carsOwner));
   }
 
-  const whereClause = and(...conidtions);
+  if (carsSearchTerm) {
+    const searchTermWithWildcards = `%${carsSearchTerm}%`;
+    conditions.push(
+      or(
+        ilike(cars.make, searchTermWithWildcards),
+        ilike(cars.model, searchTermWithWildcards),
+        ilike(cars.registrationNumber, searchTermWithWildcards)
+      )
+    );
+  }
+
+  const whereClause = and(...conditions);
 
   const { data, total } = await db.transaction(async tx => {
     const data = await tx.query.cars.findMany({
@@ -57,11 +69,13 @@ export async function getCars({ page = 1, limit = 10, offset, carsMake, carsOwne
 
     return { data, total };
   });
+  
+
 
   return {
     cars: data as Car[],
     total,
-    totalPages: Math.ceil(total / limit),
+    totalPages: total === 0 ? 1 : Math.ceil(total / limit),
     currentPage: page,
   };
 }

@@ -12,6 +12,7 @@ interface CarsProps {
     carsPageSize?: string;
     carsMake?: string;
     carsOwner?: string;
+    carsSearchTerm?:string;
   };
 }
 
@@ -27,6 +28,7 @@ const Cars = async ({ searchParams }: CarsProps) => {
     offset,
     carsMake: params?.carsMake,
     carsOwner: params?.carsOwner,
+    carsSearchTerm:params?.carsSearchTerm
   });
 
   return (
