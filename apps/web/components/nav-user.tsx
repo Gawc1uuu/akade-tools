@@ -28,11 +28,14 @@ export function NavUser({
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton size='lg' className="data-[state=open]:bg-gray-900/50 data-[state=open]:text-white hover:text-white hover:cursor-pointer">
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-gray-900/50 data-[state=open]:text-white hover:text-white hover:cursor-pointer"
+            >
               {state === 'collapsed' && !isMobile ? (
-                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold text-lg">
-                 {user.email.charAt(0).toUpperCase()}
-               </div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold text-lg">
+                  {user.email.charAt(0).toUpperCase()}
+                </div>
               ) : (
                 <>
                   <div className="grid flex-1 text-left text-sm leading-tight">
