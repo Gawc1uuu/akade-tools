@@ -31,7 +31,7 @@ export function NavMain({
   }[];
 }) {
   return (
-    <SidebarGroup className='px-0 mt-6 font-sans'>
+    <SidebarGroup className="px-0 mt-6 font-sans">
       <SidebarMenu className="space-y-1">
         {items.map(item => {
           const hasSubItems = item.items && item.items.length > 0;
@@ -67,8 +67,8 @@ export function NavMain({
               </SidebarMenuItem>
             </Collapsible>
           ) : (
-<SidebarMenuItem key={item.title} className="flex group-data-[collapsible=icon]:justify-center">
-<SidebarMenuButton
+            <SidebarMenuItem key={item.title} className="flex group-data-[collapsible=icon]:justify-center">
+              <SidebarMenuButton
                 asChild
                 tooltip={item.title}
                 className={cn(

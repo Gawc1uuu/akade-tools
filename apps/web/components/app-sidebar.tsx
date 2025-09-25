@@ -42,13 +42,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-      <div className="relative h-16 w-full overflow-hidden rounded-md">
-          <Image
-            src={Logo}
-            alt="Logo"
-            fill 
-            className="object-fill" 
-          />
+        <div className="relative h-16 w-full overflow-hidden rounded-md">
+          <Image src={Logo} alt="Logo" fill className="object-fill" />
         </div>
       </SidebarHeader>
       <SidebarContent>

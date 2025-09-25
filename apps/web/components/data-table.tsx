@@ -33,7 +33,7 @@ interface DataTableProps<TData, TValue> {
   limit: number;
   filters?: React.ReactNode;
   paramName: string;
-  action?:React.ReactNode;
+  action?: React.ReactNode;
 }
 
 export function DataTable<TData, TValue>({

@@ -78,7 +78,7 @@ const CreateCarForm = ({ onSuccess }: { onSuccess: () => void }) => {
               )}
               minLength={3}
               maxLength={255}
-              />
+            />
             {state.errors?.registrationNumber && <ErrorDisplay messages={state.errors.registrationNumber} />}
           </div>
           <div className="grid gap-3">

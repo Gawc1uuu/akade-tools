@@ -19,7 +19,6 @@ interface CarsTableI {
 }
 
 const CarsTable = ({ cars, currentPage, totalPages, limit, makes, users }: CarsTableI) => {
-
   const {
     state,
     editingCar,
@@ -30,135 +29,144 @@ const CarsTable = ({ cars, currentPage, totalPages, limit, makes, users }: CarsT
     handleDeletePrompt,
     handleCancelDelete,
     handleConfirmDelete,
-  } = useCarActions()
+  } = useCarActions();
 
-  const columns: ColumnDef<Car>[] = useMemo(() => [
-    {
-      header: 'Marka',
-      accessorKey: 'make',
-      meta: {
-        width: '10%',
+  const columns: ColumnDef<Car>[] = useMemo(
+    () => [
+      {
+        header: 'Marka',
+        accessorKey: 'make',
+        meta: {
+          width: '10%',
+        },
+        cell: ({ row }) => {
+          const make = row.getValue('make') as string;
+          return <div>{make}</div>;
+        },
       },
-      cell: ({ row }) => {
-        const make = row.getValue('make') as string;
-        return <div>{make}</div>;
+      {
+        header: 'Model',
+        accessorKey: 'model',
+        meta: {
+          width: '10%',
+        },
+        cell: ({ row }) => {
+          const model = row.getValue('model') as string;
+          return <div>{model}</div>;
+        },
       },
-    },
-    {
-      header: 'Model',
-      accessorKey: 'model',
-      meta: {
-        width: '10%',
+      {
+        header: 'Numer rejestracyjny',
+        accessorKey: 'registrationNumber',
+        meta: {
+          width: '10%',
+        },
+        cell: ({ row }) => {
+          const registrationNumber = row.getValue('registrationNumber') as string;
+          return <div>{registrationNumber}</div>;
+        },
       },
-      cell: ({ row }) => {
-        const model = row.getValue('model') as string;
-        return <div>{model}</div>;
+      {
+        header: 'Data ważności ubezpieczenia',
+        accessorKey: 'insuranceEndDate',
+        meta: {
+          width: '10%',
+        },
+        cell: ({ row }) => {
+          const insuranceEndDate = row.getValue('insuranceEndDate') as string;
+          return <ClientDate date={insuranceEndDate} />;
+        },
       },
-    },
-    {
-      header: 'Numer rejestracyjny',
-      accessorKey: 'registrationNumber',
-      meta: {
-        width: '10%',
+      {
+        header: 'Data ważności przeglądu',
+        accessorKey: 'inspectionEndDate',
+        meta: {
+          width: '10%',
+        },
+        cell: ({ row }) => {
+          const inspectionEndDate = row.getValue('inspectionEndDate') as string;
+          return <ClientDate date={inspectionEndDate} />;
+        },
       },
-      cell: ({ row }) => {
-        const registrationNumber = row.getValue('registrationNumber') as string;
-        return <div>{registrationNumber}</div>;
+      {
+        header: 'Utworzono przez',
+        accessorKey: 'owner',
+        meta: {
+          width: '15%',
+        },
+        cell: ({ row }) => {
+          const owner = row.getValue('owner') as { id: string; email: string };
+          return <div>{owner.email}</div>;
+        },
       },
-    },
-    {
-      header: 'Data ważności ubezpieczenia',
-      accessorKey: 'insuranceEndDate',
-      meta: {
-        width: '10%',
-      },
-      cell: ({ row }) => {
-        const insuranceEndDate = row.getValue('insuranceEndDate') as string;
-        return <ClientDate date={insuranceEndDate} />;
-      },
-    },
-    {
-      header: 'Data ważności przeglądu',
-      accessorKey: 'inspectionEndDate',
-      meta: {
-        width: '10%',
-      },
-      cell: ({ row }) => {
-        const inspectionEndDate = row.getValue('inspectionEndDate') as string;
-        return <ClientDate date={inspectionEndDate} />;
-      },
-    },
-    {
-      header: 'Utworzono przez',
-      accessorKey: 'owner',
-      meta: {
-        width: '15%',
-      },
-      cell: ({ row }) => {
-        const owner = row.getValue('owner') as { id: string; email: string };
-        return <div>{owner.email}</div>;
-      },
-    },
-  ], []);
+    ],
+    []
+  );
 
-  const getActions = useCallback((row: Car): Action<Car>[] => {
-    if (deletingCarId === row.id) {
+  const getActions = useCallback(
+    (row: Car): Action<Car>[] => {
+      if (deletingCarId === row.id) {
+        return [
+          {
+            label: 'Zatwierdź',
+            onClick: () => handleConfirmDelete(row.id),
+            variant: 'destructive',
+            disabled: isPending,
+            className: 'cursor-pointer',
+          },
+          {
+            label: 'Anuluj',
+            onClick: () => handleCancelDelete(),
+            variant: 'outline',
+            disabled: false,
+            className: 'cursor-pointer',
+          },
+        ];
+      }
+
       return [
         {
-          label: 'Zatwierdź',
-          onClick: () => handleConfirmDelete(row.id),
+          label: 'Usuń',
+          onClick: () => handleDeletePrompt(row.id),
           variant: 'destructive',
           disabled: isPending,
           className: 'cursor-pointer',
         },
         {
-          label: 'Anuluj',
-          onClick: () => handleCancelDelete(),
-          variant: 'outline',
+          label: 'Edytuj',
+          onClick: () => handleEdit(row),
+          variant: 'default',
           disabled: false,
           className: 'cursor-pointer',
         },
       ];
-    }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [deletingCarId, isPending]
+  );
 
-    return [
+  const carFilterConfig: FilterConfig[] = useMemo(
+    () => [
       {
-        label: 'Usuń',
-        onClick: () => handleDeletePrompt(row.id),
-        variant: 'destructive',
-        disabled: isPending,
-        className: 'cursor-pointer',
+        type: 'select',
+        param: 'carsMake',
+        placeholder: 'Wybierz markę',
+        options: makes.map(make => ({ value: make, label: make })),
       },
       {
-        label: 'Edytuj',
-        onClick: () => handleEdit(row),
-        variant: 'default',
-        disabled: false,
-        className: 'cursor-pointer',
+        type: 'select',
+        param: 'carsOwner',
+        placeholder: 'Wybierz użytkownika',
+        options: users.map(user => ({ value: user.id, label: user.email })),
       },
-    ];
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deletingCarId, isPending]);
-
-  const carFilterConfig: FilterConfig[] = useMemo(() => [
-    {
-      type: 'select',
-      param: 'carsMake',
-      placeholder: 'Wybierz markę',
-      options: makes.map(make => ({ value: make, label: make })),
-    },
-    {
-      type: 'select',
-      param: 'carsOwner',
-      placeholder: 'Wybierz użytkownika',
-      options: users.map(user => ({ value: user.id, label: user.email })),
-    },
-    {
-      type: 'input',
-      param: 'carsSearchTerm',
-      placeholder: 'Wyszukaj po czymkolwiek',
-    },
-  ], [makes, users]);
+      {
+        type: 'input',
+        param: 'carsSearchTerm',
+        placeholder: 'Wyszukaj po czymkolwiek',
+      },
+    ],
+    [makes, users]
+  );
 
   return (
     <div>
@@ -174,7 +182,7 @@ const CarsTable = ({ cars, currentPage, totalPages, limit, makes, users }: CarsT
         paramName="cars"
         action={<CreateCarModal />}
       />
-     <UpdateCarModal car={editingCar} onOpenChange={handleCloseModal} isOpen={!!editingCar} />
+      <UpdateCarModal car={editingCar} onOpenChange={handleCloseModal} isOpen={!!editingCar} />
     </div>
   );
 };
