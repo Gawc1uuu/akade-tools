@@ -169,7 +169,7 @@ const CarsTable = ({ cars, currentPage, totalPages, limit, makes, users }: CarsT
   );
 
   return (
-    <div>
+    <div className='bg-white'>
       <DataTable
         actions={row => getActions(row)}
         columns={columns}

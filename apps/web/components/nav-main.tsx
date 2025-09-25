@@ -54,8 +54,10 @@ export function NavMain({
                     )}
                   >
                     {item.icon && <item.icon />}
-                    <span>{item.title}</span>
-                    <ChevronDown className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-180" />
+                    <span className="flex flex-1 items-center">
+                      <span>{item.title}</span>
+                      <ChevronDown className="ml-auto text-white transition-transform duration-200 group-data-[state=open]/collapsible:rotate-180" />
+                    </span>
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
