@@ -1,12 +1,11 @@
 'use client';
 
-import { ChevronRight, type LucideIcon } from 'lucide-react';
+import { ChevronDown, type LucideIcon } from 'lucide-react';
 import Link from 'next/link';
-
+import { usePathname } from 'next/navigation';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
 import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -30,6 +29,9 @@ export function NavMain({
     }[];
   }[];
 }) {
+
+  const pathname = usePathname();
+
   return (
     <SidebarGroup className="px-0 mt-6 font-sans">
       <SidebarMenu className="space-y-1">
@@ -39,29 +41,44 @@ export function NavMain({
           return hasSubItems ? (
             <Collapsible key={item.title} asChild defaultOpen={item.isActive} className="group/collapsible">
               <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
+                <CollapsibleTrigger asChild 
+                >
                   <SidebarMenuButton
                     tooltip={item.title}
-                    className={cn('text-base gap-x-3 [&>svg]:h-5 [&>svg]:w-5', {
-                      'bg-accent text-accent-foreground': item.isActive,
-                    })}
+                    className={cn(
+                  'text-base text-xl gap-x-3 py-6 px-4 [&>svg]:h-7 [&>svg]:w-7',
+                  'group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:[&>svg]:size-10',
+                  'active:bg-transparent active:text-primary-red',
+                  {
+                    'text-primary-red hover:text-primary-red-foreground hover:bg-none active:bg-none hover:text-primary-red-foreground':
+                      item.isActive,
+                  }
+                )}
                   >
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                    <ChevronDown className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-180" />
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                   <SidebarMenuSub>
-                    {item.items?.map(subItem => (
-                      <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton asChild>
-                          <Link href={subItem.url}>
+                    {item.items?.map(subItem => {
+                      const isActive = subItem.url === pathname;
+                      return (<SidebarMenuSubItem key={subItem.title}>
+                        <SidebarMenuSubButton asChild
+                        className={cn(
+                          {
+                            'bg-primary-red text-primary-red-foreground hover:bg-primary-red hover:text-primary-red-foreground active:bg-primary-red active:text-primary-red-foreground':
+                              isActive,
+                          },
+                        )}
+                        >
+                          <Link href={subItem.url} >
                             <span>{subItem.title}</span>
                           </Link>
                         </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    ))}
+                      </SidebarMenuSubItem>)
+                    })}
                   </SidebarMenuSub>
                 </CollapsibleContent>
               </SidebarMenuItem>

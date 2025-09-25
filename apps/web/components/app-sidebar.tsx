@@ -29,6 +29,28 @@ const data = {
       url: '/staff',
       icon: Users,
     },
+    {
+      title: 'Klienci',
+      url: '/customers',
+      icon: Users,
+      items: [
+        {
+          title: 'Klienci',
+          url: '/customers1',
+          icon: Users,
+        },
+        {
+          title: 'Test',
+          url: '/customers2',
+          icon: Users,
+        },
+        {
+          title: 'Test1',
+          url: '/customers3',
+          icon: Users,
+        },
+      ],
+    },
   ],
 };
 
