@@ -46,7 +46,7 @@ export function NavMain({
                     className={cn(
                       'text-base text-xl gap-x-3 py-6 px-4 [&>svg]:h-7 [&>svg]:w-7',
                       'group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:[&>svg]:size-10',
-                      'active:bg-transparent active:text-primary-red',
+                      'active:bg-transparent active:text-primary-red cursor-pointer',
                       {
                         'text-primary-red hover:text-primary-red-foreground hover:bg-none active:bg-none hover:text-primary-red-foreground':
                           item.isActive,
