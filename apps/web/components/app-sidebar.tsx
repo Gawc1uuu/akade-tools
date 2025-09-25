@@ -1,12 +1,14 @@
 'use client';
 
 import * as React from 'react';
-import { BookOpen, Bot, Settings2, CarIcon, Users } from 'lucide-react';
+import { CarIcon, Users } from 'lucide-react';
 
 import { NavMain } from '~/components/nav-main';
 import { NavUser } from '~/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '~/components/ui/sidebar';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
+import Logo from '../public/akade-logo.png';
 
 // This is sample data.
 const data = {
@@ -40,7 +42,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <div>LOGO</div>
+      <div className="relative h-16 w-full overflow-hidden rounded-md">
+          <Image
+            src={Logo}
+            alt="Logo"
+            fill 
+            className="object-fill" 
+          />
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={dynamicNavMain} />

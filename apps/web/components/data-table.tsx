@@ -11,7 +11,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~
 import { cn } from '~/lib/utils';
 import { Label } from '~/components/ui/label';
 import { useEffect } from 'react';
-import { param } from 'drizzle-orm';
 
 export interface Action<T> {
   label: string;
@@ -34,6 +33,7 @@ interface DataTableProps<TData, TValue> {
   limit: number;
   filters?: React.ReactNode;
   paramName: string;
+  action?:React.ReactNode;
 }
 
 export function DataTable<TData, TValue>({
@@ -46,6 +46,7 @@ export function DataTable<TData, TValue>({
   limit,
   filters,
   paramName,
+  action,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -89,6 +90,7 @@ export function DataTable<TData, TValue>({
       <div className="flex flex-col gap-4 px-3 pb-3">
         <h1 className="text-2xl font-bold">{title}</h1>
         <div>{filters}</div>
+        <div>{action}</div>
       </div>
       <div className={cn('w-full relative bg-transparent')}>
         <div className="w-full overflow-auto min-w-0">

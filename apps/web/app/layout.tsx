@@ -1,5 +1,29 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { Outfit, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
+
+export const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  variable: '--font-ibm-plex-mono',
+  display: 'swap',
+  weight: ['100', '200', '300', '400', '500', '600', '700'], // Unified weights
+});
+
+export const ibmPlexSans = IBM_Plex_Sans({
+  subsets: ['latin'],
+  variable: '--font-ibm-plex-sans',
+  display: 'swap',
+  weight: ['100', '200', '300', '400', '500', '600', '700'], // Unified weights
+});
+
+export const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-outfit',
+  display: 'swap',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800'], // Unified weights
+});
+
+export const fontVariables = [ibmPlexMono.variable, ibmPlexSans.variable, outfit.variable].join(' ');
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -13,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={fontVariables}>{children}</body>
     </html>
   );
 }

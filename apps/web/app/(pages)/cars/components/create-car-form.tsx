@@ -1,6 +1,6 @@
 'use client';
 import React, { useActionState, useEffect } from 'react';
-import { Calendar28 } from '~/app/(pages)/cars/components/date-picker-input';
+import { Calendar28 } from '~/components/date-picker-input';
 import { createCar } from '~/app/actions/cars/create-car';
 import { Button } from '~/components/ui/button';
 import { DialogClose, DialogFooter } from '~/components/ui/dialog';
@@ -44,6 +44,8 @@ const CreateCarForm = ({ onSuccess }: { onSuccess: () => void }) => {
                 'bg-background border-border focus:ring-2 focus:ring-accent',
                 state.errors.make && 'border-red-500 ring-2 ring-red-500/60'
               )}
+              minLength={3}
+              maxLength={255}
             />
             {state.errors?.make && <ErrorDisplay messages={state.errors.make} />}
           </div>
@@ -58,6 +60,8 @@ const CreateCarForm = ({ onSuccess }: { onSuccess: () => void }) => {
                 'bg-background border-border focus:ring-2 focus:ring-accent',
                 state.errors.model && 'border-red-500 ring-2 ring-red-500/60'
               )}
+              minLength={3}
+              maxLength={255}
             />
             {state.errors?.model && <ErrorDisplay messages={state.errors.model} />}
           </div>
@@ -72,7 +76,9 @@ const CreateCarForm = ({ onSuccess }: { onSuccess: () => void }) => {
                 'bg-background border-border focus:ring-2 focus:ring-accent',
                 state.errors.registrationNumber && 'border-red-500 ring-2 ring-red-500/60'
               )}
-            />
+              minLength={3}
+              maxLength={255}
+              />
             {state.errors?.registrationNumber && <ErrorDisplay messages={state.errors.registrationNumber} />}
           </div>
           <div className="grid gap-3">

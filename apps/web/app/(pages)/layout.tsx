@@ -20,11 +20,15 @@ export default function RootLayout({
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex border h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+        <header className="flex bg-sidebar h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear">
+          <div className='flex items-center justify-between max-w-[90%] w-full'>
           <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
-            <Button onClick={logout}>Logout</Button>
+            <SidebarTrigger className="-ml-1 text-sidebar-foreground cursor-pointer" />
+            <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-6" />
+          </div>
+          <div className="flex items-center gap-2 px-4">
+          <Button variant='destructive' onClick={logout}>Logout</Button>
+          </div>
           </div>
         </header>
         <main className="min-h-screen">{children}</main>

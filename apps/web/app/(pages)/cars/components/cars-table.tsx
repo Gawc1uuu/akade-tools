@@ -1,16 +1,15 @@
 'use client';
 import { ColumnDef } from '@tanstack/react-table';
-import { useRouter } from 'next/navigation';
-import React, { useActionState, startTransition, useState } from 'react';
-import { ClientDate } from '~/app/(pages)/cars/components/client-date';
-import { Action, DataTable } from '~/app/(pages)/cars/components/data-table';
-import DataTableFilter, { FilterConfig } from '~/app/(pages)/cars/components/data-table-filter';
-import EditCarForm from '~/app/(pages)/cars/components/edit-car-form';
-import { deleteCar } from '~/app/actions/cars/delete-car';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '~/components/ui/dialog';
+import React, { useMemo, useCallback } from 'react';
+import { ClientDate } from '~/components/client-date';
+import CreateCarModal from '~/app/(pages)/cars/components/create-car-modal';
+import { Action, DataTable } from '~/components/data-table';
+import DataTableFilter, { FilterConfig } from '~/components/data-table-filter';
+import UpdateCarModal from '~/app/(pages)/cars/components/update-car-modal';
+import { useCarActions } from '~/hooks/use-car-actions';
 import { Car, User } from '~/lib/types';
 
-interface DataDisplayI {
+interface CarsTableI {
   cars: Car[];
   currentPage: number;
   totalPages: number;
@@ -19,34 +18,21 @@ interface DataDisplayI {
   users: User[];
 }
 
-const DataDisplay = ({ cars, currentPage, totalPages, limit, makes, users }: DataDisplayI) => {
-  const router = useRouter();
-  const [state, formAction, isPending] = useActionState(deleteCar, { success: false, deletedCar: null });
-  const [deletingCarId, setDeletingCarId] = useState<string | null>(null);
-  const [editingCar, setEditingCar] = useState<Car | null>(null);
+const CarsTable = ({ cars, currentPage, totalPages, limit, makes, users }: CarsTableI) => {
 
-  const handleDeleteSave = (car: string) => {
-    setDeletingCarId(car);
-  };
+  const {
+    state,
+    editingCar,
+    deletingCarId,
+    isPending,
+    handleEdit,
+    handleCloseModal,
+    handleDeletePrompt,
+    handleCancelDelete,
+    handleConfirmDelete,
+  } = useCarActions()
 
-  const handleDelete = (car: string) => {
-    const formData = new FormData();
-    formData.append('id', car);
-    startTransition(() => {
-      formAction(formData);
-    });
-    router.refresh();
-  };
-
-  const handleEdit = (car: Car) => {
-    setEditingCar(car);
-  };
-
-  const handleModalClose = () => {
-    setEditingCar(null);
-  };
-
-  const columns: ColumnDef<Car>[] = [
+  const columns: ColumnDef<Car>[] = useMemo(() => [
     {
       header: 'Marka',
       accessorKey: 'make',
@@ -113,21 +99,21 @@ const DataDisplay = ({ cars, currentPage, totalPages, limit, makes, users }: Dat
         return <div>{owner.email}</div>;
       },
     },
-  ];
+  ], []);
 
-  const getActions = (row: Car): Action<Car>[] => {
+  const getActions = useCallback((row: Car): Action<Car>[] => {
     if (deletingCarId === row.id) {
       return [
         {
           label: 'Zatwierdź',
-          onClick: () => handleDelete(row.id),
+          onClick: () => handleConfirmDelete(row.id),
           variant: 'destructive',
           disabled: isPending,
           className: 'cursor-pointer',
         },
         {
           label: 'Anuluj',
-          onClick: () => setDeletingCarId(null),
+          onClick: () => handleCancelDelete(),
           variant: 'outline',
           disabled: false,
           className: 'cursor-pointer',
@@ -138,7 +124,7 @@ const DataDisplay = ({ cars, currentPage, totalPages, limit, makes, users }: Dat
     return [
       {
         label: 'Usuń',
-        onClick: () => handleDeleteSave(row.id),
+        onClick: () => handleDeletePrompt(row.id),
         variant: 'destructive',
         disabled: isPending,
         className: 'cursor-pointer',
@@ -151,9 +137,10 @@ const DataDisplay = ({ cars, currentPage, totalPages, limit, makes, users }: Dat
         className: 'cursor-pointer',
       },
     ];
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deletingCarId, isPending]);
 
-  const carFilterConfig: FilterConfig[] = [
+  const carFilterConfig: FilterConfig[] = useMemo(() => [
     {
       type: 'select',
       param: 'carsMake',
@@ -171,7 +158,7 @@ const DataDisplay = ({ cars, currentPage, totalPages, limit, makes, users }: Dat
       param: 'carsSearchTerm',
       placeholder: 'Wyszukaj po czymkolwiek',
     },
-  ];
+  ], [makes, users]);
 
   return (
     <div>
@@ -185,19 +172,11 @@ const DataDisplay = ({ cars, currentPage, totalPages, limit, makes, users }: Dat
         limit={limit}
         filters={<DataTableFilter filters={carFilterConfig} />}
         paramName="cars"
+        action={<CreateCarModal />}
       />
-
-      <Dialog open={!!editingCar} onOpenChange={isOpen => !isOpen && handleModalClose()}>
-        <DialogContent className="sm:max-w-[700px]">
-          <DialogHeader>
-            <DialogTitle>Edytuj pojazd</DialogTitle>
-            <DialogDescription>Zaktualizuj dane wybranego pojazdu.</DialogDescription>
-          </DialogHeader>
-          {editingCar && <EditCarForm onSuccess={handleModalClose} initialData={editingCar} />}
-        </DialogContent>
-      </Dialog>
+     <UpdateCarModal car={editingCar} onOpenChange={handleCloseModal} isOpen={!!editingCar} />
     </div>
   );
 };
 
-export default DataDisplay;
+export default CarsTable;

@@ -31,8 +31,7 @@ export function NavMain({
   }[];
 }) {
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel>Akade</SidebarGroupLabel>
+    <SidebarGroup className='px-0 mt-6 font-sans'>
       <SidebarMenu className="space-y-1">
         {items.map(item => {
           const hasSubItems = item.items && item.items.length > 0;
@@ -68,13 +67,19 @@ export function NavMain({
               </SidebarMenuItem>
             </Collapsible>
           ) : (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton
+<SidebarMenuItem key={item.title} className="flex group-data-[collapsible=icon]:justify-center">
+<SidebarMenuButton
                 asChild
                 tooltip={item.title}
-                className={cn('text-base gap-x-3 [&>svg]:h-5 [&>svg]:w-5', {
-                  'bg-accent text-accent-foreground': item.isActive,
-                })}
+                className={cn(
+                  'text-base text-xl gap-x-3 py-6 px-4 [&>svg]:h-7 [&>svg]:w-7',
+                  'group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:[&>svg]:size-10',
+                  'active:bg-transparent active:text-primary-red',
+                  {
+                    'bg-primary-red text-primary-red-foreground hover:bg-primary-red hover:text-primary-red-foreground active:bg-primary-red active:text-primary-red-foreground':
+                      item.isActive,
+                  }
+                )}
               >
                 <Link href={item.url}>
                   {item.icon && <item.icon />}
