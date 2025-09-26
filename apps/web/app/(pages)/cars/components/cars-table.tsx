@@ -141,7 +141,7 @@ const CarsTable = ({ cars, currentPage, totalPages, limit, makes, users }: CarsT
         },
       ];
     },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [deletingCarId, isPending]
   );
 
