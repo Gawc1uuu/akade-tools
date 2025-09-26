@@ -41,9 +41,7 @@ export function NavMain({
             <Collapsible key={item.title} asChild defaultOpen={item.isActive} className="group/collapsible">
               <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton
-                    tooltip={item.title}
-                  >
+                  <SidebarMenuButton tooltip={item.title}>
                     {item.icon && <item.icon />}
                     <span className="flex flex-1 items-center">
                       <span>{item.title}</span>
@@ -56,9 +54,7 @@ export function NavMain({
                     {item.items?.map(subItem => {
                       return (
                         <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton
-                            asChild
-                          >
+                          <SidebarMenuSubButton asChild>
                             <Link href={subItem.url}>
                               <span>{subItem.title}</span>
                             </Link>
@@ -72,10 +68,7 @@ export function NavMain({
             </Collapsible>
           ) : (
             <SidebarMenuItem key={item.title} className="flex group-data-[collapsible=icon]:justify-center">
-              <SidebarMenuButton
-                asChild
-                tooltip={item.title}
-              >
+              <SidebarMenuButton asChild tooltip={item.title}>
                 <Link href={item.url}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>

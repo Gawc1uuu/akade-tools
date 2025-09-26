@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { generatePaginationLinks, Pagination, PaginationContent, PaginationItem, PaginationNext } from '~/components/ui/pagination';
 import { PaginationPrevious } from '~/components/ui/pagination';

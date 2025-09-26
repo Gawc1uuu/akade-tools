@@ -1,28 +1,16 @@
-"use client"
+'use client';
 
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import Paginator from "~/components/paginator";
-import { Button } from "~/components/ui/button";
-import { Label } from "~/components/ui/label";
-import { SelectContent, SelectItem } from "~/components/ui/select";
-import { Select, SelectTrigger } from "~/components/ui/select";
-import { SelectValue } from "~/components/ui/select";
+import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+import Paginator from '~/components/paginator';
+import { Button } from '~/components/ui/button';
+import { Label } from '~/components/ui/label';
+import { SelectContent, SelectItem } from '~/components/ui/select';
+import { Select, SelectTrigger } from '~/components/ui/select';
+import { SelectValue } from '~/components/ui/select';
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "~/components/ui/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -64,7 +52,7 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-  })
+  });
 
   const pageParamName = `${paramName}Page`;
   const limitParamName = `${paramName}PageSize`;
@@ -99,50 +87,42 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="overflow-hidden rounded-md border">
-        <div className="flex flex-col gap-4 px-3 pb-3">
+      <div className="flex flex-col gap-4 px-3 pb-3">
         <h1 className="text-2xl font-bold">{title}</h1>
         <div>{filters}</div>
         <div>{action}</div>
       </div>
       <div>
         <div>
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                )
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                  style={{
-                    width: cell.column.columnDef.meta?.width ?? cell.column.getSize(),
-                  }}
-                  key={cell.id}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-                ))}
-                {actions && getRowActions(row.original) && (
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map(headerGroup => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map(header => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map(row => (
+                  <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                    {row.getVisibleCells().map(cell => (
+                      <TableCell
+                        style={{
+                          width: cell.column.columnDef.meta?.width ?? cell.column.getSize(),
+                        }}
+                        key={cell.id}
+                      >
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                    {actions && getRowActions(row.original) && (
                       <TableCell style={{ width: '20%', minWidth: '20%', maxWidth: '20%' }}>
                         <div>
                           {getRowActions(row.original)?.map((action, actionIndex) => {
@@ -166,18 +146,18 @@ export function DataTable<TData, TValue>({
                         </div>
                       </TableCell>
                     )}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <div className="flex justify-end my-6">
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+          <div className="flex justify-end my-6">
             <div className="flex gap-2">
               <Label>Rozmiar strony</Label>
               <Select value={limit.toString()} onValueChange={value => handlePageSizeChange(Number(value))}>
@@ -193,9 +173,9 @@ export function DataTable<TData, TValue>({
               </Select>
             </div>
             <Paginator onPageChange={handlePageChange} page={page} totalPages={totalPages} showPreviousNext={true} />
-            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    </div>
-    </div>
-  )
+  );
 }
