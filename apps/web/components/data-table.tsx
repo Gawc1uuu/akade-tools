@@ -28,7 +28,7 @@ interface DataTableProps<TData, TValue> {
 export interface Action<T> {
   label: string;
   onClick?: (row: T) => void;
-  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+  variant?: 'default' | 'destructive' | 'outline' | 'success';
   condition?: (row: T) => boolean;
   className?: string;
   disabled: boolean;
@@ -67,7 +67,7 @@ export function DataTable<TData, TValue>({
       params.set(pageParamName, totalPages.toString());
       push(`${pathname}?${params.toString()}`, { scroll: false });
     }
-  }, [page, totalPages, limit, pageParamName, pathname, push, searchParams]);
+  }, [page, totalPages, limit]);
 
   const getRowActions = (row: TData): Action<TData>[] | undefined => {
     return typeof actions === 'function' ? actions(row) : actions;
@@ -126,7 +126,7 @@ export function DataTable<TData, TValue>({
                     ))}
                     {actions && getRowActions(row.original) && (
                       <TableCell style={{ width: '20%', minWidth: '20%', maxWidth: '20%' }}>
-                        <div className="flex gap-2">
+                        <div>
                           {getRowActions(row.original)?.map((action, actionIndex) => {
                             return (
                               <Button
@@ -138,9 +138,8 @@ export function DataTable<TData, TValue>({
                                 }}
                                 key={actionIndex}
                                 className={action.className}
-                                variant={action.variant}
+                                variant={action.variant as any}
                                 disabled={action.disabled}
-                                style={{ minWidth: 95 }}
                               >
                                 {action.label}
                               </Button>

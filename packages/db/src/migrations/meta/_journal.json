@@ -15,6 +15,13 @@
       "when": 1758019967588,
       "tag": "0001_eminent_rhino",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1758893650777,
+      "tag": "0002_colorful_tempest",
+      "breakpoints": true
     }
   ]
 }

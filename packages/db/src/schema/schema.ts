@@ -19,6 +19,7 @@ export const organizations = pgTable('organizations', {
   id: varchar('id').primaryKey().$defaultFn(ulid),
   name: varchar('name').notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  organizationEmail: varchar('organization_email'),
 });
 
 export const cars = pgTable('cars', {
