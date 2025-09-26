@@ -22,6 +22,7 @@ export async function GET(request: Request) {
         insuranceEndDate: cars.insuranceEndDate,
         inspectionEndDate: cars.inspectionEndDate,
         createdBy: users.email,
+        organizationId: organizations.id,
         organizationEmail: organizations.organizationEmail,
       })
       .from(cars)
@@ -54,6 +55,9 @@ export async function GET(request: Request) {
         }[];
       }
     >();
+
+
+    
 
     return new Response(
       JSON.stringify({
