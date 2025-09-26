@@ -140,8 +140,8 @@ const CarsTable = ({ cars, currentPage, totalPages, limit, makes, users }: CarsT
           className: 'cursor-pointer',
         },
       ];
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     [deletingCarId, isPending]
   );
 
@@ -150,13 +150,13 @@ const CarsTable = ({ cars, currentPage, totalPages, limit, makes, users }: CarsT
       {
         type: 'select',
         param: 'carsMake',
-        placeholder: 'Wybierz markę',
+        placeholder: 'Filtruj po marce',
         options: makes.map(make => ({ value: make, label: make })),
       },
       {
         type: 'select',
         param: 'carsOwner',
-        placeholder: 'Wybierz użytkownika',
+        placeholder: 'Filtruj po użytkowniku',
         options: users.map(user => ({ value: user.id, label: user.email })),
       },
       {

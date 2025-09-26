@@ -28,7 +28,7 @@ interface DataTableProps<TData, TValue> {
 export interface Action<T> {
   label: string;
   onClick?: (row: T) => void;
-  variant?: 'default' | 'destructive' | 'outline' | 'success';
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
   condition?: (row: T) => boolean;
   className?: string;
   disabled: boolean;
@@ -67,7 +67,7 @@ export function DataTable<TData, TValue>({
       params.set(pageParamName, totalPages.toString());
       push(`${pathname}?${params.toString()}`, { scroll: false });
     }
-  }, [page, totalPages, limit]);
+  }, [page, totalPages, limit, pageParamName, pathname, push, searchParams]);
 
   const getRowActions = (row: TData): Action<TData>[] | undefined => {
     return typeof actions === 'function' ? actions(row) : actions;
@@ -86,11 +86,13 @@ export function DataTable<TData, TValue>({
   };
 
   return (
-    <div className="overflow-hidden rounded-md border">
-      <div className="flex flex-col gap-4 px-3 pb-3">
-        <h1 className="text-2xl font-bold">{title}</h1>
+    <div className="overflow-hidden rounded-md border p-6">
+      <div className="flex flex-col gap-8 px-3 pb-3 mb-4">
+        <div className="flex justify-between mt-4">
+          <h1 className="text-2xl font-bold">{title}</h1>
+          <div>{action}</div>
+        </div>
         <div>{filters}</div>
-        <div>{action}</div>
       </div>
       <div>
         <div>
@@ -124,7 +126,7 @@ export function DataTable<TData, TValue>({
                     ))}
                     {actions && getRowActions(row.original) && (
                       <TableCell style={{ width: '20%', minWidth: '20%', maxWidth: '20%' }}>
-                        <div>
+                        <div className="flex gap-2">
                           {getRowActions(row.original)?.map((action, actionIndex) => {
                             return (
                               <Button
@@ -136,8 +138,9 @@ export function DataTable<TData, TValue>({
                                 }}
                                 key={actionIndex}
                                 className={action.className}
-                                variant={action.variant as any}
+                                variant={action.variant}
                                 disabled={action.disabled}
+                                style={{ minWidth: 95 }}
                               >
                                 {action.label}
                               </Button>

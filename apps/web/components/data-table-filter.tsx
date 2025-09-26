@@ -85,39 +85,37 @@ const DataTableFilter = ({ filters }: DataTableFilterProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchTerm, searchParams]);
 
+  const areFiltersActive = filters.some(filter => searchParams.has(filter.param));
+
   return (
-    <div>
-      <div>
-        <div>
-          {filters
-            .filter(f => f.type === 'select')
-            .map(filter => (
-              <div key={filter.param}>
-                <Select value={searchParams.get(filter.param) || ''} onValueChange={value => handleFilterChange(filter.param, value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={filter.placeholder} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {filter.options &&
-                      filter.options.map(option => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            ))}
-        </div>
-        <div>
-          <Button onClick={handleClearFilters}>Wyczyść Filtry</Button>
-        </div>
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-end gap-2">
+        {filters
+          .filter(f => f.type === 'select')
+          .map(filter => (
+            <div key={filter.param}>
+              <Select value={searchParams.get(filter.param) || ''} onValueChange={value => handleFilterChange(filter.param, value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder={filter.placeholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  {filter.options &&
+                    filter.options.map(option => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+            </div>
+          ))}
+        {areFiltersActive && <Button onClick={handleClearFilters}>Wyczyść Filtry</Button>}
       </div>
-      <div>
+      <div className="flex w-full gap-2">
         {filters
           .filter(f => f.type === 'input')
           .map(filter => (
-            <div key={filter.param}>
+            <div key={filter.param} className="w-full">
               <Input
                 type="text"
                 placeholder={filter.placeholder}
