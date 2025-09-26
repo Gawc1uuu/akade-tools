@@ -43,15 +43,6 @@ export function NavMain({
                 <CollapsibleTrigger asChild>
                   <SidebarMenuButton
                     tooltip={item.title}
-                    className={cn(
-                      'text-base text-xl gap-x-3 py-6 px-4 [&>svg]:h-7 [&>svg]:w-7',
-                      'group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:[&>svg]:size-10',
-                      'active:bg-transparent active:text-primary-red cursor-pointer',
-                      {
-                        'text-primary-red hover:text-primary-red-foreground hover:bg-none active:bg-none hover:text-primary-red-foreground':
-                          item.isActive,
-                      }
-                    )}
                   >
                     {item.icon && <item.icon />}
                     <span className="flex flex-1 items-center">
@@ -63,15 +54,10 @@ export function NavMain({
                 <CollapsibleContent>
                   <SidebarMenuSub>
                     {item.items?.map(subItem => {
-                      const isActive = subItem.url === pathname;
                       return (
                         <SidebarMenuSubItem key={subItem.title}>
                           <SidebarMenuSubButton
                             asChild
-                            className={cn({
-                              'bg-primary-red text-primary-red-foreground hover:bg-primary-red hover:text-primary-red-foreground active:bg-primary-red active:text-primary-red-foreground':
-                                isActive,
-                            })}
                           >
                             <Link href={subItem.url}>
                               <span>{subItem.title}</span>
@@ -89,15 +75,6 @@ export function NavMain({
               <SidebarMenuButton
                 asChild
                 tooltip={item.title}
-                className={cn(
-                  'text-base text-xl gap-x-3 py-6 px-4 [&>svg]:h-7 [&>svg]:w-7',
-                  'group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:[&>svg]:size-10',
-                  'active:bg-transparent active:text-primary-red',
-                  {
-                    'bg-primary-red text-primary-red-foreground hover:bg-primary-red hover:text-primary-red-foreground active:bg-primary-red active:text-primary-red-foreground':
-                      item.isActive,
-                  }
-                )}
               >
                 <Link href={item.url}>
                   {item.icon && <item.icon />}

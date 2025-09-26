@@ -1,14 +1,8 @@
-import {
-  generatePaginationLinks,
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '~/components/ui/pagination';
+
 
 import React from 'react';
+import { generatePaginationLinks, Pagination, PaginationContent, PaginationItem, PaginationNext } from '~/components/ui/pagination';
+import { PaginationPrevious } from '~/components/ui/pagination';
 
 interface PaginatorProps {
   onPageChange: (page: number) => void;

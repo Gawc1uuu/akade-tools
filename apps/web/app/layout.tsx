@@ -1,26 +1,27 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Outfit, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
+import { ThemeProvider } from '~/components/theme-provider';
 
 export const ibmPlexMono = IBM_Plex_Mono({
   subsets: ['latin'],
   variable: '--font-ibm-plex-mono',
   display: 'swap',
-  weight: ['100', '200', '300', '400', '500', '600', '700'], // Unified weights
+  weight: ['100', '200', '300', '400', '500', '600', '700'],
 });
 
 export const ibmPlexSans = IBM_Plex_Sans({
   subsets: ['latin'],
   variable: '--font-ibm-plex-sans',
   display: 'swap',
-  weight: ['100', '200', '300', '400', '500', '600', '700'], // Unified weights
+  weight: ['100', '200', '300', '400', '500', '600', '700'],
 });
 
 export const outfit = Outfit({
   subsets: ['latin'],
   variable: '--font-outfit',
   display: 'swap',
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800'], // Unified weights
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800'],
 });
 
 export const fontVariables = [ibmPlexMono.variable, ibmPlexSans.variable, outfit.variable].join(' ');
@@ -36,8 +37,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={fontVariables}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={fontVariables}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
