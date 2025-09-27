@@ -68,7 +68,7 @@ const Register = () => {
             {state.errors.other && <ErrorDisplay messages={state.errors.other ?? []} />}
             <div className="text-center text-sm text-gray-600">
               <span>Masz juz konto?</span>{' '}
-              <Link className="text-primary-red font-medium hover:text-primary-red/90 hover:cursor-pointer hover:underline" href="/login">
+              <Link className="text-red-400 font-medium hover:text-red-500/90 hover:cursor-pointer hover:underline" href="/login">
                 Zalgouj się
               </Link>
             </div>
