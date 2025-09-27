@@ -13,7 +13,7 @@ export const users = pgTable('users', {
   password: varchar('password'),
   role: roleEnum('role').default('ADMIN'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-  organizationId: varchar('organization_id').notNull(),
+  organizationId: varchar('organization_id'),
 });
 
 export const organizations = pgTable('organizations', {

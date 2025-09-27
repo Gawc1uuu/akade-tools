@@ -78,6 +78,7 @@ export async function signup(currentState: FormState, formData: FormData): Promi
       .insert(organizations)
       .values({
         name: `${email.split('@')[0]}'s Organization`,
+        organizationEmail: email,
       })
       .returning();
 
@@ -90,12 +91,13 @@ export async function signup(currentState: FormState, formData: FormData): Promi
     }
 
     const [user] = await db
-      .insert(users)
-      .values({
-        email,
+      .update(users)
+      .set({
         password: hashedPassword,
         organizationId: organization.id,
+        status: 'ACTIVE',
       })
+      .where(eq(users.id, userCheck.id))
       .returning();
 
     if (!user) {
@@ -107,7 +109,7 @@ export async function signup(currentState: FormState, formData: FormData): Promi
         data: rawData,
       };
     }
-    await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role, organizationId: user.organizationId });
+    await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role, organizationId: organization.id });
     redirect('/');
   } else {
     const [user] = await db
@@ -120,6 +122,14 @@ export async function signup(currentState: FormState, formData: FormData): Promi
       .returning();
 
     if (!user) {
+      return {
+        success: false,
+        errors: { other: ['Bład podczas rejestracji'] },
+        data: rawData,
+      };
+    }
+
+    if (!user.organizationId) {
       return {
         success: false,
         errors: { other: ['Bład podczas rejestracji'] },
@@ -153,6 +163,14 @@ export async function login(currentState: FormState, formData: FormData): Promis
   const { email, password } = validatedFields.data;
 
   const user = await getUserByEmail(email);
+
+  if (user && user.status === 'BLOCKED') {
+    return {
+      success: false,
+      errors: { other: ['Konto zostało zablokowane'] },
+      data: rawData,
+    };
+  }
 
   if (!user || !user.password) {
     return {
