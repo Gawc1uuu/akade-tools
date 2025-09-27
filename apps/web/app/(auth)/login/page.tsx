@@ -68,10 +68,7 @@ const Login = () => {
             {state.errors.other && <ErrorDisplay messages={state.errors.other ?? []} />}
             <div className="text-center text-sm text-gray-600">
               <span>Nie masz konta?</span>{' '}
-              <Link
-                className="text-red-400 font-medium hover:text-red-500/90 hover:cursor-pointer hover:underline"
-                href="/register"
-              >
+              <Link className="text-red-400 font-medium hover:text-red-500/90 hover:cursor-pointer hover:underline" href="/register">
                 Zarejestruj się
               </Link>
             </div>

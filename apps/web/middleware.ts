@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { deleteTokens, verifyToken } from '~/lib/tokens';
 
-const protectedRoutes = ['/', '/cars','/staff'];
+const protectedRoutes = ['/', '/cars', '/staff'];
 const publicRoutes = ['/login', '/register'];
 
 export default async function middleware(req: NextRequest) {
