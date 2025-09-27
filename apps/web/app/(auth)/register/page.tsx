@@ -62,13 +62,13 @@ const Register = () => {
         </CardContent>
         <CardFooter>
           <div className="flex flex-col gap-4 w-full">
-            <Button type="submit" variant="register" className="w-full" form="register-form">
+            <Button type="submit" variant="default" className="w-full" form="register-form">
               {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Zarejstruj się'}
             </Button>
             {state.errors.other && <ErrorDisplay messages={state.errors.other ?? []} />}
             <div className="text-center text-sm text-gray-600">
               <span>Masz juz konto?</span>{' '}
-              <Link className="text-primary-red font-medium hover:text-primary-red/90 hover:cursor-pointer hover:underline" href="/login">
+              <Link className="text-red-400 font-medium hover:text-red-500/90 hover:cursor-pointer hover:underline" href="/login">
                 Zalgouj się
               </Link>
             </div>

@@ -17,7 +17,7 @@ const CreateCarModal = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Dodaj pojazd</Button>
+        <Button variant="default">Dodaj pojazd</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[700px]">
         <DialogHeader>

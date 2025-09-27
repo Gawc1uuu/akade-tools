@@ -1,27 +1,16 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 import Paginator from '~/components/paginator';
 import { Button } from '~/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
+import { Label } from '~/components/ui/label';
+import { SelectContent, SelectItem } from '~/components/ui/select';
+import { Select, SelectTrigger } from '~/components/ui/select';
+import { SelectValue } from '~/components/ui/select';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table';
-import { cn } from '~/lib/utils';
-import { Label } from '~/components/ui/label';
-import { useEffect } from 'react';
-
-export interface Action<T> {
-  label: string;
-  onClick?: (row: T) => void;
-  variant?: 'default' | 'destructive' | 'outline' | 'success';
-  condition?: (row: T) => boolean;
-  className?: string;
-  disabled: boolean;
-  renderer?: (row: T) => React.ReactNode;
-  width?: number | string;
-}
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -34,6 +23,17 @@ interface DataTableProps<TData, TValue> {
   filters?: React.ReactNode;
   paramName: string;
   action?: React.ReactNode;
+}
+
+export interface Action<T> {
+  label: string;
+  onClick?: (row: T) => void;
+  variant?: 'default' | 'destructive' | 'outline' | 'success';
+  condition?: (row: T) => boolean;
+  className?: string;
+  disabled: boolean;
+  renderer?: (row: T) => React.ReactNode;
+  width?: number | string;
 }
 
 export function DataTable<TData, TValue>({
@@ -86,21 +86,23 @@ export function DataTable<TData, TValue>({
   };
 
   return (
-    <div className="flex flex-col p-6 border border-border">
-      <div className="flex flex-col gap-4 px-3 pb-3">
-        <h1 className="text-2xl font-bold">{title}</h1>
+    <div className="overflow-hidden rounded-md border p-6">
+      <div className="flex flex-col gap-8 px-3 pb-3 mb-4">
+        <div className="flex justify-between mt-4">
+          <h1 className="text-2xl font-bold">{title}</h1>
+          <div>{action}</div>
+        </div>
         <div>{filters}</div>
-        <div>{action}</div>
       </div>
-      <div className={cn('w-full relative bg-transparent')}>
-        <div className="w-full overflow-auto min-w-0">
-          <Table className={`min-w-full bg-transparent border-spacing-0`}>
+      <div>
+        <div>
+          <Table>
             <TableHeader>
               {table.getHeaderGroups().map(headerGroup => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map(header => {
                     return (
-                      <TableHead key={header.id} style={{ width: header.column.columnDef.meta?.width ?? header.getSize() }}>
+                      <TableHead key={header.id}>
                         {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                       </TableHead>
                     );

@@ -9,16 +9,18 @@ export const roleEnum = pgEnum('role', ['ADMIN', 'USER']);
 export const users = pgTable('users', {
   id: varchar('id').primaryKey().$defaultFn(ulid),
   email: varchar('email').notNull().unique(),
+  status: userStatusEnum('status'),
   password: varchar('password'),
   role: roleEnum('role').default('ADMIN'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-  organizationId: varchar('organization_id').notNull(),
+  organizationId: varchar('organization_id'),
 });
 
 export const organizations = pgTable('organizations', {
   id: varchar('id').primaryKey().$defaultFn(ulid),
   name: varchar('name').notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  organizationEmail: varchar('organization_email'),
 });
 
 export const cars = pgTable('cars', {

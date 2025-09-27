@@ -41,18 +41,7 @@ export function NavMain({
             <Collapsible key={item.title} asChild defaultOpen={item.isActive} className="group/collapsible">
               <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton
-                    tooltip={item.title}
-                    className={cn(
-                      'text-base text-xl gap-x-3 py-6 px-4 [&>svg]:h-7 [&>svg]:w-7',
-                      'group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:[&>svg]:size-10',
-                      'active:bg-transparent active:text-primary-red cursor-pointer',
-                      {
-                        'text-primary-red hover:text-primary-red-foreground hover:bg-none active:bg-none hover:text-primary-red-foreground':
-                          item.isActive,
-                      }
-                    )}
-                  >
+                  <SidebarMenuButton tooltip={item.title}>
                     {item.icon && <item.icon />}
                     <span className="flex flex-1 items-center">
                       <span>{item.title}</span>
@@ -63,16 +52,9 @@ export function NavMain({
                 <CollapsibleContent>
                   <SidebarMenuSub>
                     {item.items?.map(subItem => {
-                      const isActive = subItem.url === pathname;
                       return (
                         <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton
-                            asChild
-                            className={cn({
-                              'bg-primary-red text-primary-red-foreground hover:bg-primary-red hover:text-primary-red-foreground active:bg-primary-red active:text-primary-red-foreground':
-                                isActive,
-                            })}
-                          >
+                          <SidebarMenuSubButton asChild>
                             <Link href={subItem.url}>
                               <span>{subItem.title}</span>
                             </Link>
@@ -86,19 +68,7 @@ export function NavMain({
             </Collapsible>
           ) : (
             <SidebarMenuItem key={item.title} className="flex group-data-[collapsible=icon]:justify-center">
-              <SidebarMenuButton
-                asChild
-                tooltip={item.title}
-                className={cn(
-                  'text-base text-xl gap-x-3 py-6 px-4 [&>svg]:h-7 [&>svg]:w-7',
-                  'group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:[&>svg]:size-10',
-                  'active:bg-transparent active:text-primary-red',
-                  {
-                    'bg-primary-red text-primary-red-foreground hover:bg-primary-red hover:text-primary-red-foreground active:bg-primary-red active:text-primary-red-foreground':
-                      item.isActive,
-                  }
-                )}
-              >
+              <SidebarMenuButton asChild tooltip={item.title}>
                 <Link href={item.url}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>

@@ -31,7 +31,7 @@ const Cars = async ({ searchParams }: CarsProps) => {
   });
 
   return (
-    <div className="border-2 border-blue-500 min-h-screen bg-gray-500">
+    <div>
       <div className="flex flex-col gap-8 px-10 min-w-0 mt-10">
         <CarsTable cars={cars} totalPages={totalPages} currentPage={currentPage} limit={limit} makes={makes} users={users} />
       </div>

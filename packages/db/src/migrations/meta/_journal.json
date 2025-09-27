@@ -15,6 +15,27 @@
       "when": 1758019967588,
       "tag": "0001_eminent_rhino",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1758893650777,
+      "tag": "0002_colorful_tempest",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1758989325917,
+      "tag": "0003_daily_ink",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1758990303039,
+      "tag": "0004_productive_masque",
+      "breakpoints": true
     }
   ]
 }
