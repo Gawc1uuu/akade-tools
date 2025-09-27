@@ -1,13 +1,4 @@
-import {
-  Body,
-  Container,
-  Head,
-  Heading,
-  Html,
-  Preview,
-  Section,
-  Text
-} from '@react-email/components';
+import { Body, Container, Head, Heading, Html, Preview, Section, Text } from '@react-email/components';
 import * as React from 'react';
 
 interface NotificationEmailProps {
@@ -22,9 +13,7 @@ interface NotificationEmailProps {
   }[];
 }
 
-const getPolishNotificationType = (
-  notificationType: 'Insurance' | 'Technical Inspection'
-) => {
+const getPolishNotificationType = (notificationType: 'Insurance' | 'Technical Inspection') => {
   switch (notificationType) {
     case 'Insurance':
       return 'Ubezpieczenie';
@@ -33,19 +22,14 @@ const getPolishNotificationType = (
   }
 };
 
-export const NotificationEmail = ({
-  organizationName,
-  items,
-}: NotificationEmailProps) => (
+export const NotificationEmail = ({ organizationName, items }: NotificationEmailProps) => (
   <Html>
     <Head />
     <Preview>Nadchodzące terminy wygaśnięcia dla Twoich pojazdów</Preview>
     <Body style={main}>
       <Container style={container}>
         <Heading style={h1}>Witaj {organizationName},</Heading>
-        <Text style={text}>
-          Oto nadchodzące terminy wygaśnięcia dla Twoich pojazdów:
-        </Text>
+        <Text style={text}>Oto nadchodzące terminy wygaśnięcia dla Twoich pojazdów:</Text>
         <Section style={box}>
           {items.map((item, index) => (
             <div key={index}>
@@ -53,9 +37,7 @@ export const NotificationEmail = ({
                 <strong>
                   {item.make} {item.model}
                 </strong>{' '}
-                ({item.registrationNumber}) -{' '}
-                {getPolishNotificationType(item.notificationType)} wygasa za{' '}
-                {item.daysUntil} dni, dnia{' '}
+                ({item.registrationNumber}) - {getPolishNotificationType(item.notificationType)} wygasa za {item.daysUntil} dni, dnia{' '}
                 {item.dueDate.toLocaleDateString('pl-PL')}.
               </Text>
             </div>

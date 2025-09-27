@@ -86,10 +86,7 @@ export async function GET(request: Request) {
             dueDate: insuranceDate,
             daysUntil: 7,
           });
-        } else if (
-          insuranceDate >= fourteenDaysFromNowStart &&
-          insuranceDate <= fourteenDaysFromNowEnd
-        ) {
+        } else if (insuranceDate >= fourteenDaysFromNowStart && insuranceDate <= fourteenDaysFromNowEnd) {
           orgNotification.items.push({
             make: car.make,
             model: car.model,
@@ -103,10 +100,7 @@ export async function GET(request: Request) {
 
       if (car.inspectionEndDate) {
         const inspectionDate = new Date(car.inspectionEndDate);
-        if (
-          inspectionDate >= sevenDaysFromNowStart &&
-          inspectionDate <= sevenDaysFromNowEnd
-        ) {
+        if (inspectionDate >= sevenDaysFromNowStart && inspectionDate <= sevenDaysFromNowEnd) {
           orgNotification.items.push({
             make: car.make,
             model: car.model,
@@ -115,10 +109,7 @@ export async function GET(request: Request) {
             dueDate: inspectionDate,
             daysUntil: 7,
           });
-        } else if (
-          inspectionDate >= fourteenDaysFromNowStart &&
-          inspectionDate <= fourteenDaysFromNowEnd
-        ) {
+        } else if (inspectionDate >= fourteenDaysFromNowStart && inspectionDate <= fourteenDaysFromNowEnd) {
           orgNotification.items.push({
             make: car.make,
             model: car.model,
