@@ -62,7 +62,7 @@ const Register = () => {
         </CardContent>
         <CardFooter>
           <div className="flex flex-col gap-4 w-full">
-            <Button type="submit" variant="register" className="w-full" form="register-form">
+            <Button type="submit" variant="default" className="w-full" form="register-form">
               {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Zarejstruj się'}
             </Button>
             {state.errors.other && <ErrorDisplay messages={state.errors.other ?? []} />}
