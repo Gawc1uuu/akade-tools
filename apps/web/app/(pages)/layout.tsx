@@ -25,14 +25,9 @@ export default async function RootLayout({
     redirect('/login');
   }
 
-  const handleLogout = async () => {
-    'use server';
-    await logout();
-  };
-
   return (
     <SidebarProvider>
-      <AppSidebar handleLogout={handleLogout} session={session} />
+      <AppSidebar session={session} />
       <SidebarInset>
         <header className="flex bg-sidebar h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear">
           <div className="flex items-center justify-between max-w-[90%] w-full">

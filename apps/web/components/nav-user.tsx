@@ -13,7 +13,7 @@ import {
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '~/components/ui/sidebar';
 import { Session } from '~/lib/types';
 
-export function NavUser({ user, handleLogout }: { user: Session; handleLogout: () => void }) {
+export function NavUser({ user }: { user: Session }) {
   const { isMobile, state } = useSidebar();
 
   return (
@@ -54,7 +54,7 @@ export function NavUser({ user, handleLogout }: { user: Session; handleLogout: (
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="hover:bg-gray-500/50 hover:cursor-pointer focus:bg-gray-500/50 focus:text-white [&_svg]:text-white">
-              <LogOut className="text-white" onClick={handleLogout} />
+              <LogOut className="text-white" />
               Wyloguj się
             </DropdownMenuItem>
           </DropdownMenuContent>

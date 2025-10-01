@@ -32,7 +32,7 @@ const data = {
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar> & { session: Session; handleLogout: () => void }) {
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar> & { session: Session }) {
   const pathname = usePathname();
   const dynamicNavMain = data.navMain.map(item => ({
     ...item,
@@ -50,7 +50,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar> & 
         <NavMain items={dynamicNavMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={props.session} handleLogout={props.handleLogout} />
+        <NavUser user={props.session} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
