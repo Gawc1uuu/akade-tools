@@ -19,18 +19,16 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   const session = await getSession();
 
-  if(!session) {
+  if (!session) {
     redirect('/login');
   }
 
   const handleLogout = async () => {
-    "use server";
+    'use server';
     await logout();
-  }
-
+  };
 
   return (
     <SidebarProvider>

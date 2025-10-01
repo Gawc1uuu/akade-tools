@@ -13,13 +13,7 @@ import {
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '~/components/ui/sidebar';
 import { Session } from '~/lib/types';
 
-export function NavUser({
-  user,
-  handleLogout,
-}: {
-  user: Session;
-  handleLogout: () => void;
-}) {
+export function NavUser({ user, handleLogout }: { user: Session; handleLogout: () => void }) {
   const { isMobile, state } = useSidebar();
 
   return (
