@@ -5,6 +5,7 @@ import { AppSidebar } from '~/components/app-sidebar';
 import { Separator } from '~/components/ui/separator';
 import { Button } from '~/components/ui/button';
 import { logout } from '~/app/actions/auth';
+import Footer from '~/components/footer';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -33,7 +34,8 @@ export default function RootLayout({
             </div>
           </div>
         </header>
-        <main className="min-h-screen">{children}</main>
+        <main className="flex-1">{children}</main>
+        <Footer />
       </SidebarInset>
     </SidebarProvider>
   );
