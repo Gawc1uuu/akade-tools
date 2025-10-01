@@ -11,15 +11,14 @@ import {
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '~/components/ui/sidebar';
+import { Session } from '~/lib/types';
 
 export function NavUser({
   user,
+  handleLogout,
 }: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
+  user: Session;
+  handleLogout: () => void;
 }) {
   const { isMobile, state } = useSidebar();
 
@@ -61,7 +60,7 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="hover:bg-gray-500/50 hover:cursor-pointer focus:bg-gray-500/50 focus:text-white [&_svg]:text-white">
-              <LogOut className="text-white" />
+              <LogOut className="text-white" onClick={handleLogout} />
               Wyloguj się
             </DropdownMenuItem>
           </DropdownMenuContent>

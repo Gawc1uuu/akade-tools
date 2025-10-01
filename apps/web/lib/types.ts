@@ -15,6 +15,8 @@ export type RefreshTokenPayload = {
 export type Session = {
   id: string;
   email: string;
+  role: string;
+  organizationId: string;
 };
 
 export type Car = {

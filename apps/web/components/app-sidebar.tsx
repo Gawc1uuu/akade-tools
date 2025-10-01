@@ -9,6 +9,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } fr
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Logo from '../public/akade-logo.png';
+import { Session } from '~/lib/types';
 
 // This is sample data.
 const data = {
@@ -31,7 +32,7 @@ const data = {
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar> & { session: Session, handleLogout: () => void }) {
   const pathname = usePathname();
   const dynamicNavMain = data.navMain.map(item => ({
     ...item,
@@ -49,7 +50,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={dynamicNavMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={props.session} handleLogout={props.handleLogout} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
