@@ -1,7 +1,10 @@
-import React from 'react';
+import AddWorkerDialog from '~/app/(pages)/staff/components/add-worker-dialog';
 
 const Staff = () => {
-  return <div>Staff</div>;
+
+  return <div>
+    <AddWorkerDialog />
+  </div>;
 };
 
 export default Staff;
