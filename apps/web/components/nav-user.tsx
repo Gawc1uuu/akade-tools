@@ -54,7 +54,10 @@ export function NavUser({ user }: { user: Session }) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => logout()} className="hover:bg-gray-500/50 hover:cursor-pointer focus:bg-gray-500/50 focus:text-white [&_svg]:text-white">
+            <DropdownMenuItem
+              onSelect={() => logout()}
+              className="hover:bg-gray-500/50 hover:cursor-pointer focus:bg-gray-500/50 focus:text-white [&_svg]:text-white"
+            >
               <LogOut className="text-white" />
               Wyloguj się
             </DropdownMenuItem>
