@@ -19,7 +19,6 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-
   const accessTokenPayload = await verifyToken(accessToken);
 
   if (accessTokenPayload) {
