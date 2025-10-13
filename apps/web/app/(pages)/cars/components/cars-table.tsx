@@ -20,7 +20,6 @@ interface CarsTableI {
 
 const CarsTable = ({ cars, currentPage, totalPages, limit, makes, users }: CarsTableI) => {
   const {
-    state,
     editingCar,
     deletingCarId,
     isPending,
@@ -169,7 +168,7 @@ const CarsTable = ({ cars, currentPage, totalPages, limit, makes, users }: CarsT
   );
 
   return (
-    <div>
+    <div className="w-full min-w-0">
       <DataTable
         actions={row => getActions(row)}
         columns={columns}

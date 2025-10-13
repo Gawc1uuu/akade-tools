@@ -28,21 +28,21 @@ export default async function RootLayout({
   return (
     <SidebarProvider>
       <AppSidebar session={session} />
-      <SidebarInset>
+      <SidebarInset className="min-w-0">
         <header className="flex bg-sidebar h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear">
-          <div className="flex items-center justify-between max-w-[90%] w-full">
-            <div className="flex items-center gap-2 px-4">
+          <div className="flex items-center justify-between w-full px-4">
+            <div className="flex items-center gap-2">
               <SidebarTrigger className="-ml-1 text-sidebar-foreground cursor-pointer" />
               <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-6" />
             </div>
-            <div className="flex items-center gap-2 px-4">
+            <div className="flex items-center gap-2">
               <Button variant="destructive" onClick={logout}>
                 Logout
               </Button>
             </div>
           </div>
         </header>
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 min-w-0">{children}</main>
         <Footer />
       </SidebarInset>
     </SidebarProvider>

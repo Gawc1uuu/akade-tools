@@ -31,8 +31,8 @@ const Cars = async ({ searchParams }: CarsProps) => {
   });
 
   return (
-    <div>
-      <div className="flex flex-col gap-8 px-10 min-w-0 mt-10">
+    <div className="w-full min-w-0">
+      <div className="flex flex-col gap-8 px-4 md:px-6 lg:px-10 min-w-0 mt-6 md:mt-10">
         <CarsTable cars={cars} totalPages={totalPages} currentPage={currentPage} limit={limit} makes={makes} users={users} />
       </div>
     </div>

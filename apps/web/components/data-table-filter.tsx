@@ -88,14 +88,14 @@ const DataTableFilter = ({ filters }: DataTableFilterProps) => {
   const areFiltersActive = filters.some(filter => searchParams.has(filter.param));
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex justify-end gap-2">
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-wrap justify-end gap-2">
         {filters
           .filter(f => f.type === 'select')
           .map(filter => (
-            <div key={filter.param}>
+            <div key={filter.param} className="w-full sm:w-auto min-w-[200px]">
               <Select value={searchParams.get(filter.param) || ''} onValueChange={value => handleFilterChange(filter.param, value)}>
-                <SelectTrigger>
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder={filter.placeholder} />
                 </SelectTrigger>
                 <SelectContent>
@@ -109,9 +109,13 @@ const DataTableFilter = ({ filters }: DataTableFilterProps) => {
               </Select>
             </div>
           ))}
-        {areFiltersActive && <Button onClick={handleClearFilters}>Wyczyść Filtry</Button>}
+        {areFiltersActive && (
+          <Button onClick={handleClearFilters} className="w-full sm:w-auto">
+            Wyczyść Filtry
+          </Button>
+        )}
       </div>
-      <div className="flex w-full gap-2">
+      <div className="flex flex-col sm:flex-row w-full gap-2">
         {filters
           .filter(f => f.type === 'input')
           .map(filter => (
