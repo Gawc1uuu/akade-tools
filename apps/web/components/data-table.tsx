@@ -126,7 +126,7 @@ export function DataTable<TData, TValue>({
                     ))}
                     {actions && getRowActions(row.original) && (
                       <TableCell style={{ width: '20%', minWidth: '20%', maxWidth: '20%' }}>
-                        <div>
+                        <div className="flex gap-2">
                           {getRowActions(row.original)?.map((action, actionIndex) => {
                             return (
                               <Button

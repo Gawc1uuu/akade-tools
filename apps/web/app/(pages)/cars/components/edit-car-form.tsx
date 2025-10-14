@@ -97,9 +97,9 @@ const EditCarForm = ({ onSuccess, initialData }: EditCarFormProps) => {
       </form>
       <DialogFooter>
         <DialogClose asChild>
-          <Button variant="outline">Anuluj</Button>
+          <Button className='hover:cursor-pointer' variant="outline">Anuluj</Button>
         </DialogClose>
-        <Button type="submit" form="edit-car-form" disabled={isPending}>
+        <Button className='hover:cursor-pointer' type="submit" form="edit-car-form" disabled={isPending}>
           {isPending ? 'Zapisywanie...' : 'Zapisz'}
         </Button>
       </DialogFooter>

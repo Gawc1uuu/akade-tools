@@ -111,14 +111,14 @@ const CarsTable = ({ cars, currentPage, totalPages, limit, makes, users }: CarsT
             onClick: () => handleConfirmDelete(row.id),
             variant: 'destructive',
             disabled: isPending,
-            className: 'cursor-pointer',
+            className: 'cursor-pointer w-20',
           },
           {
             label: 'Anuluj',
             onClick: () => handleCancelDelete(),
             variant: 'outline',
             disabled: false,
-            className: 'cursor-pointer',
+            className: 'cursor-pointer w-20',
           },
         ];
       }
@@ -129,14 +129,14 @@ const CarsTable = ({ cars, currentPage, totalPages, limit, makes, users }: CarsT
           onClick: () => handleDeletePrompt(row.id),
           variant: 'destructive',
           disabled: isPending,
-          className: 'cursor-pointer',
+          className: 'cursor-pointer hover:!bg-destructive/70 w-20',
         },
         {
           label: 'Edytuj',
           onClick: () => handleEdit(row),
           variant: 'default',
           disabled: false,
-          className: 'cursor-pointer',
+          className: 'cursor-pointer hover:!bg-primary/70 w-20',
         },
       ];
     },
