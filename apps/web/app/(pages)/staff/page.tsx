@@ -11,7 +11,7 @@ interface StaffProps {
   };
 }
 
-const Staff = async ( { searchParams }: StaffProps ) => {
+const Staff = async ({ searchParams }: StaffProps) => {
   const params = await searchParams;
   const { page, limit, offset } = await parsePaginationParams(params, 'staff');
 
@@ -19,7 +19,7 @@ const Staff = async ( { searchParams }: StaffProps ) => {
     page,
     limit,
     offset,
-    staffSearchTerm: params?.staffSearchTerm ?? "",
+    staffSearchTerm: params?.staffSearchTerm ?? '',
   });
 
   console.log(workers);
