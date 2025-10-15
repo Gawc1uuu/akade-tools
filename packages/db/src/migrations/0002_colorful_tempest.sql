@@ -1,1 +1,0 @@
-ALTER TABLE "organizations" ADD COLUMN "organization_email" varchar;

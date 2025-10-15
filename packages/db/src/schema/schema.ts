@@ -8,12 +8,21 @@ export const roleEnum = pgEnum('role', ['ADMIN', 'USER']);
 
 export const users = pgTable('users', {
   id: varchar('id').primaryKey().$defaultFn(ulid),
+  firstName: varchar('first_name').notNull(),
+  lastName: varchar('last_name').notNull(),
   email: varchar('email').notNull().unique(),
   status: userStatusEnum('status'),
   password: varchar('password'),
   role: roleEnum('role').default('ADMIN'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   organizationId: varchar('organization_id'),
+});
+
+export const invites = pgTable('invites', {
+  id: varchar('id').primaryKey().$defaultFn(ulid),
+  email: varchar('email').notNull().unique(),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  organizationId: varchar('organization_id').notNull(),
 });
 
 export const organizations = pgTable('organizations', {
@@ -51,6 +60,13 @@ export const carsRelations = relations(cars, ({ one }) => ({
   }),
   organization: one(organizations, {
     fields: [cars.organizationId],
+    references: [organizations.id],
+  }),
+}));
+
+export const invitesRelations = relations(invites, ({ one }) => ({
+  organization: one(organizations, {
+    fields: [invites.organizationId],
     references: [organizations.id],
   }),
 }));
