@@ -53,34 +53,40 @@ export async function signup(currentState: FormState, formData: FormData): Promi
 
   const userCheck = await getUserByEmail(rawData.email);
 
-  if(userCheck){
+  if (userCheck) {
     return {
       success: false,
       errors: { other: ['Uzytkownik juz istnieje'] },
       data: rawData,
-    }
+    };
   }
 
   const { email, password } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const { organization, user } = await db.transaction(async (tx) => {
-    const [organization] = await tx.insert(organizations).values({
-      name: `${email.split('@')[0]}'s Organization`,
-      organizationEmail: email,
-    }).returning();
+  const { organization, user } = await db.transaction(async tx => {
+    const [organization] = await tx
+      .insert(organizations)
+      .values({
+        name: `${email.split('@')[0]}'s Organization`,
+        organizationEmail: email,
+      })
+      .returning();
 
     if (!organization) {
       throw new Error('Failed to create organization');
     }
 
-    const [user] = await tx.insert(users).values({
-      email: email,
-      password: hashedPassword,
-      firstName: '',
-      lastName: '',
-      organizationId: organization.id,
-    }).returning();
+    const [user] = await tx
+      .insert(users)
+      .values({
+        email: email,
+        password: hashedPassword,
+        firstName: '',
+        lastName: '',
+        organizationId: organization.id,
+      })
+      .returning();
 
     if (!user) {
       throw new Error('Failed to create user');
@@ -89,11 +95,9 @@ export async function signup(currentState: FormState, formData: FormData): Promi
     return { organization, user };
   });
 
-
-    await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role, organizationId: organization?.id });
-    redirect('/');
+  await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role, organizationId: organization?.id });
+  redirect('/');
 }
-
 
 export async function login(currentState: FormState, formData: FormData): Promise<FormState> {
   const rawData = {
