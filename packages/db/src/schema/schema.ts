@@ -3,7 +3,6 @@ import { pgEnum } from 'drizzle-orm/pg-core';
 import { pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { ulid } from 'ulid';
 
-export const userStatusEnum = pgEnum('user_status', ['INVITED', 'ACTIVE', 'BLOCKED']);
 export const roleEnum = pgEnum('role', ['ADMIN', 'USER']);
 
 export const users = pgTable('users', {
@@ -11,7 +10,6 @@ export const users = pgTable('users', {
   firstName: varchar('first_name').notNull(),
   lastName: varchar('last_name').notNull(),
   email: varchar('email').notNull().unique(),
-  status: userStatusEnum('status'),
   password: varchar('password'),
   role: roleEnum('role').default('ADMIN'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),

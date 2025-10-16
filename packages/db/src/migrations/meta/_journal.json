@@ -8,6 +8,13 @@
       "when": 1760551542337,
       "tag": "0000_normal_triton",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1760642427823,
+      "tag": "0001_spicy_madelyne_pryor",
+      "breakpoints": true
     }
   ]
 }
