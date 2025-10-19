@@ -39,3 +39,10 @@ export type User = {
   organizationId: string;
   role: string;
 };
+
+export type Invite = {
+  id: string;
+  email: string;
+  organizationId: string;
+  createdAt: Date;
+};

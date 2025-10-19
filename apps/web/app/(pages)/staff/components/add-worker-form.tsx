@@ -2,12 +2,16 @@
 import React, { useActionState } from 'react';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { Button } from '~/components/ui/button';
 import { inviteWorker } from '~/app/actions/staff/invite-worker';
+import { ErrorDisplay } from '~/components/ui/error-display';
+
+
 
 const AddWorkerForm = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (isOpen: boolean) => void }) => {
-  const [state, formAction, isPending] = useActionState(inviteWorker, null);
+  const [state, formAction, isPending] = useActionState(inviteWorker, 
+    { success: false, errors: {}, data: {} }
+  );
 
   return (
     <div>
@@ -16,27 +20,17 @@ const AddWorkerForm = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (isO
           <div className="grid gap-4">
             <div className="grid gap-1">
               <Label htmlFor="name">E-mail</Label>
-              <Input id="name" name="email" placeholder="E-mail" />
+              <Input id="name" name="email" placeholder="email@example.com" defaultValue={state.data?.email} />
             </div>
-            <div className="grid gap-1">
-              <Label htmlFor="name">Rola</Label>
-              <Select name="role">
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Wybierz rolę" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="user">Użytkownik</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            {state.errors.email && <ErrorDisplay messages={state.errors.email} />}
+            {state.errors.other && <ErrorDisplay messages={state.errors.other} />}
           </div>
           <div className="flex gap-2 w-full justify-end items-center">
             <Button className="hover:bg-red-500/90 cursor-pointer" type="button" variant="destructive" onClick={() => setIsOpen(false)}>
               Anuluj
             </Button>
             <Button className="hover:bg-primary/90 cursor-pointer" type="submit" form="add-worker-form" disabled={isPending}>
-              Dodaj pracownika
+              Zaproś pracownika
             </Button>
           </div>
         </div>

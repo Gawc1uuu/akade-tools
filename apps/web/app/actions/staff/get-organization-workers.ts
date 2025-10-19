@@ -29,7 +29,7 @@ export async function getOrganizationWorkers({
 
   if (staffSearchTerm) {
     const searchTermWithWildcards = `%${staffSearchTerm}%`;
-    conditions.push(or(ilike(users.email, searchTermWithWildcards)));
+    conditions.push(or(ilike(users.email, searchTermWithWildcards), ilike(users.firstName, searchTermWithWildcards), ilike(users.lastName, searchTermWithWildcards)));
   }
 
   const whereClause = and(...conditions);
