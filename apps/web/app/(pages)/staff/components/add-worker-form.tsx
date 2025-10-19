@@ -28,8 +28,6 @@ const AddWorkerForm = ({ onSuccess, setIsOpen }: { onSuccess: () => void; setIsO
             </div>
             {state.errors.email && <ErrorDisplay messages={state.errors.email} />}
             {state.errors.other && <ErrorDisplay messages={state.errors.other} />}
-            {state.errors.email && <ErrorDisplay messages={state.errors.email} />}
-            {state.errors.other && <ErrorDisplay messages={state.errors.other} />}
           </div>
           <div className="flex gap-2 w-full justify-end items-center">
             <Button className="hover:bg-red-500/90 cursor-pointer" type="button" variant="destructive" onClick={() => setIsOpen(false)}>
