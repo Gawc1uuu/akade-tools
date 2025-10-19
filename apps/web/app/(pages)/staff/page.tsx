@@ -1,5 +1,4 @@
-import AddWorkerDialog from '~/app/(pages)/staff/components/add-worker-dialog';
-import InvitesTable from '~/app/(pages)/staff/components/invites-table';
+import InvitesTableContainer from '~/app/(pages)/staff/components/invites-table-container';
 import StaffTableContainer from '~/app/(pages)/staff/components/staff-table-container';
 import { parsePaginationParams } from '~/app/actions/cars/parsePaginationParams';
 import { getOrganizationInvites } from '~/app/actions/staff/get-invites';
@@ -37,7 +36,7 @@ const Staff = async ({ searchParams }: StaffProps) => {
     <div className="w-full min-w-0">
       <div className="flex flex-col gap-8 px-4 md:px-6 lg:px-10 min-w-0 mt-6 md:mt-10">
         <StaffTableContainer page={staffPage} limit={staffLimit} workers={workers.data} totalPages={workers.totalPages} />
-        <InvitesTable page={invitesPage} limit={invitesLimit} invites={invites.data} totalPages={invites.totalPages} />
+        <InvitesTableContainer page={invitesPage} limit={invitesLimit} invites={invites.data} totalPages={invites.totalPages} />
       </div>
     </div>
   );
