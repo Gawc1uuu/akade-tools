@@ -1,27 +1,19 @@
-"use server";
+'use server';
 
-import { db, invites } from "@repo/db";
-import { count, eq } from "drizzle-orm";
-import { getToken, verifyToken } from "~/lib/tokens";
-import { Invite } from "~/lib/types";
+import { db, invites } from '@repo/db';
+import { count, eq } from 'drizzle-orm';
+import { getToken, verifyToken } from '~/lib/tokens';
+import { Invite } from '~/lib/types';
 
-export async function getOrganizationInvites({
-  page,
-  limit,
-  offset,
-}: {
-  page: number;
-  limit: number;
-  offset: number;
-}) {
+export async function getOrganizationInvites({ page, limit, offset }: { page: number; limit: number; offset: number }) {
   const token = await getToken();
   if (!token) {
-    throw new Error("Unauthorized");
+    throw new Error('Unauthorized');
   }
   const decodedToken = await verifyToken(token);
 
   if (!decodedToken || !decodedToken.organizationId) {
-    throw new Error("Unauthorized");
+    throw new Error('Unauthorized');
   }
 
   const { data, total } = await db.transaction(async tx => {
@@ -31,7 +23,10 @@ export async function getOrganizationInvites({
       orderBy: (invites, { desc }) => [desc(invites.createdAt)],
     });
 
-    const [total] = await tx.select({ count: count() }).from(invites).where(eq(invites.organizationId, decodedToken.organizationId as string));
+    const [total] = await tx
+      .select({ count: count() })
+      .from(invites)
+      .where(eq(invites.organizationId, decodedToken.organizationId as string));
 
     return { data, total: total?.count ?? 0 };
   });
@@ -42,5 +37,4 @@ export async function getOrganizationInvites({
     totalPages: total === 0 ? 1 : Math.ceil(total / limit),
     currentPage: page,
   };
-
 }

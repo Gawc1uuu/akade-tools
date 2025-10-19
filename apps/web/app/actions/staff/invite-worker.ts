@@ -17,7 +17,7 @@ export type InviteWorkerState = {
 };
 
 const inviteWorkerSchema = z.object({
-  email: z.email({message: 'Nieprawidłowy email'}),
+  email: z.email({ message: 'Nieprawidłowy email' }),
 });
 
 export async function inviteWorker(prevState: InviteWorkerState, formData: FormData): Promise<InviteWorkerState> {
@@ -26,15 +26,20 @@ export async function inviteWorker(prevState: InviteWorkerState, formData: FormD
   const verifiedToken = await verifyToken(token);
 
   if (!verifiedToken) {
-      return { ...newState, success: false, errors: { other: ['Nieprawidłowy token'] } };
-    }
+    return { ...newState, success: false, errors: { other: ['Nieprawidłowy token'] } };
+  }
 
   const validatedFields = inviteWorkerSchema.safeParse({
     email: formData.get('email'),
   });
 
   if (!validatedFields.success) {
-    return { ...newState, success: false, errors: validatedFields.error.flatten().fieldErrors, data: { email: formData.get('email') as string } };
+    return {
+      ...newState,
+      success: false,
+      errors: validatedFields.error.flatten().fieldErrors,
+      data: { email: formData.get('email') as string },
+    };
   }
 
   const { email } = validatedFields.data;
@@ -45,15 +50,15 @@ export async function inviteWorker(prevState: InviteWorkerState, formData: FormD
 
   if (user) {
     return { ...newState, success: false, errors: { email: ['Pracownik już istnieje'] }, data: { email: formData.get('email') as string } };
-  } 
+  }
 
-  if(!verifiedToken.organizationId) {
+  if (!verifiedToken.organizationId) {
     return { ...newState, success: false, errors: { other: ['Nieprawidłowy token'] } };
-  } 
-     await db.insert(invites).values({
+  }
+  await db.insert(invites).values({
     email: email as string,
     organizationId: verifiedToken.organizationId as string,
-  })
+  });
 
   return { ...newState, success: true, data: { email } };
 }

@@ -6,12 +6,8 @@ import { Button } from '~/components/ui/button';
 import { inviteWorker } from '~/app/actions/staff/invite-worker';
 import { ErrorDisplay } from '~/components/ui/error-display';
 
-
-
 const AddWorkerForm = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (isOpen: boolean) => void }) => {
-  const [state, formAction, isPending] = useActionState(inviteWorker, 
-    { success: false, errors: {}, data: {} }
-  );
+  const [state, formAction, isPending] = useActionState(inviteWorker, { success: false, errors: {}, data: {} });
 
   return (
     <div>

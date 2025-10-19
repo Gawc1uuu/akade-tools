@@ -14,7 +14,6 @@ interface StaffTableContainerProps {
 }
 
 const StaffTableContainer = ({ page, limit, workers, totalPages }: StaffTableContainerProps) => {
-
   const columns: ColumnDef<User>[] = [
     {
       header: 'Imię',
@@ -71,7 +70,7 @@ const StaffTableContainer = ({ page, limit, workers, totalPages }: StaffTableCon
   ];
 
   return (
-      <DataTable
+    <DataTable
       title="Pracownicy"
       data={workers}
       page={page}
@@ -81,7 +80,7 @@ const StaffTableContainer = ({ page, limit, workers, totalPages }: StaffTableCon
       filters={<DataTableFilter filters={staffFilterConfig} />}
       columns={columns}
       action={<AddWorkerDialog />}
-      />
+    />
   );
 };
 
