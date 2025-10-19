@@ -26,7 +26,6 @@ const Staff = async ({ searchParams }: StaffProps) => {
     staffSearchTerm: params?.staffSearchTerm ?? '',
   });
 
-
   const invites = await getOrganizationInvites({
     page: invitesPage,
     limit: invitesLimit,
