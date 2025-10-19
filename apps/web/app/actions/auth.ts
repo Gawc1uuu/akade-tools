@@ -6,7 +6,6 @@ import { deleteTokens, saveAccessTokenToCookies } from '~/lib/tokens';
 import { deleteSession } from '~/lib/session';
 import { redirect } from 'next/navigation';
 import bcrypt from 'bcrypt';
-import { eq } from 'drizzle-orm';
 
 const registerFormSchema = z.object({
   email: z.email('This is not correct email').trim(),
@@ -54,7 +53,7 @@ export async function signup(currentState: FormState, formData: FormData): Promi
 
   const userCheck = await getUserByEmail(rawData.email);
 
-  if (userCheck && userCheck.status === 'ACTIVE') {
+  if (userCheck) {
     return {
       success: false,
       errors: { other: ['Uzytkownik juz istnieje'] },
@@ -62,19 +61,11 @@ export async function signup(currentState: FormState, formData: FormData): Promi
     };
   }
 
-  if (!userCheck) {
-    return {
-      success: false,
-      errors: { other: ['Potrzebujesz aktywacji konta przez administratora'] },
-      data: rawData,
-    };
-  }
-
   const { email, password } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  if (!userCheck.organizationId) {
-    const [organization] = await db
+  const { organization, user } = await db.transaction(async tx => {
+    const [organization] = await tx
       .insert(organizations)
       .values({
         name: `${email.split('@')[0]}'s Organization`,
@@ -83,63 +74,29 @@ export async function signup(currentState: FormState, formData: FormData): Promi
       .returning();
 
     if (!organization) {
-      return {
-        success: false,
-        errors: { other: ['Bład podczas rejestracji'] },
-        data: rawData,
-      };
+      throw new Error('Failed to create organization');
     }
 
-    const [user] = await db
-      .update(users)
-      .set({
+    const [user] = await tx
+      .insert(users)
+      .values({
+        email: email,
         password: hashedPassword,
+        firstName: '',
+        lastName: '',
         organizationId: organization.id,
-        status: 'ACTIVE',
       })
-      .where(eq(users.id, userCheck.id))
       .returning();
 
     if (!user) {
-      return {
-        success: false,
-        errors: {
-          other: ['Bład podczas rejestracji'],
-        },
-        data: rawData,
-      };
-    }
-    await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role, organizationId: organization.id });
-    redirect('/');
-  } else {
-    const [user] = await db
-      .update(users)
-      .set({
-        password: hashedPassword,
-        status: 'ACTIVE',
-      })
-      .where(eq(users.id, userCheck.id))
-      .returning();
-
-    if (!user) {
-      return {
-        success: false,
-        errors: { other: ['Bład podczas rejestracji'] },
-        data: rawData,
-      };
+      throw new Error('Failed to create user');
     }
 
-    if (!user.organizationId) {
-      return {
-        success: false,
-        errors: { other: ['Bład podczas rejestracji'] },
-        data: rawData,
-      };
-    }
+    return { organization, user };
+  });
 
-    await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role, organizationId: user.organizationId });
-    redirect('/');
-  }
+  await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role, organizationId: organization?.id });
+  redirect('/');
 }
 
 export async function login(currentState: FormState, formData: FormData): Promise<FormState> {
@@ -164,14 +121,6 @@ export async function login(currentState: FormState, formData: FormData): Promis
 
   const user = await getUserByEmail(email);
 
-  if (user && user.status === 'BLOCKED') {
-    return {
-      success: false,
-      errors: { other: ['Konto zostało zablokowane'] },
-      data: rawData,
-    };
-  }
-
   if (!user || !user.password) {
     return {
       success: false,
@@ -183,6 +132,14 @@ export async function login(currentState: FormState, formData: FormData): Promis
   const passwordsMatch = await bcrypt.compare(password, user.password);
 
   if (!passwordsMatch) {
+    return {
+      success: false,
+      errors: { other: ['Nieprawidłowy email lub hasło'] },
+      data: rawData,
+    };
+  }
+
+  if (!user.organizationId) {
     return {
       success: false,
       errors: { other: ['Nieprawidłowy email lub hasło'] },
