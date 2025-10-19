@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import AddWorkerForm from '~/app/(pages)/staff/components/add-worker-form';
 import { Button } from '~/components/ui/button';
@@ -6,6 +7,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 
 const AddWorkerDialog = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const handleSuccess = () => {
+    setIsOpen(false);
+    router.refresh();
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -15,7 +22,7 @@ const AddWorkerDialog = () => {
         <DialogHeader>
           <DialogTitle>Dodaj pracownika</DialogTitle>
         </DialogHeader>
-        <AddWorkerForm isOpen={isOpen} setIsOpen={setIsOpen} />
+        <AddWorkerForm onSuccess={handleSuccess} setIsOpen={setIsOpen} />
       </DialogContent>
     </Dialog>
   );

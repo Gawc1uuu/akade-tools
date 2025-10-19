@@ -1,13 +1,20 @@
 'use client';
-import React, { useActionState } from 'react';
+import React, { useActionState, useEffect } from 'react';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { Button } from '~/components/ui/button';
 import { inviteWorker } from '~/app/actions/staff/invite-worker';
 import { ErrorDisplay } from '~/components/ui/error-display';
+import { Loader2 } from 'lucide-react';
 
-const AddWorkerForm = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (isOpen: boolean) => void }) => {
+const AddWorkerForm = ({ onSuccess, setIsOpen }: { onSuccess: () => void; setIsOpen: (isOpen: boolean) => void }) => {
   const [state, formAction, isPending] = useActionState(inviteWorker, { success: false, errors: {}, data: {} });
+
+  useEffect(() => {
+    if (state.success) {
+      onSuccess();
+    }
+  }, [state.success, onSuccess]);
 
   return (
     <div>
@@ -26,7 +33,7 @@ const AddWorkerForm = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (isO
               Anuluj
             </Button>
             <Button className="hover:bg-primary/90 cursor-pointer" type="submit" form="add-worker-form" disabled={isPending}>
-              Zaproś pracownika
+              {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <span>Zaproś pracownika</span>}
             </Button>
           </div>
         </div>

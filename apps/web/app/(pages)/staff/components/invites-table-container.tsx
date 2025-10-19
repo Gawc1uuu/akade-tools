@@ -5,7 +5,7 @@ import { ClientDate } from '~/components/client-date';
 import { DataTable } from '~/components/data-table';
 import { Invite } from '~/lib/types';
 
-const InvitesTable = ({ page, limit, invites, totalPages }: { page: number; limit: number; invites: Invite[]; totalPages: number }) => {
+const InvitesTableContainer = ({ page, limit, invites, totalPages }: { page: number; limit: number; invites: Invite[]; totalPages: number }) => {
   const columns: ColumnDef<Invite>[] = [
     {
       header: 'Email',
@@ -36,4 +36,4 @@ const InvitesTable = ({ page, limit, invites, totalPages }: { page: number; limi
   );
 };
 
-export default InvitesTable;
+export default InvitesTableContainer;
