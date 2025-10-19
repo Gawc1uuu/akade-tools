@@ -1,4 +1,3 @@
-import AddWorkerDialog from '~/app/(pages)/staff/components/add-worker-dialog';
 import InvitesTableContainer from '~/app/(pages)/staff/components/invites-table-container';
 import StaffTableContainer from '~/app/(pages)/staff/components/staff-table-container';
 import { parsePaginationParams } from '~/app/actions/cars/parsePaginationParams';
@@ -26,6 +25,7 @@ const Staff = async ({ searchParams }: StaffProps) => {
     offset: staffOffset,
     staffSearchTerm: params?.staffSearchTerm ?? '',
   });
+
 
   const invites = await getOrganizationInvites({
     page: invitesPage,

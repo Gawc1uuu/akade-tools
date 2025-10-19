@@ -24,7 +24,10 @@ const AddWorkerForm = ({ onSuccess, setIsOpen }: { onSuccess: () => void; setIsO
             <div className="grid gap-1">
               <Label htmlFor="name">E-mail</Label>
               <Input id="name" name="email" placeholder="email@example.com" defaultValue={state.data?.email} />
+              <Input id="name" name="email" placeholder="email@example.com" defaultValue={state.data?.email} />
             </div>
+            {state.errors.email && <ErrorDisplay messages={state.errors.email} />}
+            {state.errors.other && <ErrorDisplay messages={state.errors.other} />}
             {state.errors.email && <ErrorDisplay messages={state.errors.email} />}
             {state.errors.other && <ErrorDisplay messages={state.errors.other} />}
           </div>
