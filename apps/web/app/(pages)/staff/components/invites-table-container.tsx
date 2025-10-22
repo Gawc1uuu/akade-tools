@@ -16,7 +16,6 @@ const InvitesTableContainer = ({
   invites: Invite[];
   totalPages: number;
 }) => {
-
   const [deletingInviteId, setDeletingInviteId] = useState<string | null>(null);
 
   const columns: ColumnDef<Invite>[] = [
@@ -44,41 +43,51 @@ const InvitesTableContainer = ({
     },
   ];
 
-  const getActions = useCallback((row: Invite): Action<Invite>[] => {
+  const getActions = useCallback(
+    (row: Invite): Action<Invite>[] => {
+      if (deletingInviteId === row.id) {
+        return [
+          {
+            label: 'Zatwierdź',
+            onClick: () => setDeletingInviteId(null),
+            variant: 'destructive',
+            disabled: false,
+            className: 'cursor-pointer w-20',
+          },
+          {
+            label: 'Anuluj',
+            onClick: () => setDeletingInviteId(null),
+            variant: 'outline',
+            disabled: false,
+            className: 'cursor-pointer w-20',
+          },
+        ];
+      }
 
-    if (deletingInviteId === row.id) {
       return [
         {
-          label: 'Zatwierdź',
-          onClick: () => setDeletingInviteId(null),
+          label: 'Usuń',
+          onClick: () => setDeletingInviteId(row.id),
           variant: 'destructive',
           disabled: false,
           className: 'cursor-pointer w-20',
         },
-        {
-          label: 'Anuluj',
-          onClick: () => setDeletingInviteId(null),
-          variant: 'outline',
-          disabled: false,
-          className: 'cursor-pointer w-20',
-        },
       ];
-    }
-
-    return [
-      {
-        label: 'Usuń',
-        onClick: () => setDeletingInviteId(row.id),
-        variant: 'destructive',
-        disabled: false,
-        className: 'cursor-pointer w-20',
-      },
-    ]
-  }, [deletingInviteId]);
-
+    },
+    [deletingInviteId]
+  );
 
   return (
-    <DataTable title="Zaproszenia" data={invites} page={page} totalPages={totalPages} limit={limit} paramName="invites" columns={columns} actions={getActions} />
+    <DataTable
+      title="Zaproszenia"
+      data={invites}
+      page={page}
+      totalPages={totalPages}
+      limit={limit}
+      paramName="invites"
+      columns={columns}
+      actions={getActions}
+    />
   );
 };
 

@@ -18,16 +18,15 @@ const StaffTableContainer = ({ page, limit, workers, totalPages }: StaffTableCon
   const [deletingWorkerId, setDeletingWorkerId] = useState<string | null>(null);
   const [editingWorkerId, setEditingWorkerId] = useState<string | null>(null);
   const [editedWorkerRole, setEditedWorkerRole] = useState<string | null>(null);
-  
+
   const columns: ColumnDef<User>[] = [
     {
-      header: 'Imię', 
+      header: 'Imię',
       accessorKey: 'firstName',
       meta: {
         width: '10%',
       },
       cell: ({ row }) => {
-        
         const firstName = row.getValue('firstName') as string;
         return <div>{firstName}</div>;
       },
@@ -63,7 +62,7 @@ const StaffTableContainer = ({ page, limit, workers, totalPages }: StaffTableCon
       cell: ({ row }) => {
         const role = row.getValue('role') as string;
         return editingWorkerId === row.original.id ? (
-          <Select defaultValue={role} onValueChange={(value) => setEditedWorkerRole(value)}>
+          <Select defaultValue={role} onValueChange={value => setEditedWorkerRole(value)}>
             <SelectTrigger>
               <SelectValue placeholder="Wybierz rolę" />
             </SelectTrigger>
@@ -72,69 +71,72 @@ const StaffTableContainer = ({ page, limit, workers, totalPages }: StaffTableCon
               <SelectItem value="USER">USER</SelectItem>
             </SelectContent>
           </Select>
-        ) : <div>{role}</div>;
+        ) : (
+          <div>{role}</div>
+        );
       },
     },
   ];
 
+  const getActions = useCallback(
+    (row: User): Action<User>[] => {
+      if (deletingWorkerId === row.id) {
+        return [
+          {
+            label: 'Zatwierdź',
+            onClick: () => setDeletingWorkerId(null),
+            variant: 'destructive',
+            disabled: false,
+            className: 'cursor-pointer w-20',
+          },
+          {
+            label: 'Anuluj',
+            onClick: () => setDeletingWorkerId(null),
+            variant: 'outline',
+            disabled: false,
+            className: 'cursor-pointer w-20',
+          },
+        ];
+      }
 
-  const getActions = useCallback((row: User): Action<User>[] => {
+      if (editingWorkerId === row.id) {
+        return [
+          {
+            label: 'Zatwierdź',
+            onClick: () => console.log('edit'),
+            variant: 'default',
+            disabled: false,
+            className: 'cursor-pointer w-20',
+          },
+          {
+            label: 'Anuluj',
+            onClick: () => setEditingWorkerId(null),
+            variant: 'outline',
+            disabled: false,
+            className: 'cursor-pointer w-20',
+          },
+        ];
+      }
 
-    if (deletingWorkerId === row.id) {
       return [
         {
-          label: 'Zatwierdź',
-          onClick: () => setDeletingWorkerId(null),
+          label: 'Usuń',
+          onClick: () => setDeletingWorkerId(row.id),
           variant: 'destructive',
           disabled: false,
           className: 'cursor-pointer w-20',
         },
         {
-          label: 'Anuluj',
-          onClick: () => setDeletingWorkerId(null),
-          variant: 'outline',
-          disabled: false,
-          className: 'cursor-pointer w-20',
-        },
-      ];
-    }
-
-    if (editingWorkerId === row.id) {
-      return [
-        {
-          label: 'Zatwierdź',
-          onClick: () => console.log('edit'),
+          label: 'Edytuj',
+          onClick: () => setEditingWorkerId(row.id),
           variant: 'default',
           disabled: false,
           className: 'cursor-pointer w-20',
         },
-        {
-          label: 'Anuluj',
-          onClick: () => setEditingWorkerId(null),
-          variant: 'outline',
-          disabled: false,
-          className: 'cursor-pointer w-20',
-        },
       ];
-    }
-
-    return [
-      {
-        label: 'Usuń',
-        onClick: () => setDeletingWorkerId(row.id),
-        variant: 'destructive',
-        disabled: false,
-        className: 'cursor-pointer w-20',
-      },
-      {
-        label: 'Edytuj',
-        onClick: () => setEditingWorkerId(row.id),
-        variant: 'default',
-        disabled: false,
-        className: 'cursor-pointer w-20',
-      },
-    ];
-  }, [deletingWorkerId, editingWorkerId]);
+    },
+    [deletingWorkerId, editingWorkerId]
+  );
 
   const staffFilterConfig: FilterConfig[] = [
     {
