@@ -1,9 +1,11 @@
 'use client';
 import { ColumnDef } from '@tanstack/react-table';
-import React, { useCallback, useState } from 'react';
+import React, { startTransition, useActionState, useCallback, useEffect, useState } from 'react';
 import { ClientDate } from '~/components/client-date';
 import { Action, DataTable } from '~/components/data-table';
 import { Invite } from '~/lib/types';
+import { deleteInvite } from '~/app/actions/staff/delete-invite';
+import { useRouter } from 'next/navigation';
 
 const InvitesTableContainer = ({
   page,
@@ -16,7 +18,17 @@ const InvitesTableContainer = ({
   invites: Invite[];
   totalPages: number;
 }) => {
+  const router = useRouter();
   const [deletingInviteId, setDeletingInviteId] = useState<string | null>(null);
+  const [deleteState, deleteAction, isDeleting] = useActionState(deleteInvite, null);
+
+  useEffect(() => {
+    if (deleteState?.success) {
+      router.refresh();
+      setDeletingInviteId(null);
+    }
+  }, [deleteState, router]);
+
 
   const columns: ColumnDef<Invite>[] = [
     {
@@ -48,17 +60,23 @@ const InvitesTableContainer = ({
       if (deletingInviteId === row.id) {
         return [
           {
-            label: 'Zatwierdź',
-            onClick: () => setDeletingInviteId(null),
+            label: isDeleting ? "Usuwanie..." : 'Zatwierdź',
+            onClick: () => {
+              startTransition(()=>{
+                const formData = new FormData();
+                formData.append('inviteId', row.id);
+                deleteAction(formData);
+              })
+            },
             variant: 'destructive',
-            disabled: false,
+            disabled: isDeleting,
             className: 'cursor-pointer w-20',
           },
           {
             label: 'Anuluj',
             onClick: () => setDeletingInviteId(null),
             variant: 'outline',
-            disabled: false,
+            disabled: isDeleting,
             className: 'cursor-pointer w-20',
           },
         ];
@@ -69,12 +87,12 @@ const InvitesTableContainer = ({
           label: 'Usuń',
           onClick: () => setDeletingInviteId(row.id),
           variant: 'destructive',
-          disabled: false,
+          disabled: isDeleting,
           className: 'cursor-pointer w-20',
         },
       ];
     },
-    [deletingInviteId]
+    [deletingInviteId, isDeleting, deleteAction]
   );
 
   return (

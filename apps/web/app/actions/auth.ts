@@ -1,11 +1,12 @@
 /* eslint-disable no-useless-escape */
 'use server';
 import * as z from 'zod';
-import { db, getUserByEmail, organizations, users } from '@repo/db';
+import { db, getUserByEmail, invites, organizations, users } from '@repo/db';
 import { deleteTokens, saveAccessTokenToCookies } from '~/lib/tokens';
 import { deleteSession } from '~/lib/session';
 import { redirect } from 'next/navigation';
 import bcrypt from 'bcrypt';
+import { eq } from 'drizzle-orm';
 
 const registerFormSchema = z.object({
   email: z.email('This is not correct email').trim(),
@@ -61,30 +62,32 @@ export async function signup(currentState: FormState, formData: FormData): Promi
     };
   }
 
+  const invitation = await db.query.invites.findFirst({
+    where: eq(invites.email, rawData.email),
+  });
+
+  if (!invitation) {
+    return {
+      success: false,
+      errors: { other: ['Nie masz zaproszenia do aplikacji'] },
+      data: rawData,
+    };
+  }
+
   const { email, password } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const { organization, user } = await db.transaction(async tx => {
-    const [organization] = await tx
-      .insert(organizations)
-      .values({
-        name: `${email.split('@')[0]}'s Organization`,
-        organizationEmail: email,
-      })
-      .returning();
-
-    if (!organization) {
-      throw new Error('Failed to create organization');
-    }
+  const { user } = await db.transaction(async tx => {
 
     const [user] = await tx
       .insert(users)
       .values({
         email: email,
         password: hashedPassword,
+        role: 'USER',
         firstName: '',
         lastName: '',
-        organizationId: organization.id,
+        organizationId: invitation.organizationId,
       })
       .returning();
 
@@ -92,10 +95,14 @@ export async function signup(currentState: FormState, formData: FormData): Promi
       throw new Error('Failed to create user');
     }
 
-    return { organization, user };
+    return { user };
   });
 
-  await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role, organizationId: organization?.id });
+  if (!user.organizationId) {
+    throw new Error('Failed to create user: missing organizationId');
+  }
+
+  await saveAccessTokenToCookies({ userId: user.id, email: user.email, role: user.role, organizationId: user.organizationId });
   redirect('/');
 }
 

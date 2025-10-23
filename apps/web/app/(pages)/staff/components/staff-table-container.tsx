@@ -1,11 +1,15 @@
 'use client';
 import { ColumnDef } from '@tanstack/react-table';
-import React, { useCallback, useState } from 'react';
+import React, { startTransition, useActionState, useCallback, useEffect, useState } from 'react';
 import AddWorkerDialog from '~/app/(pages)/staff/components/add-worker-dialog';
 import { Action, DataTable } from '~/components/data-table';
 import DataTableFilter, { FilterConfig } from '~/components/data-table-filter';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { User } from '~/lib/types';
+import { deleteWorker } from '~/app/actions/staff/delete-worker';
+import { useRouter } from 'next/navigation';
+import { updateWorker } from '~/app/actions/staff/update-worker';
+import { Loader2 } from 'lucide-react';
 
 interface StaffTableContainerProps {
   page: number;
@@ -15,9 +19,36 @@ interface StaffTableContainerProps {
 }
 
 const StaffTableContainer = ({ page, limit, workers, totalPages }: StaffTableContainerProps) => {
+  const router = useRouter();
   const [deletingWorkerId, setDeletingWorkerId] = useState<string | null>(null);
   const [editingWorkerId, setEditingWorkerId] = useState<string | null>(null);
   const [editedWorkerRole, setEditedWorkerRole] = useState<string | null>(null);
+
+  const [deleteState, deleteAction, isDeleting] = useActionState(deleteWorker, null);
+  const [updateState, updateAction, isUpdating] = useActionState(updateWorker, null);
+
+  useEffect(() => {
+    if (deleteState?.success) {
+      router.refresh();
+      setDeletingWorkerId(null);
+    }
+    if (deleteState?.error) {
+      console.error(deleteState.error);
+      setDeletingWorkerId(null);
+    }
+  }, [deleteState, router]);
+
+  useEffect(() => {
+    if (updateState?.success) {
+      router.refresh();
+      setEditingWorkerId(null);
+      setEditedWorkerRole(null);
+    }
+    if (updateState?.error) {
+      console.error(updateState.error);
+      setEditingWorkerId(null);
+    }
+  }, [updateState, router]);
 
   const columns: ColumnDef<User>[] = [
     {
@@ -62,7 +93,7 @@ const StaffTableContainer = ({ page, limit, workers, totalPages }: StaffTableCon
       cell: ({ row }) => {
         const role = row.getValue('role') as string;
         return editingWorkerId === row.original.id ? (
-          <Select defaultValue={role} onValueChange={value => setEditedWorkerRole(value)}>
+          <Select value={editedWorkerRole || role} onValueChange={value => setEditedWorkerRole(value)} disabled={isUpdating}>
             <SelectTrigger>
               <SelectValue placeholder="Wybierz rolę" />
             </SelectTrigger>
@@ -83,17 +114,24 @@ const StaffTableContainer = ({ page, limit, workers, totalPages }: StaffTableCon
       if (deletingWorkerId === row.id) {
         return [
           {
-            label: 'Zatwierdź',
-            onClick: () => setDeletingWorkerId(null),
+            label: isDeleting ? "Usuwanie..." : 'Zatwierdź',
+            onClick: () => {
+              startTransition(() => {
+                // 4. Wywołaj akcję serwera z FormData
+                const formData = new FormData();
+                formData.append('workerId', row.id);
+                deleteAction(formData);
+              });
+            },
             variant: 'destructive',
-            disabled: false,
+            disabled: isDeleting,
             className: 'cursor-pointer w-20',
           },
           {
             label: 'Anuluj',
             onClick: () => setDeletingWorkerId(null),
             variant: 'outline',
-            disabled: false,
+            disabled: isDeleting,
             className: 'cursor-pointer w-20',
           },
         ];
@@ -102,17 +140,24 @@ const StaffTableContainer = ({ page, limit, workers, totalPages }: StaffTableCon
       if (editingWorkerId === row.id) {
         return [
           {
-            label: 'Zatwierdź',
-            onClick: () => console.log('edit'),
+            label: isUpdating ? "Aktualizowanie..." : 'Zatwierdź',
+            onClick: () => {
+              startTransition(() => {
+                const formData = new FormData();
+                formData.append('workerId', row.id);
+                formData.append('role', editedWorkerRole as string);
+                updateAction(formData);
+              });
+            },
             variant: 'default',
-            disabled: false,
+            disabled: isUpdating,
             className: 'cursor-pointer w-20',
           },
           {
             label: 'Anuluj',
             onClick: () => setEditingWorkerId(null),
             variant: 'outline',
-            disabled: false,
+            disabled: isUpdating,
             className: 'cursor-pointer w-20',
           },
         ];
@@ -135,7 +180,7 @@ const StaffTableContainer = ({ page, limit, workers, totalPages }: StaffTableCon
         },
       ];
     },
-    [deletingWorkerId, editingWorkerId]
+    [deletingWorkerId, editingWorkerId, isDeleting, deleteAction, isUpdating, updateAction, editedWorkerRole]
   );
 
   const staffFilterConfig: FilterConfig[] = [
