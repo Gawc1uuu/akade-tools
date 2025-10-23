@@ -29,7 +29,6 @@ const InvitesTableContainer = ({
     }
   }, [deleteState, router]);
 
-
   const columns: ColumnDef<Invite>[] = [
     {
       header: 'Email',
@@ -60,13 +59,13 @@ const InvitesTableContainer = ({
       if (deletingInviteId === row.id) {
         return [
           {
-            label: isDeleting ? "Usuwanie..." : 'Zatwierdź',
+            label: isDeleting ? 'Usuwanie...' : 'Zatwierdź',
             onClick: () => {
-              startTransition(()=>{
+              startTransition(() => {
                 const formData = new FormData();
                 formData.append('inviteId', row.id);
                 deleteAction(formData);
-              })
+              });
             },
             variant: 'destructive',
             disabled: isDeleting,

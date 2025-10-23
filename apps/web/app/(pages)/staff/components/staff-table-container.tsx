@@ -114,7 +114,7 @@ const StaffTableContainer = ({ page, limit, workers, totalPages }: StaffTableCon
       if (deletingWorkerId === row.id) {
         return [
           {
-            label: isDeleting ? "Usuwanie..." : 'Zatwierdź',
+            label: isDeleting ? 'Usuwanie...' : 'Zatwierdź',
             onClick: () => {
               startTransition(() => {
                 // 4. Wywołaj akcję serwera z FormData
@@ -140,7 +140,7 @@ const StaffTableContainer = ({ page, limit, workers, totalPages }: StaffTableCon
       if (editingWorkerId === row.id) {
         return [
           {
-            label: isUpdating ? "Aktualizowanie..." : 'Zatwierdź',
+            label: isUpdating ? 'Aktualizowanie...' : 'Zatwierdź',
             onClick: () => {
               startTransition(() => {
                 const formData = new FormData();

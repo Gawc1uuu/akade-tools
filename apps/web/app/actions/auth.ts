@@ -78,7 +78,6 @@ export async function signup(currentState: FormState, formData: FormData): Promi
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const { user } = await db.transaction(async tx => {
-
     const [user] = await tx
       .insert(users)
       .values({
