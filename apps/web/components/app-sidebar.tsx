@@ -33,7 +33,7 @@ const data = {
       title: 'Faktury',
       url: '/invoices',
       icon: FileText,
-    }
+    },
   ],
 };
 
