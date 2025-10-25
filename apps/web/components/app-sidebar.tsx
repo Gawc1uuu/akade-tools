@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { CarIcon, Users } from 'lucide-react';
+import { CarIcon, FileText, Users } from 'lucide-react';
 
 import { NavMain } from '~/components/nav-main';
 import { NavUser } from '~/components/nav-user';
@@ -29,6 +29,11 @@ const data = {
       url: '/staff',
       icon: Users,
     },
+    {
+      title: 'Faktury',
+      url: '/invoices',
+      icon: FileText,
+    }
   ],
 };
 
