@@ -1,7 +1,7 @@
 import React from 'react';
 
 const InvoicesPage = () => {
-  return <div>Page</div>;
+  return <div>Faktury</div>;
 };
 
 export default InvoicesPage;
